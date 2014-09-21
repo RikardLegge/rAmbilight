@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -29,6 +30,11 @@ import com.rambilight.core.preferences.Global;
     protected Visulizer() {
         alrgb = new int[Global.numLights][];
 
+        setTitle("rAmiligt Visulizer");
+        try {
+            setIconImage(new ImageIcon(Visulizer.class.getResource("Tray_Active.png")).getImage());
+        } catch (Exception e) {}
+        
         setDefaultLookAndFeelDecorated(true);
         setAlwaysOnTop(true);
         setUndecorated(true);
