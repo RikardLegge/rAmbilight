@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>C:\Files\Cloud\Git\Daily Hacks\Ambilight\Builds\rAmbilight.jar</jar>
-  <outfile>C:\Files\Cloud\Git\Daily Hacks\Ambilight\Builds\rAmbilight.exe</outfile>
+  <jar>C:\Files\Cloud\Git\rAmbilight\rAmbilight\dist\rAmbilight.jar</jar>
+  <outfile>C:\Files\Cloud\Git\rAmbilight\rAmbilight\dist\rAmbilight.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -12,7 +12,7 @@
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>C:\Files\Cloud\Git\Daily Hacks\Ambilight\Builds\rAmbilight.ico</icon>
+  <icon>C:\Files\Cloud\Git\rAmbilight\rAmbilight\dist\rAmbilight.ico</icon>
   <jre>
     <path></path>
     <bundledJre64Bit>false</bundledJre64Bit>
