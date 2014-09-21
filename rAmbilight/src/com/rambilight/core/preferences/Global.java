@@ -8,6 +8,7 @@ public class Global {
     public static boolean      isActive           = false;
 
     public static int          numLights          = 59;
+    public static int[]        lightLayout        = new int[] { 15, 29, 15 };       // Right, Top, Left, Bottom
     public static String[]     currentControllers = new String[0];
     public static String       serialPort         = "COM3";
 
@@ -23,13 +24,17 @@ public class Global {
         Global.isActive = preferences.load("isActive", Global.isActive);
         Global.currentControllers = preferences.load("currentControllers", Global.currentControllers, -1);
 
-        Global.numLights = preferences.load("numLights", Global.numLights);
+        Global.lightLayout = preferences.load("lightLayout", Global.lightLayout, -1);
         Global.loadInternal = preferences.load("loadInternal", Global.loadInternal);
         Global.pluginPath = preferences.load("pluginPath", Global.pluginPath);
 
         Global.lightStepSize = preferences.load("lightStepSize", Global.lightStepSize);
         Global.lightFrameDelay = preferences.load("lightFrameDelay", Global.lightFrameDelay);
         Global.serialPort = preferences.load("serialPort", Global.serialPort);
+
+        numLights = 0;
+        for (int num : lightLayout)
+            numLights += num;
     }
 
     /** Writes the variables to cache */
@@ -37,7 +42,7 @@ public class Global {
         preferences.save("isActive", Global.isActive);
         preferences.save("currentControllers", Global.currentControllers);
 
-        preferences.save("numLights", Global.numLights);
+        preferences.save("lightLayout", lightLayout);
         preferences.save("loadInternal", Global.loadInternal);
         preferences.save("pluginPath", Global.pluginPath);
 

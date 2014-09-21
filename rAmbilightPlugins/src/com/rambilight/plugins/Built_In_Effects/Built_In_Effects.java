@@ -26,7 +26,7 @@ public class Built_In_Effects extends Module {
         switch (currentEffect) {
         case 0:
             if (index - 4 < 0)
-                lightHandler.addToUpdateBuffer(Global.numLights - index - 1, 0, 0, 0);
+                lightHandler.addToUpdateBuffer(Global.numLights - 4 + index, 0, 0, 0);
             else
                 lightHandler.addToUpdateBuffer(index - 4, 0, 0, 0);
             lightHandler.addToUpdateBuffer(index, 200, 200, 200);

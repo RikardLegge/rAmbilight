@@ -11,6 +11,8 @@ import java.awt.Rectangle;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.rambilight.core.preferences.Global;
+
 /*
  * Original source
  * http://stackoverflow.com/questions/1190168/pass-mouse-events-to-applications-behind-from-a-java-ui
@@ -21,11 +23,11 @@ import javax.swing.JPanel;
 /** Frame controller for selecting the area of the ambilight screen capture */
 @SuppressWarnings("serial") public class Visulizer extends JFrame {
 
-    private Rectangle       screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-    private int[][] alrgb;
+    private Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+    private int[][]   alrgb;
 
-    protected Visulizer(int numLights) {
-        alrgb = new int[numLights][];
+    protected Visulizer() {
+        alrgb = new int[Global.numLights][];
 
         setDefaultLookAndFeelDecorated(true);
         setAlwaysOnTop(true);
@@ -59,25 +61,34 @@ import javax.swing.JPanel;
         int wd = w / 29;
         int light = 0;
 
-        for (int i = 0; i < 15; i++) {
-            g.setColor(getColor(light));
-            g.fillRect(w - a, h - hd * (i+1), a, hd);
-            light++;
-        }
-        for (int i = 0; i < 29; i++) {
-            g.setColor(getColor(light));
-            g.fillRect(w - wd * (i+1), 0, wd, a);
-            light++;
-        }
-        for (int i = 0; i < 15; i++) {
-            g.setColor(getColor(light));
-            g.fillRect(0, hd * i, a, hd);
-            light++;
-        }
+        if (Global.lightLayout.length > 0)
+            for (int i = 0; i < Global.lightLayout[0]; i++) {
+                g.setColor(getColor(light));
+                g.fillRect(w - a, h - hd * (i + 1), a, hd);
+                light++;
+            }
+        if (Global.lightLayout.length > 1)
+            for (int i = 0; i < Global.lightLayout[1]; i++) {
+                g.setColor(getColor(light));
+                g.fillRect(w - wd * (i + 1), 0, wd, a);
+                light++;
+            }
+        if (Global.lightLayout.length > 2)
+            for (int i = 0; i < Global.lightLayout[2]; i++) {
+                g.setColor(getColor(light));
+                g.fillRect(0, hd * i, a, hd);
+                light++;
+            }
+        if (Global.lightLayout.length > 3)
+            for (int i = 0; i < Global.lightLayout[3]; i++) {
+                g.setColor(getColor(light));
+                g.fillRect(wd * i, h - a, wd, a);
+                light++;
+            }
     }
 
     public void setColor(int l, int r, int g, int b) {
-        if (l >= 0 && l <= 59) {
+        if (l >= 0 && l <= Global.numLights) {
             if (alrgb[l] == null)
                 alrgb[l] = new int[3];
             alrgb[l][0] = Math.max(Math.min(r, 252), 0);

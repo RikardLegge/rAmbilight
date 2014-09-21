@@ -18,7 +18,7 @@ public class Debugger {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {}
         
-        visulizer = new Visulizer(59);
+        visulizer = new Visulizer();
         trayController = new TrayController();
 
         module.lightHandler = new LightHandler(visulizer);

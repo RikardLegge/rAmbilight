@@ -42,6 +42,7 @@ public class AmbilightDriver {
 
             serialCom.initialize();
         } catch (Exception e) {
+            e.getStackTrace();
             MessageBox.Error(e.getMessage()); // Displays an error box in case of something happens
             exit(-1);
         }
