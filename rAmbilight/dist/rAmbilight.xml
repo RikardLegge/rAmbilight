@@ -3,7 +3,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>C:\Files\Cloud\Git\rAmbilight\rAmbilight\dist\rAmbilight.jar</jar>
-  <outfile>C:\Files\Cloud\Git\rAmbilight\rAmbilight\dist\rAmbilight.exe</outfile>
+  <outfile>C:\Programs\rAmbilight\rAmbilight.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>

@@ -3,7 +3,7 @@ package com.rambilight.core.preferences;
 /** Global class for easy handling of global variables. */
 public class Global {
 
-    public static final int    VERSION            = 24;
+    public static final int    VERSION            = 25;
     public static boolean      requestExit        = false;
     public static boolean      isActive           = false;
 
@@ -14,8 +14,8 @@ public class Global {
 
     public static String       pluginPath         = "/plugins";
     public static boolean      loadInternal       = false;
-    public static int          lightStepSize      = 10;
-    public static int          lightFrameDelay    = 10;
+    public static int          lightStepSize      = 6;
+    public static int          lightFrameDelay    = 6;
     private static Preferences preferences        = new Preferences("core");
 
     /** Loads the variables from cache */

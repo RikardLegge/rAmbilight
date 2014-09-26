@@ -1,7 +1,7 @@
 #include <FastLED.h>      // The LED library
 
 #define DATA_PIN 6        // The pin on the Arduino to use for the LED PWM.
-#define DATA_RATE 115200  // The speed of the transmission
+#define DATA_RATE 256000//115200  // The speed of the transmission
 
 #define NULL 0
 #define NUMBER_OF_LEDS 1
