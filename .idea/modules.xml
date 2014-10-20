@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/rAmbilight.iml" filepath="$PROJECT_DIR$/.idea/rAmbilight.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rAmbilight/rAmbilight.iml" filepath="$PROJECT_DIR$/rAmbilight/rAmbilight.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rAmbilightAPI/rAmbilightAPI.iml" filepath="$PROJECT_DIR$/rAmbilightAPI/rAmbilightAPI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rAmbilightPlugins/rAmbilightPlugins.iml" filepath="$PROJECT_DIR$/rAmbilightPlugins/rAmbilightPlugins.iml" />
     </modules>
   </component>
 </project>

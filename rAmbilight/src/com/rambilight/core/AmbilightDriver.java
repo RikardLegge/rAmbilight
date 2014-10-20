@@ -11,17 +11,20 @@ import com.rambilight.core.ui.TrayController;
 public class AmbilightDriver {
 
     private static TrayController tray;
-    private static ComDriver      serialCom;
+    private static ComDriver serialCom;
 
-    /** Start the application
-     * 
-     * @args The input from for example the commandline */
+    /**
+     * Start the application
+     *
+     * @args The input from for example the commandline
+     */
     public static void main(String[] args) throws Exception {
 
         // Set the UI to a theme that resembles the platform specific one.
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         // Safer way to do things...
         try {
@@ -49,15 +52,14 @@ public class AmbilightDriver {
         new Thread(new Runtime()).start();
     }
 
-    /** A recursive function...
-     * 
-     * @param str
-     *        Original string
-     * @param first
-     *        Use the original first vale as the output first value
-     * @param weirdly
-     *        Do the invert in a weird way
-     * @return A kind of inverted string */
+    /**
+     * A recursive function...
+     *
+     * @param str     Original string
+     * @param first   Use the original first vale as the output first value
+     * @param weirdly Do the invert in a weird way
+     * @return A kind of inverted string
+     */
     public static String invert(String str, boolean first, boolean weirdly) {
         String[] strs = str.split(" ", 2);
         if (strs.length > 1) {
@@ -72,21 +74,27 @@ public class AmbilightDriver {
         return strs[0];
     }
 
-    /** Global function for getting the seril comunication device
-     * 
-     * @return Returns the currently active Serial comunications device */
+    /**
+     * Global function for getting the seril comunication device
+     *
+     * @return Returns the currently active Serial comunications device
+     */
     public static ComDriver getSerialCom() {
         return serialCom;
     }
 
-    /** Global function for exiting the application under controlled manners */
+    /**
+     * Global function for exiting the application under controlled manners
+     */
     public static void requestExit() {
         Global.requestExit = true;
     }
 
-    /** Private function for exiting the application and releasing all assets
-     * 
-     * @code Errorcode, 0 for safe exit */
+    /**
+     * Private function for exiting the application and releasing all assets
+     *
+     * @code Errorcode, 0 for safe exit
+     */
     private static void exit(int code) {
         try {
             ModuleLoader.dispose();
@@ -106,7 +114,9 @@ public class AmbilightDriver {
         System.exit(0);
     }
 
-    /** The infinite loop the application depends on that runs in the background */
+    /**
+     * The infinite loop the application depends on that runs in the background
+     */
     private static class Runtime implements Runnable {
 
         boolean suspended;
@@ -121,7 +131,8 @@ public class AmbilightDriver {
                         serialCom.update();
                         try {
                             Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
-                        } catch (InterruptedException e) {}
+                        } catch (InterruptedException e) {
+                        }
                     } else {
                         if (!suspended) {
                             suspended = true;
@@ -129,7 +140,8 @@ public class AmbilightDriver {
                         }
                         try {
                             Thread.sleep(500);
-                        } catch (InterruptedException e) {}
+                        } catch (InterruptedException e) {
+                        }
                     }
                 } catch (Exception e) {
                     MessageBox.Error(e.getMessage()); // Displays an errorbox in case of someting happends
