@@ -1,9 +1,9 @@
 package com.rambilight.core.serial;
 
+import com.rambilight.core.preferences.Global;
+
 import java.util.LinkedList;
 import java.util.Queue;
-
-import com.rambilight.core.preferences.Global;
 
 public class ComDriver {
 

@@ -30,13 +30,13 @@ import com.rambilight.core.preferences.Global;
     protected Visulizer() {
         alrgb = new int[Global.numLights][];
 
-        setTitle("rAmiligt Visulizer");
+        setTitle("rAmiligt Visualizer");
         try {
             setIconImage(new ImageIcon(Visulizer.class.getResource("Tray_Active.png")).getImage());
         } catch (Exception e) {}
         
         setDefaultLookAndFeelDecorated(true);
-        setAlwaysOnTop(true);
+        //setAlwaysOnTop(true);
         setUndecorated(true);
         Component c = new JPanel() {
 

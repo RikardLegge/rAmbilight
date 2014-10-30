@@ -46,6 +46,10 @@ public class Global {
         preferences.save("loadInternal", Global.loadInternal);
         preferences.save("pluginPath", Global.pluginPath);
 
+        preferences.save("lightStepSize", lightStepSize);
+        preferences.save("lightFrameDelay", Global.lightFrameDelay);
+        preferences.save("serialPort", Global.serialPort);
+
         preferences.save("VERSION", Global.VERSION);
     }
 }

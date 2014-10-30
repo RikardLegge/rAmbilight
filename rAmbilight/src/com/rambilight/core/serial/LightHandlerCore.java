@@ -1,20 +1,21 @@
 package com.rambilight.core.serial;
 
-import java.util.Hashtable;
-import java.util.Stack;
-
 import com.rambilight.core.ModuleLoader;
+
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class LightHandlerCore {
 
     private int                        numLights;              // Total numbe of lights
     private Light[]                    colorBuffer;            // List of the colors of the respective lights
-    private Stack<Integer>             lightsToUpdate;         // List of lights that require updating
+    private Queue<Integer>             lightsToUpdate;         // List of lights that require updating
     private Hashtable<String, Light[]> identifiableColorBuffer;
 
     public LightHandlerCore(int numLights) {
         this.numLights = numLights;
-        lightsToUpdate = new Stack<Integer>();
+        lightsToUpdate = new LinkedList<>();
         identifiableColorBuffer = new Hashtable<String, Light[]>();
         colorBuffer = new Light[numLights];
         for (int i = 0; i < colorBuffer.length; i++)
@@ -43,7 +44,7 @@ public class LightHandlerCore {
 
     public Light next() {
         if (requiresUpdate())
-            return composeColor(lightsToUpdate.pop());
+            return composeColor(lightsToUpdate.remove());
         else
             return null;
     }
@@ -75,7 +76,7 @@ public class LightHandlerCore {
             light.r = r;
             light.g = g;
             light.b = b;
-            if (colorBuffer[id].requiresUpdate == false) {
+            if (!colorBuffer[id].requiresUpdate) {
                 lightsToUpdate.add(id);
                 colorBuffer[id].requiresUpdate = true;
             }

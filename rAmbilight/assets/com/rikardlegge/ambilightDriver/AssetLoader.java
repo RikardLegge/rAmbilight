@@ -1,9 +1,8 @@
 package com.rikardlegge.ambilightDriver;
 
-import java.awt.Image;
+import javax.swing.*;
+import java.awt.*;
 import java.io.FileNotFoundException;
-
-import javax.swing.ImageIcon;
 
 public class AssetLoader {
 

@@ -1,12 +1,12 @@
 package com.rambilight.core;
 
-import javax.swing.UIManager;
-
 import com.rambilight.core.preferences.Global;
 import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.serial.ComDriver;
 import com.rambilight.core.ui.MessageBox;
 import com.rambilight.core.ui.TrayController;
+
+import javax.swing.*;
 
 public class AmbilightDriver {
 
@@ -36,7 +36,9 @@ public class AmbilightDriver {
 
             System.out.println(invert("This is the recursive function that was needed in the program", true, true));
 
-            ModuleLoader.loadModules(ModuleLoader.loadExternalModules(AmbilightDriver.class));
+            ModuleLoader.loadModule(com.rambilight.plugins.Ambilight.Ambilight.class);
+
+            //ModuleLoader.loadModules(ModuleLoader.loadExternalModules(AmbilightDriver.class));
 
             tray = new TrayController();
 

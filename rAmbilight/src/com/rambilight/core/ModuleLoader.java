@@ -1,16 +1,16 @@
 package com.rambilight.core;
 
+import com.rambilight.core.preferences.Global;
+import com.rambilight.core.preferences.Preferences;
+import com.rambilight.core.serial.LightHandler;
+import com.rambilight.plugins.Module;
+
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
-import com.rambilight.core.preferences.Global;
-import com.rambilight.core.preferences.Preferences;
-import com.rambilight.core.serial.LightHandler;
-import com.rambilight.plugins.Module;
 
 /** Class for loading and handling modules */
 public class ModuleLoader {
@@ -129,19 +129,25 @@ public class ModuleLoader {
             urls[i] = new URL(TMP_paths.get(i));
         TMP_paths.clear();  // Just to clarify that this is temporary
 
-        ClassLoader loader = URLClassLoader.newInstance(urls, classLoaderSoruce.getClassLoader());  // New instance of the class loader that allows the
+        URLClassLoader loader = URLClassLoader.newInstance(urls, classLoaderSoruce.getClassLoader());  // New instance of the class loader that allows the
                                                                                                    // required subclasses and assets to be loaded
-        ArrayList<Class<? extends Module>> classes = new ArrayList<>(); // The succsessfully loaded classes
+        ArrayList<Class<? extends Module>> classes = new ArrayList<>(); // The successfully loaded classes
+
         for (URL url : urls) {
             // Parse the path into a name. Remove everything before the last "/"(Path) and after the last "."(Extension)
+
             String name = url.toString().substring(url.toString().lastIndexOf("/") + 1, url.toString().lastIndexOf("."));
+            String postError = "";
+
+            System.out.println(loader.findResource("Module"));
             try {
-                Class<?> RawClass = Class.forName("com.rambilight.plugins." + name + "." + name, true, loader);    // Creates a link for access to the
-                                                                                                                // class
+                Class<?> RawClass = Class.forName("com.rambilight.plugins." + name + "." + name, true, loader);    // Creates a link for access to the class
+                postError = "Loading as asset instead";
                 Class<? extends Module> modulePlugin = RawClass.asSubclass(Module.class);                          // Make sure it's a subclass of "Module"
                 classes.add(modulePlugin);                                                                         // If all goes well, add it to the list.
             } catch (Exception e) {
-                System.err.println("Unable to load plugin '" + name + "'. Loading as asset instead");
+                System.err.println("Unable to load plugin '" + name + "'. " + postError);
+                e.printStackTrace();
             }
         }
         Class<?>[] toRet = new Class<?>[classes.size()];

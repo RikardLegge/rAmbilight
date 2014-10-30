@@ -1,23 +1,16 @@
 package com.rambilight.core.ui;
 
-import java.awt.CheckboxMenuItem;
-import java.awt.Image;
-import java.awt.Menu;
-import java.awt.MenuComponent;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
+import com.rambilight.core.AmbilightDriver;
+import com.rambilight.core.ModuleLoader;
+import com.rambilight.core.preferences.Global;
+import com.rikardlegge.ambilightDriver.AssetLoader;
+
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Enumeration;
 import java.util.Hashtable;
-
-import com.rambilight.core.AmbilightDriver;
-import com.rambilight.core.ModuleLoader;
-import com.rambilight.core.preferences.Global;
-import com.rikardlegge.ambilightDriver.AssetLoader;
 
 public class TrayController {
 
