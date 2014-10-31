@@ -16,7 +16,7 @@ public class LightHandlerCore {
     public LightHandlerCore(int numLights) {
         this.numLights = numLights;
         lightsToUpdate = new LinkedList<>();
-        identifiableColorBuffer = new Hashtable<String, Light[]>();
+        identifiableColorBuffer = new Hashtable<>();
         colorBuffer = new Light[numLights];
         for (int i = 0; i < colorBuffer.length; i++)
             colorBuffer[i] = new Light(i, (byte) 0, (byte) 0, (byte) 0);
@@ -54,14 +54,12 @@ public class LightHandlerCore {
         if (ModuleLoader.getActiveModules().size() == 0)
             colorBuffer[i].set(0, 0, 0);
         else
-            for (String name : ModuleLoader.getActiveModules()) {
-                if (identifiableColorBuffer.containsKey(name)) {
-                    Light lightI = identifiableColorBuffer.get(name)[i];
-                    colorBuffer[i].r = Math.round((float) colorBuffer[i].r * ((float) lightI.r / 252f));
-                    colorBuffer[i].g = Math.round((float) colorBuffer[i].g * ((float) lightI.g / 252f));
-                    colorBuffer[i].b = Math.round((float) colorBuffer[i].b * ((float) lightI.b / 252f));
-                }
-            }
+            ModuleLoader.getActiveModules().parallelStream().filter(name -> identifiableColorBuffer.containsKey(name)).forEach(name -> {
+                Light lightI = identifiableColorBuffer.get(name)[i];
+                colorBuffer[i].r = Math.round((float) colorBuffer[i].r * ((float) lightI.r / 252f));
+                colorBuffer[i].g = Math.round((float) colorBuffer[i].g * ((float) lightI.g / 252f));
+                colorBuffer[i].b = Math.round((float) colorBuffer[i].b * ((float) lightI.b / 252f));
+            });
         return colorBuffer[i];
     }
 

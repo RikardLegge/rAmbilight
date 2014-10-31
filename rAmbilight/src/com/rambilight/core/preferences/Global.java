@@ -12,11 +12,13 @@ public class Global {
     public static String[]     currentControllers = new String[0];
     public static String       serialPort         = "/dev/tty.usbmodem1451";//"COM3";
 
-    public static String       pluginPath         = "/plugins";
+    public static String       pluginPath         = "";
     public static boolean      loadInternal       = false;
     public static int          lightStepSize      = 6;
     public static int          lightFrameDelay    = 6;
     private static Preferences preferences        = new Preferences("core");
+
+    public static final String PLATFORM = System.getProperty("os.name").toLowerCase();
 
     /** Loads the variables from cache */
     public static void loadPreferences() {

@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Build rAmbilight">
+    <output-path>$PROJECT_DIR$/dist/rAmbilight.app/Contents/Resources/Java</output-path>
+    <properties id="ant-postprocessing">
+      <options enabled="true" />
+    </properties>
+    <root id="archive" name="Application.jar">
+      <element id="module-output" name="rAmbilight" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/rAmbilight/lib/JSSC/jssc.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

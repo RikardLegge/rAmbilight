@@ -11,16 +11,16 @@ public class ComDriver {
     private LightHandlerCore     lightHandler;
     private Queue<Byte>          serialBuffer;
 
-    private long                 lastPing               = 0;
-    private long                 lastRecived            = 0;
-    private long                 ticksSinceLastRecieved = 0;    // 1 tick > ~10ms.
+    private long lastPing               = 0;
+    private long lastReceived            = 0;
+    private long ticksSinceLastReceived = 0;    // 1 tick > ~10ms.
 
-    private boolean              writtenPrefs           = false;
+    private boolean writtenPrefs = false;
 
     public ComDriver() {
         lightHandler = new LightHandlerCore(Global.numLights);
         serial = new SerialControllerJSSC();
-        serialBuffer = new LinkedList<Byte>();
+        serialBuffer = new LinkedList<>();
     }
 
     public LightHandlerCore getLightHandler() {
@@ -32,8 +32,8 @@ public class ComDriver {
             throw new Exception("Unable to connect to device");
 
         System.out.println("Serial baud rate: " + serial.getDataRate());
-        serial.setEventListener((data) -> recivedPacket(data));
-        lastRecived = System.currentTimeMillis();
+        serial.setEventListener((data) -> receivedPacket(data));
+        lastReceived = System.currentTimeMillis();
     }
 
     public void ping() {
@@ -43,25 +43,31 @@ public class ComDriver {
 
     public void update() {
         long now = System.currentTimeMillis();
-        ticksSinceLastRecieved++;
-        if (now - lastRecived > 3000 && ticksSinceLastRecieved > 250) {
+        ticksSinceLastReceived++;
+        if (now - lastReceived > 3000 && ticksSinceLastReceived > 250) {
             boolean cache = Global.isActive;
             try {
                 Global.isActive = false;
                 System.err.println("The system seems to have halted.");
+                System.out.println("Closing port.");
                 serial.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                Thread.sleep(100);
                 System.out.print("Reopening port...");
                 if (!serial.initialize(Global.serialPort))
                     throw new Exception("Unable to open port");
                 System.out.println(" Opened!");
-                lastRecived = now;
+                lastReceived = now;
                 writtenPrefs = false;
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
             Global.isActive = cache;
-        } else if (now - lastPing > 750)
+        }
+        else if (now - lastPing > 750)
             ping();
     }
 
@@ -69,22 +75,22 @@ public class ComDriver {
         serial.close();
     }
 
-    private void recivedPacket(int data) {
-        lastRecived = System.currentTimeMillis();
-        ticksSinceLastRecieved = 0;
+    private void receivedPacket(int data) {
+        lastReceived = System.currentTimeMillis();
+        ticksSinceLastReceived = 0;
         switch (data) {
-        case 1: // Ready
-            if (!writtenPrefs) {
-                writtenPrefs = true;
-                serialGateway(Gateway.preferences);
-            }
-            serialGateway(Gateway.data);
-        break;
-        case 2: // Sleeping
-        break;
-        default:
-            System.out.println("Recived:" + data);
-        break;
+            case 1: // Ready
+                if (!writtenPrefs) {
+                    writtenPrefs = true;
+                    serialGateway(Gateway.preferences);
+                }
+                serialGateway(Gateway.data);
+                break;
+            case 2: // Sleeping
+                break;
+            default:
+                System.out.println("Received:" + data);
+                break;
         }
     }
 
@@ -124,26 +130,26 @@ public class ComDriver {
         lastPing = System.currentTimeMillis();
 
         Light light = null;
-        write(ArduinoComunication.BEGIN_SEND);
+        write(ArduinoCommunication.BEGIN_SEND);
         for (int i = 0; i < 12; i++) {
-            while (lightHandler.requiresUpdate() && (light = lightHandler.next()).requiresUpdate == false) {}
+            while (lightHandler.requiresUpdate() && !(light = lightHandler.next()).requiresUpdate);
             if (light == null)
                 break;
             light.requiresUpdate = false;
-            write(new byte[] { (byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b });
+            write(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
         }
-        write(ArduinoComunication.END_SEND);
+        write(ArduinoCommunication.END_SEND);
     }
 
     private void flushPreferences() {
-        writePreference(ArduinoComunication.CLEAR_BUFFER, ArduinoComunication.NULL);
-        writePreference(ArduinoComunication.NUMBER_OF_LEDS, Global.numLights);
-        writePreference(ArduinoComunication.FRAME_DELAY, Global.lightFrameDelay);
-        writePreference(ArduinoComunication.SMOOTH_STEP, Global.lightStepSize);
+        writePreference(ArduinoCommunication.CLEAR_BUFFER, ArduinoCommunication.NULL);
+        writePreference(ArduinoCommunication.NUMBER_OF_LEDS, Global.numLights);
+        writePreference(ArduinoCommunication.FRAME_DELAY, Global.lightFrameDelay);
+        writePreference(ArduinoCommunication.SMOOTH_STEP, Global.lightStepSize);
     }
 
     private void writePreference(byte preference, int value) {
-        writeToBuffer(ArduinoComunication.BEGIN_SEND_PREFS);
+        writeToBuffer(ArduinoCommunication.BEGIN_SEND_PREFS);
 
         writeToBuffer(preference);
         writeToBuffer((byte) value);
@@ -152,7 +158,7 @@ public class ComDriver {
     }
 
     private void pingLights() {
-        write(ArduinoComunication.END_SEND);
+        write(ArduinoCommunication.END_SEND);
     }
 
     private enum Gateway {
@@ -161,26 +167,26 @@ public class ComDriver {
 
     private synchronized void serialGateway(Gateway gate) {
         switch (gate) {
-        case ping:
-            pingLights();
-        break;
-        case data:
-            flushLights();
-        break;
-        case preferences:
-            flushPreferences();
-        break;
+            case ping:
+                pingLights();
+                break;
+            case data:
+                flushLights();
+                break;
+            case preferences:
+                flushPreferences();
+                break;
         }
     }
 
-    static class ArduinoComunication {
+    static class ArduinoCommunication {
 
-        public static final byte NULL             = 0;
+        public static final byte NULL = 0;
 
-        public static final byte NUMBER_OF_LEDS   = 1;
-        public static final byte SMOOTH_STEP      = 2;
-        public static final byte FRAME_DELAY      = 3;
-        public static final byte CLEAR_BUFFER     = 4;
+        public static final byte NUMBER_OF_LEDS = 1;
+        public static final byte SMOOTH_STEP    = 2;
+        public static final byte FRAME_DELAY    = 3;
+        public static final byte CLEAR_BUFFER   = 4;
 
         public static final byte END_SEND         = (byte) 254;
         public static final byte BEGIN_SEND       = (byte) 255;

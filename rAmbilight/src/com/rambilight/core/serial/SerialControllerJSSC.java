@@ -56,24 +56,20 @@ public class SerialControllerJSSC implements SerialPortEventListener {
 
     /** Is the current serial port open? */
     public boolean isAvailable() {
-        if (serialPort != null)
-            return serialPort.isOpened();
-        return false;
+        return serialPort != null && serialPort.isOpened();
     }
 
     /** When a byte is recieved, handle it and call the callback */
     public void serialEvent(SerialPortEvent event) {
         if (event.isRXCHAR()) {// If data is available
             if (event.getEventValue() > 0) {
-                byte buffer[] = null;
+                byte buffer[];
                 try {
                     buffer = serialPort.readBytes();
+                    for (byte read : buffer)
+                        serialEvent.Recived(read & 0xff);
                 } catch (SerialPortException e) {
                     System.err.println(e.toString());
-                }
-                for (int i = 0; i < buffer.length; i++) {
-                    int read = buffer[i];
-                    serialEvent.Recived(read & 0xff);
                 }
             }
         } else if (event.isCTS()) {// If CTS line has changed state
@@ -129,7 +125,7 @@ public class SerialControllerJSSC implements SerialPortEventListener {
         if (serialPort != null)
             serialPort.writeBytes(o);
         else
-            System.err.println("WARNING: Output device not initiated. Not sending byte[] " + o.toString());
+            System.err.println("WARNING: Output device not initiated. Not sending byte[] with length " + o.length);
     }
 
     /** Write INT through the serialPort (Will probably be split into 4 bytes)

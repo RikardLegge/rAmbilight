@@ -15,8 +15,8 @@ import java.util.Hashtable;
 public class TrayController {
 
     // The tray
-    private SystemTray                    tray;
-    private PopupMenu                     popup;
+    private SystemTray tray;
+    private PopupMenu  popup;
 
     // Menu items in the tray
     private CheckboxMenuItem              runToggle;
@@ -25,12 +25,12 @@ public class TrayController {
     private Hashtable<String, MenuItem[]> itemGroups;
 
     // assets for the tray
-    private TrayIcon                      trayIcon;
-    private Image                         Image_Active;
-    private Image                         Image_Idle;
+    private TrayIcon trayIcon;
+    private Image    Image_Active;
+    private Image    Image_Idle;
 
     public TrayController() throws Exception {
-        itemGroups = new Hashtable<String, MenuItem[]>();
+        itemGroups = new Hashtable<>();
         popup = new PopupMenu();
 
         // Safe way of creating the tray. If something fails, throw an error
@@ -78,9 +78,7 @@ public class TrayController {
                     (e) -> setState(e.getStateChange() == ItemEvent.SELECTED));
 
             inputs = createRadioGroup("Modules", inputslist, (e) -> {});
-            exit = createItem("Quit", (e) -> {
-                AmbilightDriver.requestExit();
-            });
+            exit = createItem("Quit", (e) -> AmbilightDriver.requestExit());
 
             // Add a listener for when the module changes
             ModuleLoader.addOnChangeListener((s) -> {
@@ -130,7 +128,7 @@ public class TrayController {
         String names = "";
         for (int i = 0; i < inputs.getItemCount(); i++) {
             MenuItem MIitem = inputs.getItem(i);
-            CheckboxMenuItem item = null;
+            CheckboxMenuItem item;
             try {
                 item = (CheckboxMenuItem) MIitem;
             } catch (Exception e) {
@@ -146,7 +144,8 @@ public class TrayController {
         if (names.length() > 0) {
             names = names.substring(0, names.length() - 2);
             inputs.setLabel("Modules (" + names + ")");
-        } else
+        }
+        else
             inputs.setLabel("Modules");
     }
 

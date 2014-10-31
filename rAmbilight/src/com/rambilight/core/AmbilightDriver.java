@@ -16,7 +16,7 @@ public class AmbilightDriver {
     /**
      * Start the application
      *
-     * @args The input from for example the commandline
+     * @param args  The input from the command line
      */
     public static void main(String[] args) throws Exception {
 
@@ -24,23 +24,19 @@ public class AmbilightDriver {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
+            System.err.println("Unable to set the look and feel.");
         }
 
         // Safer way to do things...
         try {
-
             Preferences.read();
             Global.loadPreferences();
-
             serialCom = new ComDriver();
 
+            // Arguments: String, invert?, switch every other?
             System.out.println(invert("This is the recursive function that was needed in the program", true, true));
 
-            ModuleLoader.loadModule(com.rambilight.plugins.Ambilight.Ambilight.class);
-            ModuleLoader.loadModule(com.rambilight.plugins.PushBullet.PushBullet.class);
-            ModuleLoader.loadModule(com.rambilight.plugins.Built_In_Effects.Built_In_Effects.class);
-
-            //ModuleLoader.loadModules(ModuleLoader.loadExternalModules(AmbilightDriver.class));
+            ModuleLoader.loadModules(ModuleLoader.loadExternalModules(AmbilightDriver.class));
 
             tray = new TrayController();
 
@@ -49,9 +45,10 @@ public class AmbilightDriver {
 
             serialCom.initialize();
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
             MessageBox.Error(e.getMessage()); // Displays an error box in case of something happens
             exit(-1);
+            return;
         }
         new Thread(new Runtime()).start();
     }
@@ -79,9 +76,9 @@ public class AmbilightDriver {
     }
 
     /**
-     * Global function for getting the seril comunication device
+     * Global function for getting the serial communication device
      *
-     * @return Returns the currently active Serial comunications device
+     * @return Returns the currently active Serial communications device
      */
     public static ComDriver getSerialCom() {
         return serialCom;
@@ -97,7 +94,7 @@ public class AmbilightDriver {
     /**
      * Private function for exiting the application and releasing all assets
      *
-     * @code Errorcode, 0 for safe exit
+     * @code Error code, 0 for safe exit
      */
     private static void exit(int code) {
         try {
@@ -114,7 +111,7 @@ public class AmbilightDriver {
         if (code == 0)
             System.out.println("Exiting");
         else
-            System.out.println("Exiting with errorcode " + code);
+            System.out.println("Exiting with error code " + code);
         System.exit(0);
     }
 
@@ -136,6 +133,8 @@ public class AmbilightDriver {
                         try {
                             Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
                         } catch (InterruptedException e) {
+                            System.err.println("An error occurred in the main thread.");
+                            e.printStackTrace();
                         }
                     } else {
                         if (!suspended) {
@@ -145,10 +144,11 @@ public class AmbilightDriver {
                         try {
                             Thread.sleep(500);
                         } catch (InterruptedException e) {
+                            System.out.println("Thread sleep was interrupted.");
                         }
                     }
                 } catch (Exception e) {
-                    MessageBox.Error(e.getMessage()); // Displays an errorbox in case of someting happends
+                    MessageBox.Error(e.getMessage()); // Displays an error box in case of something happens
                     e.printStackTrace();
                 }
             exit(0);

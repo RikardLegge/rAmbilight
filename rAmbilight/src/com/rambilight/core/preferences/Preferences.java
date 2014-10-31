@@ -13,63 +13,61 @@ public class Preferences {
     // The module which this preferencehandler comunicates with
     String module;
 
-    /** Create a new instance of the class that is associated with a specific part of the application
-     * 
-     * @param moduleName
-     *        The name of the module. Must be unique.
-     * @throws Exception */
+    /**
+     * Create a new instance of the class that is associated with a specific part of the application
+     *
+     * @param moduleName The name of the module. Must be unique.
+     * @throws Exception
+     */
     public Preferences(String moduleName) {
         module = moduleName;
         if (!PreferencesCore.rawPrefs.containsKey(module))
-            PreferencesCore.rawPrefs.put(module, new Hashtable<String, String>());
+            PreferencesCore.rawPrefs.put(module, new Hashtable<>());
     }
 
-    /** Loads a int[] from cache
-     * 
-     * @param name
-     *        Name of the variable to load
-     * @param fallback
-     *        If the variable isn't found, use the fallback
-     * @return The value in cache */
+    /**
+     * Loads a int[] from cache
+     *
+     * @param name     Name of the variable to load
+     * @param fallback If the variable isn't found, use the fallback
+     * @return The value in cache
+     */
     public String load(String name, String fallback) {
         return PreferencesCore.load(module, name, fallback);
     }
 
-    /** Loads a int[] from cache
-     * 
-     * @param name
-     *        Name of the variable to load
-     * @param fallback
-     *        If the variable isn't found, use the fallback
-     * @return The value in cache */
+    /**
+     * Loads a int[] from cache
+     *
+     * @param name     Name of the variable to load
+     * @param fallback If the variable isn't found, use the fallback
+     * @return The value in cache
+     */
     public int load(String name, int fallback) {
         String loaded = PreferencesCore.load(module, name, "null");
         return !loaded.equals("null") ? Integer.valueOf(loaded) : fallback;
     }
 
-    /** Loads a int[] from cache
-     * 
-     * @param name
-     *        Name of the variable to load
-     * @param fallback
-     *        If the variable isn't found, use the fallback
-     * @param length
-     *        Length of the returned array. Use -1 to use the contents length instead of one specified
-     * @return The value in cache */
+    /**
+     * Loads a int[] from cache
+     *
+     * @param name     Name of the variable to load
+     * @param fallback If the variable isn't found, use the fallback
+     * @return The value in cache
+     */
     public boolean load(String name, boolean fallback) {
         String loaded = PreferencesCore.load(module, name, "null");
         return !loaded.equals("null") ? Boolean.valueOf(loaded) : fallback;
     }
 
-    /** Loads an int[] from cache
-     * 
-     * @param name
-     *        Name of the variable to load
-     * @param fallback
-     *        If the variable isn't found, use the fallback
-     * @param length
-     *        Length of the returned array. Use -1 to use the contents length instead of one specified
-     * @return The value in cache */
+    /**
+     * Loads an int[] from cache
+     *
+     * @param name     Name of the variable to load
+     * @param fallback If the variable isn't found, use the fallback
+     * @param length   Length of the returned array. Use -1 to use the contents length instead of one specified
+     * @return The value in cache
+     */
     public int[] load(String name, int[] fallback, int length) {
         String[] loaded = PreferencesCore.load(module, name, "null").split(",");
 
@@ -93,15 +91,14 @@ public class Preferences {
         return arr;
     }
 
-    /** Loads a String[] from cache
-     * 
-     * @param name
-     *        Name of the variable to load
-     * @param fallback
-     *        If the variable isn't found, use the fallback
-     * @param length
-     *        Length of the returned array. Use -1 to use the contents length instead of one specified
-     * @return The value in cache */
+    /**
+     * Loads a String[] from cache
+     *
+     * @param name     Name of the variable to load
+     * @param fallback If the variable isn't found, use the fallback
+     * @param length   Length of the returned array. Use -1 to use the contents length instead of one specified
+     * @return The value in cache
+     */
     public String[] load(String name, String[] fallback, int length) {
         String[] loaded = PreferencesCore.load(module, name, "null").split(",");
 
@@ -114,47 +111,46 @@ public class Preferences {
         else
             arr = new String[length];
 
-        for (int i = 0; i < arr.length; i++)
-            arr[i] = loaded[i];
+        System.arraycopy(loaded, 0, arr, 0, arr.length);
         return arr;
     }
 
-    /** Writes a string to cache
-     * 
-     * @param name
-     *        Key
-     * @param value
-     *        Value */
+    /**
+     * Writes a string to cache
+     *
+     * @param name  Key
+     * @param value Value
+     */
     public void save(String name, String value) {
         PreferencesCore.save(module, name, value);
     }
 
-    /** Writes an int to cache
-     * 
-     * @param name
-     *        Key
-     * @param value
-     *        Value */
+    /**
+     * Writes an int to cache
+     *
+     * @param name  Key
+     * @param value Value
+     */
     public void save(String name, int value) {
         PreferencesCore.save(module, name, String.valueOf(value));
     }
 
-    /** Writes a boolean to cache
-     * 
-     * @param name
-     *        Key
-     * @param value
-     *        Value */
+    /**
+     * Writes a boolean to cache
+     *
+     * @param name  Key
+     * @param value Value
+     */
     public void save(String name, boolean value) {
         PreferencesCore.save(module, name, String.valueOf(value));
     }
 
-    /** Writes a int[] to cache
-     * 
-     * @param name
-     *        Key
-     * @param value
-     *        Value */
+    /**
+     * Writes a int[] to cache
+     *
+     * @param name   Key
+     * @param values Values
+     */
     public void save(String name, int[] values) {
         String serialized = "";
         if (values.length > 0)
@@ -166,12 +162,12 @@ public class Preferences {
         PreferencesCore.save(module, name, serialized.substring(0, serialized.length() - 1));
     }
 
-    /** Writes a String[] to cache
-     * 
-     * @param name
-     *        Key
-     * @param value
-     *        Value */
+    /**
+     * Writes a String[] to cache
+     *
+     * @param name   Key
+     * @param values Values
+     */
     public void save(String name, String[] values) {
         String serialized = "";
         if (values.length > 0)
@@ -183,38 +179,60 @@ public class Preferences {
         PreferencesCore.save(module, name, serialized.substring(0, serialized.length() - 1));
     }
 
-    /** Flush the cache and write it to a file */
+    /**
+     * Flush the cache and write it to a file
+     */
     public static void flush() {
         PreferencesCore.flushFile();
     }
 
-    /** Reads a file into cache */
+    /**
+     * Reads a file into cache
+     */
     public static void read() {
         PreferencesCore.readFile();
     }
 }
 
-/** Static class for global preferences */
+/**
+ * Static class for global preferences
+ */
 class PreferencesCore {
 
-    private static String                                         PATH     = System.getProperty("user.dir") + "/rambilight.conf";
-    protected static Hashtable<String, Hashtable<String, String>> rawPrefs = new Hashtable<String, Hashtable<String, String>>();
+    private static String PATH;//System.getProperty("user.dir") + "/rambilight.conf";
+    protected static Hashtable<String, Hashtable<String, String>> rawPrefs = new Hashtable<>();
 
-    /** Loads a value from cache */
+    public static void Initialize() {
+        if (Global.PLATFORM.contains("win"))
+            PATH = System.getProperty("user.home") + "/AppData/Local/rAmbilight/rambilight.conf";
+        else if (Global.PLATFORM.contains("mac"))
+            PATH = System.getProperty("user.home") + "/Library/Application Support/rAmbilight/rambilight.conf";
+        else
+            PATH = System.getProperty("user.home") + "/.rAmbilight/rambilight.conf";
+    }
+
+    /**
+     * Loads a value from cache
+     */
     protected static String load(String module, String name, String fallback) {
         if (rawPrefs.get(module).containsKey(name))
             return rawPrefs.get(module).get(name);
         return fallback;
     }
 
-    /** Save a value to cache */
+    /**
+     * Save a value to cache
+     */
     protected static void save(String module, String name, String value) {
         if (value != null)
             rawPrefs.get(module).put(name, value);
     }
 
-    /** Read and parse the content of the config file */
+    /**
+     * Read and parse the content of the config file
+     */
     public static void readFile() {
+        Initialize();
         rawPrefs.clear();
         try {
             String currentModule = "";
@@ -224,8 +242,9 @@ class PreferencesCore {
                     continue;
                 else if (line.subSequence(0, 1).equals("[")) {
                     currentModule = line.trim().substring(1, line.length() - 1).trim();
-                    rawPrefs.put(currentModule, new Hashtable<String, String>());
-                } else {
+                    rawPrefs.put(currentModule, new Hashtable<>());
+                }
+                else {
                     String[] keyVal = line.split("=");
                     if (keyVal.length == 2)
                         save(currentModule, keyVal[0].trim(), keyVal[1].trim());
@@ -239,8 +258,12 @@ class PreferencesCore {
         }
     }
 
-    /** Write the cache to the config file */
+    /**
+     * Write the cache to the config file
+     */
     public static void flushFile() {
+        Initialize();
+        System.out.println(PATH);
         String serialized = "";
 
         for (Entry<String, Hashtable<String, String>> module : rawPrefs.entrySet()) {
