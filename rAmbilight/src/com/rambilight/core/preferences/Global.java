@@ -10,7 +10,7 @@ public class Global {
     public static int          numLights          = 59;
     public static int[]        lightLayout        = new int[] { 15, 29, 15 };       // Right, Top, Left, Bottom
     public static String[]     currentControllers = new String[0];
-    public static String       serialPort         = "COM3";
+    public static String       serialPort         = "/dev/tty.usbmodem1451";//"COM3";
 
     public static String       pluginPath         = "/plugins";
     public static boolean      loadInternal       = false;

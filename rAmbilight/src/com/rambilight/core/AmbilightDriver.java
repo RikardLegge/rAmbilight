@@ -37,6 +37,8 @@ public class AmbilightDriver {
             System.out.println(invert("This is the recursive function that was needed in the program", true, true));
 
             ModuleLoader.loadModule(com.rambilight.plugins.Ambilight.Ambilight.class);
+            ModuleLoader.loadModule(com.rambilight.plugins.PushBullet.PushBullet.class);
+            ModuleLoader.loadModule(com.rambilight.plugins.Built_In_Effects.Built_In_Effects.class);
 
             //ModuleLoader.loadModules(ModuleLoader.loadExternalModules(AmbilightDriver.class));
 
