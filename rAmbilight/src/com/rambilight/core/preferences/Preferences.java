@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 public class Preferences {
 
-    // The module which this preferencehandler comunicates with
+    // The module which this preference handler communicates with
     String module;
 
     /**

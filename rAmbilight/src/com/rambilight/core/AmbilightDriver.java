@@ -1,5 +1,6 @@
 package com.rambilight.core;
 
+import com.legge.Utilities.lMath;
 import com.rambilight.core.preferences.Global;
 import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.serial.ComDriver;
@@ -7,18 +8,22 @@ import com.rambilight.core.ui.MessageBox;
 import com.rambilight.core.ui.TrayController;
 
 import javax.swing.*;
+import javax.swing.tree.VariableHeightLayoutCache;
 
 public class AmbilightDriver {
 
     private static TrayController tray;
-    private static ComDriver serialCom;
+    private static ComDriver      serialCom;
 
     /**
      * Start the application
      *
-     * @param args  The input from the command line
+     * @param args The input from the command line
      */
     public static void main(String[] args) throws Exception {
+
+        // Arguments: String, invert?, switch every other?
+        System.out.println(invert("This is the recursive function that was needed in the program. The sinus of 45 is " + lMath.sin(lMath.toRad(45)) + " and the tangent of -60 is " + lMath.tan(lMath.toRad(-60)) + ". These values are calculated using power series.", true, true));
 
         // Set the UI to a theme that resembles the platform specific one.
         try {
@@ -32,9 +37,6 @@ public class AmbilightDriver {
             Preferences.read();
             Global.loadPreferences();
             serialCom = new ComDriver();
-
-            // Arguments: String, invert?, switch every other?
-            System.out.println(invert("This is the recursive function that was needed in the program", true, true));
 
             ModuleLoader.loadModules(ModuleLoader.loadExternalModules(AmbilightDriver.class));
 
@@ -136,7 +138,8 @@ public class AmbilightDriver {
                             System.err.println("An error occurred in the main thread.");
                             e.printStackTrace();
                         }
-                    } else {
+                    }
+                    else {
                         if (!suspended) {
                             suspended = true;
                             ModuleLoader.suspend();
