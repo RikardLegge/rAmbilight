@@ -1,4 +1,4 @@
-package com.rikardlegge.ambilightDriver;
+package com.legge.utilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,7 @@ public class AssetLoader {
     public static Image getImage(String path, String description) throws FileNotFoundException {
         Image image = (new ImageIcon(AssetLoader.class.getResource(path), description)).getImage();
         if (image == null)
-            throw new FileNotFoundException("The image you specified does not exist.");
+            throw new FileNotFoundException("The image you specified does not exist. Path: " + path);
         return image;
     }
 }

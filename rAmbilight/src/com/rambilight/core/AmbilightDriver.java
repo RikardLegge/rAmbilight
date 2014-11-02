@@ -2,7 +2,6 @@ package com.rambilight.core;
 
 import com.legge.Utilities.lMath;
 import com.legge.preferences.Preferences;
-import com.rambilight.core.preferences.Global;
 import com.rambilight.core.serial.ComDriver;
 import com.rambilight.core.ui.MessageBox;
 import com.rambilight.core.ui.TrayController;
@@ -107,20 +106,29 @@ public class AmbilightDriver {
     private static void exit(int code) {
         try {
             ModuleLoader.dispose();
-
             Global.currentControllers = ModuleLoader.getActiveModules().toArray(new String[ModuleLoader.getActiveModules().size()]);
             Global.savePreferences();
+
             Preferences.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
             tray.remove();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
             serialCom.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         if (code == 0)
             System.out.println("Exiting");
         else
             System.out.println("Exiting with error code " + code);
-        System.exit(0);
+        System.exit(code);
     }
 
     /**

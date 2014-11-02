@@ -2,7 +2,7 @@ package com.legge.Utilities;
 
 public class lMath {
 
-    public static final double PI        = 3.14159265358979323846264338327950288419716939;
+    public static final double PI = 3.14159265358979323846264338327950288419716939;
 
     // Pre calculated factorials.
     public static final long[] FACTORIAL = new long[]{1l, 2l, 6l, 24l, 120l, 720l, 5040l, 40320l, 362880l, 3628800l, 39916800l, 479001600l, 6227020800l, 87178291200l, 1307674368000l, 20922789890000l, 355687428100000l};
@@ -38,7 +38,7 @@ public class lMath {
 
     public static long factorial(int n) {
         if (n < FACTORIAL.length)
-            return FACTORIAL[n-1];
+            return FACTORIAL[n - 1];
         long fact = 1;
         for (long i = 1; i <= n; i++) fact *= i;
         return fact;

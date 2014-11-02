@@ -1,4 +1,4 @@
-package com.rikardlegge.ambilightDriver;
+package com.legge.utilities;
 
 import java.awt.Image;
 import java.io.FileNotFoundException;

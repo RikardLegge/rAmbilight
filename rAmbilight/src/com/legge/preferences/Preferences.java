@@ -18,7 +18,6 @@ public class Preferences {
      * Create a new instance of the class that is associated with a specific part of the application
      *
      * @param moduleName The name of the module. Must be unique.
-     * @throws Exception
      */
     public Preferences(String moduleName) {
         module = moduleName;
@@ -255,10 +254,10 @@ class PreferencesCore {
             String currentModule = "";
             List<String> lines = Files.readAllLines(Paths.get(PATH));
             for (String line : lines) {
-                if (line.length() == 0)
+                if (line.length() == 0 || line.charAt(0) == '#')
                     continue;
-                else if (line.subSequence(0, 1).equals("[")) {
-                    currentModule = line.trim().substring(1, line.length() - 1).trim();
+                else if (line.trim().subSequence(0, 1).equals("[")) {
+                    currentModule = line.substring(1, line.length() - 1).trim();
                     rawPrefs.put(currentModule, new Hashtable<>());
                 }
                 else {
@@ -268,39 +267,49 @@ class PreferencesCore {
                 }
             }
         } catch (IOException e) {
-            System.out.println("The config file was not found");
+            System.out.println("The config file was not found. Using defaults.");
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("The config file is corrupt. Using defaults");
+            System.out.println("The config file is corrupt. Using defaults.");
         }
     }
 
     /**
      * Write the cache to the config file
      */
-    protected static void flushFile() {
-        String[] fields = new String[rawPrefs.size()];
+
+    private static String[] getSortedTable(Hashtable<String, ?> table) {
+        String[] fields = new String[table.size()];
         int i = 0;
-        for (Entry<String, Hashtable<String, String>> module : rawPrefs.entrySet()) {
+
+        for (Entry<String, ?> module : table.entrySet())
             fields[i++] = module.getKey();
-        }
+
         Arrays.sort(fields);
+        return fields;
+    }
+
+    protected static void flushFile() {
 
         String serialized = "";
-        for (String name : fields) {
-            serialized += "[" + name + "]\n";
-            for (Entry<String, String> entry : rawPrefs.get(name).entrySet())
-                if (!entry.getKey().equals(""))
-                    serialized += entry.getKey() + "=" + entry.getValue() + "\n";
+        for (String moduleName : getSortedTable(rawPrefs)) {
+            serialized += "[" + moduleName + "]\n";
+
+            Hashtable<String, String> module = rawPrefs.get(moduleName);
+            for (String fieldName : getSortedTable(module))
+                if (!module.get(fieldName).equals(""))
+                    serialized += fieldName + "=" + module.get(fieldName) + "\n";
+
             serialized += "\n";
         }
 
         try {
             Files.write(Paths.get(PATH), serialized.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+            System.out.println("Wrote preferences to " + PATH);
         } catch (Exception _e) {
             try {
                 Files.write(Paths.get(PATH), serialized.getBytes(), StandardOpenOption.CREATE);
-                System.out.println("Wrote preferences to " + PATH);
+                System.out.println("Created new preference file at " + PATH);
             } catch (Exception e) {
                 e.printStackTrace();
             }

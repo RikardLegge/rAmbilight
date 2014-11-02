@@ -1,4 +1,4 @@
-package com.rambilight.core.preferences;
+package com.rambilight.core;
 
 import com.legge.preferences.Preferences;
 
@@ -20,7 +20,8 @@ public class Global {
     public static  boolean     loadInternal    = false;
     public static  int         lightStepSize   = 6;
     public static  int         lightFrameDelay = 6;
-    private static Preferences preferences     = new Preferences("core");
+    private static Preferences preferences     = new Preferences("Core");
+
     /**
      * Loads the variables from cache
      */

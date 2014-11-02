@@ -27,7 +27,8 @@ public abstract class Module {
     public void savePreferences() {
     }
 
-    public void loadPreferences() {}
+    public void loadPreferences() {
+    }
 
     public abstract CustomCreator getTrayCreator();
 

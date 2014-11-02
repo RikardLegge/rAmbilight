@@ -4,7 +4,7 @@ import java.awt.CheckboxMenuItem;
 import java.awt.Menu;
 import java.awt.MenuItem;
 
-import com.rambilight.core.preferences.Global;
+import com.rambilight.core.Global;
 import com.rambilight.core.ui.TrayController;
 import com.rambilight.core.ui.TrayController.CustomCreator;
 import com.rambilight.plugins.Module;

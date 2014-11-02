@@ -3,7 +3,7 @@ package com.rambilight.plugins.PushBullet;
 import java.awt.MenuItem;
 import java.util.Hashtable;
 
-import com.rambilight.core.preferences.Global;
+import com.rambilight.core.Global;
 import com.rambilight.core.ui.MessageBox;
 import com.rambilight.core.ui.TrayController.CustomCreator;
 import com.rambilight.plugins.Module;
@@ -11,24 +11,24 @@ import com.rambilight.plugins.PushBullet.PushBulletEndpoint.PushBulletEndpointLi
 
 public class PushBullet extends Module {
 
-    String                    apiKey;
-    Hashtable<String, String> colors       = new Hashtable<String, String>();
-    int[]                     currentColor = new int[] { 0, 0, 0 };
+    String apiKey;
+    Hashtable<String, String> colors       = new Hashtable<>();
+    int[]                     currentColor = new int[]{0, 0, 0};
     int                       currentStage = -1;
-    int[]                     animation    = new int[] { 1, 0, 1, 0 };
+    int[]                     animation    = new int[]{1, 0, 1, 0};
 
-    long                      lastStep     = 0;
+    long lastStep = 0;
 
     public void loaded() {
         if (apiKey == null)
-            apiKey = MessageBox.Input("Pushbullet", "Plese enter your API key");
+            apiKey = MessageBox.Input("Pushbullet", "Please enter your API key");
 
         PushBulletEndpoint.setAPiKey(apiKey);
         PushBulletEndpoint.setListener(new PushBulletEndpointListener() {
 
             public void onMessage(String s) {
                 System.out.println(s);
-                setCurrentcolor(s);
+                setCurrentColor(s);
                 currentStage = 0;
             }
 
@@ -44,7 +44,7 @@ public class PushBullet extends Module {
             lightHandler.addToUpdateBuffer(i, currentColor[0], currentColor[1], currentColor[2]);
     }
 
-    private void setCurrentcolor(String applicationName) {
+    private void setCurrentColor(String applicationName) {
         if (!colors.containsKey("applicationName"))
             colors.put(applicationName, "#FFFFFF");
         String hex = colors.get(applicationName);
@@ -77,24 +77,25 @@ public class PushBullet extends Module {
     public void loadPreferences() {
         animation = preferences.load("animation", animation, -1);
         apiKey = preferences.load("apiKey", null);
-        String[] keys = preferences.load("ConfiguredApplications", new String[0], -1);
 
+        String[] keys = preferences.load("configuredApplications", new String[0], -1);
         for (String key : keys)
-            colors.put(key, preferences.load("key", "#FFFFFF"));
+            colors.put(key, preferences.load(key, "#FFFFFF"));
     }
 
     public void savePreferences() {
 
         preferences.save("animation", animation);
         preferences.save("apiKey", apiKey);
-        String[] keys = new String[colors.size()];
+
         int i = 0;
+        String[] keys = new String[colors.size()];
         for (String key : colors.keySet()) {
             keys[i++] = key;
             preferences.save(key, colors.get(key));
         }
         if (keys.length > 0)
-            preferences.save("ConfiguredApplications", keys);
+            preferences.save("configuredApplications", keys);
     }
 
 }

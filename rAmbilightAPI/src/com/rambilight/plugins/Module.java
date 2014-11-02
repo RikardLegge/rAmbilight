@@ -1,6 +1,6 @@
 package com.rambilight.plugins;
 
-import com.rambilight.core.preferences.Preferences;
+import com.legge.preferences.Preferences;
 import com.rambilight.core.serial.LightHandler;
 import com.rambilight.core.ui.TrayController.CustomCreator;
 

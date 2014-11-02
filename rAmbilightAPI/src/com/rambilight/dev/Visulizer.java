@@ -8,11 +8,9 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-import com.rambilight.core.preferences.Global;
+import com.rambilight.core.Global;
 
 /*
  * Original source
@@ -21,11 +19,14 @@ import com.rambilight.core.preferences.Global;
  * Only edited to suite my needs. Full credit to the original author
  */
 
-/** Frame controller for selecting the area of the ambilight screen capture */
-@SuppressWarnings("serial") public class Visulizer extends JFrame {
+/**
+ * Frame controller for selecting the area of the ambilight screen capture
+ */
+@SuppressWarnings("serial")
+public class Visulizer extends JFrame {
 
     private Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-    private int[][]   alrgb;
+    private int[][] alrgb;
 
     protected Visulizer() {
         alrgb = new int[Global.numLights][];
@@ -33,14 +34,16 @@ import com.rambilight.core.preferences.Global;
         setTitle("rAmiligt Visualizer");
         try {
             setIconImage(new ImageIcon(Visulizer.class.getResource("Tray_Active.png")).getImage());
-        } catch (Exception e) {}
-        
+        } catch (Exception e) {
+        }
+
         setDefaultLookAndFeelDecorated(true);
         //setAlwaysOnTop(true);
         setUndecorated(true);
         Component c = new JPanel() {
 
-            @Override public void paintComponent(Graphics g) {
+            @Override
+            public void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setColor(Color.black);
                 int w = getWidth();
@@ -53,7 +56,7 @@ import com.rambilight.core.preferences.Global;
         };
         c.setPreferredSize(screen.getSize());
         getContentPane().add(c);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
         setVisible(true);
         com.sun.awt.AWTUtilities.setWindowOpaque(this, false);

@@ -11,15 +11,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import com.rambilight.core.preferences.Global;
+import com.rambilight.core.Global;
 import com.rambilight.core.ui.TrayController.CustomCreator;
-import com.rikardlegge.ambilightDriver.AssetLoader;
+import com.legge.utilities.AssetLoader;
 
 class TrayController {
 
     // The tray
-    private SystemTray       tray;
-    private PopupMenu        popup;
+    private SystemTray tray;
+    private PopupMenu  popup;
 
     // Menu items in the tray
     private CheckboxMenuItem runToggle;
@@ -27,9 +27,9 @@ class TrayController {
     private MenuItem[]       customItems;
 
     // assets for the tray
-    private TrayIcon         trayIcon;
-    private Image            Image_Active;
-    private Image            Image_Idle;
+    private TrayIcon trayIcon;
+    private Image    Image_Active;
+    private Image    Image_Idle;
 
     protected TrayController() throws Exception {
         popup = new PopupMenu();
@@ -56,7 +56,7 @@ class TrayController {
             runToggle = createCheckbox(Global.isActive ? "Active" : "Active", Global.isActive,
                     (e) -> setState(e.getStateChange() == ItemEvent.SELECTED));
 
-            exit = createItem("Quit", (e) -> {
+            exit = createItem("Quit rAmbilight API", (e) -> {
                 System.exit(0);
             });
         } catch (Exception e) {
@@ -67,7 +67,7 @@ class TrayController {
 
     protected void addToTrayController(CustomCreator customCreator) {
         customItems = customCreator.create();
-        
+
         purge();
 
         popup.add(runToggle);

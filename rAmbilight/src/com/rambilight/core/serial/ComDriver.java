@@ -1,6 +1,6 @@
 package com.rambilight.core.serial;
 
-import com.rambilight.core.preferences.Global;
+import com.rambilight.core.Global;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -12,7 +12,7 @@ public class ComDriver {
     private Queue<Byte>          serialBuffer;
 
     private long lastPing               = 0;
-    private long lastReceived            = 0;
+    private long lastReceived           = 0;
     private long ticksSinceLastReceived = 0;    // 1 tick > ~10ms.
 
     private boolean writtenPrefs = false;
@@ -132,7 +132,7 @@ public class ComDriver {
         Light light = null;
         write(ArduinoCommunication.BEGIN_SEND);
         for (int i = 0; i < 12; i++) {
-            while (lightHandler.requiresUpdate() && !(light = lightHandler.next()).requiresUpdate);
+            while (lightHandler.requiresUpdate() && !(light = lightHandler.next()).requiresUpdate) ;
             if (light == null)
                 break;
             light.requiresUpdate = false;

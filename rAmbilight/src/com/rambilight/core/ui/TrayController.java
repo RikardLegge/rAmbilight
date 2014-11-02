@@ -1,9 +1,9 @@
 package com.rambilight.core.ui;
 
+import com.legge.utilities.AssetLoader;
 import com.rambilight.core.AmbilightDriver;
 import com.rambilight.core.ModuleLoader;
-import com.rambilight.core.preferences.Global;
-import com.rikardlegge.ambilightDriver.AssetLoader;
+import com.rambilight.core.Global;
 
 import java.awt.*;
 import java.awt.event.ActionListener;

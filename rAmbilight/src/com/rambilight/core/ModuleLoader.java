@@ -1,7 +1,6 @@
 package com.rambilight.core;
 
 import com.legge.preferences.Preferences;
-import com.rambilight.core.preferences.Global;
 import com.rambilight.core.serial.LightHandler;
 import com.rambilight.core.ui.MessageBox;
 import com.rambilight.plugins.Module;
@@ -115,6 +114,7 @@ public class ModuleLoader {
         public void onChange(String name);
     }
 
+    // TODO Not currently working...
     public static Class<?>[] loadExternalModules(Class<?> classLoaderSoruce) throws Exception {
         String pluginDir = Global.pluginPath;  // The root directory of the plugins
         if (pluginDir.length() == 0) {

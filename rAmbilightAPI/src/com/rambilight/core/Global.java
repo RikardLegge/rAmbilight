@@ -1,9 +1,9 @@
-package com.rambilight.core.preferences;
+package com.rambilight.core;
 
 /** Global class for easy handling of global variables. */
 public class Global {
 
-    public static final int VERSION     = -1;                      // The current version of the application. Can help with debugging.
+    public static final int VERSION     = 26;                      // The current version of the application. Can help with debugging.
     public static boolean   requestExit;                           // If set to true, the application will try to exit gracefully.
     public static boolean   isActive    = true;                    // Is the application active. If set to false, the user might get confused.
     public static int[]     lightLayout = new int[] { 15, 29, 15,29 };// Right, Top, Left, Bottom
