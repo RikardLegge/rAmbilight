@@ -1,28 +1,30 @@
 package com.rambilight.core.preferences;
 
-/** Global class for easy handling of global variables. */
+import com.legge.preferences.Preferences;
+
+/**
+ * Global class for easy handling of global variables.
+ */
 public class Global {
 
-    public static final int    VERSION            = 25;
-    public static boolean      requestExit        = false;
-    public static boolean      isActive           = false;
+    public static final int     VERSION     = 25;
+    public static       boolean requestExit = false;
+    public static       boolean isActive    = false;
 
-    public static int          numLights          = 59;
-    public static int[]        lightLayout        = new int[] { 15, 29, 15 };       // Right, Top, Left, Bottom
-    public static String[]     currentControllers = new String[0];
-    public static String       serialPort         = "/dev/tty.usbmodem1451";//"COM3";
+    public static int      numLights          = 59;
+    public static int[]    lightLayout        = new int[]{15, 30, 15};       // Right, Top, Left, Bottom
+    public static String[] currentControllers = new String[0];
+    public static String   serialPort         = "/dev/tty.usbmodem1451";//"COM3";
 
-    public static String       pluginPath         = "";
-    public static boolean      loadInternal       = false;
-    public static int          lightStepSize      = 6;
-    public static int          lightFrameDelay    = 6;
-    private static Preferences preferences        = new Preferences("core");
-
-    public static final String PLATFORM = System.getProperty("os.name").toLowerCase();
-
-    /** Loads the variables from cache */
+    public static  String      pluginPath      = "";
+    public static  boolean     loadInternal    = false;
+    public static  int         lightStepSize   = 6;
+    public static  int         lightFrameDelay = 6;
+    private static Preferences preferences     = new Preferences("core");
+    /**
+     * Loads the variables from cache
+     */
     public static void loadPreferences() {
-        preferences = new Preferences("core");
         Global.isActive = preferences.load("isActive", Global.isActive);
         Global.currentControllers = preferences.load("currentControllers", Global.currentControllers, -1);
 
@@ -39,7 +41,9 @@ public class Global {
             numLights += num;
     }
 
-    /** Writes the variables to cache */
+    /**
+     * Writes the variables to cache
+     */
     public static void savePreferences() {
         preferences.save("isActive", Global.isActive);
         preferences.save("currentControllers", Global.currentControllers);

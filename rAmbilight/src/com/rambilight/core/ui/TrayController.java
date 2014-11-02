@@ -78,7 +78,7 @@ public class TrayController {
                     (e) -> setState(e.getStateChange() == ItemEvent.SELECTED));
 
             inputs = createRadioGroup("Modules", inputslist, (e) -> {});
-            exit = createItem("Quit", (e) -> AmbilightDriver.requestExit());
+            exit = createItem("Quit rAmbilight", (e) -> AmbilightDriver.requestExit());
 
             // Add a listener for when the module changes
             ModuleLoader.addOnChangeListener((s) -> {
@@ -108,6 +108,7 @@ public class TrayController {
         purge();
 
         popup.add(runToggle);
+        popup.add(inputs);
         for (String moduleName : ModuleLoader.getActiveModules())
             if (itemGroups.containsKey(moduleName)) {
                 MenuItem[] items = itemGroups.get(moduleName);
@@ -118,7 +119,6 @@ public class TrayController {
             }
 
         popup.addSeparator();
-        popup.add(inputs);
         popup.add(exit);
 
         setState(Global.isActive);

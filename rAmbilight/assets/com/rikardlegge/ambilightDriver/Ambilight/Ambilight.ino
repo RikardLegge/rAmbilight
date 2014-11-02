@@ -36,9 +36,9 @@ void setup() {
  */
 
 // Editable
-int smoothStep = 15;       // Stepsize for the lights
+int smoothStep = 6;       // Stepsize for the lights
 int numActiveLeds = 59;    // Number of active LEDs that are handled
-int normalSleep = 16;      // The ordinary sleep time
+int normalSleep = 6;      // The ordinary sleep time
 
 // Static
 int buff[4];               // LED read buffer
@@ -149,7 +149,7 @@ void loop() {
       FastLED.show();      // Update the LEDs
     Serial.write(1);       // I'm ready for more
     Serial.flush();
-    delay(normalSleep);    // Wait for a very short while
+    //delay(normalSleep);    // Wait for a very short while
   } 
 }
 

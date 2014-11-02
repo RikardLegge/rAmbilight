@@ -7,6 +7,9 @@
     <root id="archive" name="Application.jar">
       <element id="module-output" name="rAmbilight" />
       <element id="extracted-dir" path="$PROJECT_DIR$/rAmbilight/lib/JSSC/jssc.jar" path-in-jar="/" />
+      <element id="module-output" name="rAmbilightPlugins" />
+      <element id="library" level="module" name="tyrus-standalone-client-1.8.3.jar" module-name="rAmbilightPlugins" />
+      <element id="library" level="module" name="jssc.jar" module-name="rAmbilight" />
     </root>
   </artifact>
 </component>

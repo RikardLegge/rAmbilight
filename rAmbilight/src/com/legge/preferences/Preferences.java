@@ -1,9 +1,10 @@
-package com.rambilight.core.preferences;
+package com.legge.preferences;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map.Entry;
@@ -192,6 +193,14 @@ public class Preferences {
     public static void read() {
         PreferencesCore.readFile();
     }
+
+    public static void setPathBySystem(String applicationName, String fileName) {
+        PreferencesCore.setPathToSystemRelative(applicationName, fileName);
+    }
+
+    public static void setPathAbsolute(String filePath) {
+        PreferencesCore.setPathAbsolute(filePath);
+    }
 }
 
 /**
@@ -199,16 +208,25 @@ public class Preferences {
  */
 class PreferencesCore {
 
-    private static String PATH;//System.getProperty("user.dir") + "/rambilight.conf";
+    protected static String PATH;
     protected static Hashtable<String, Hashtable<String, String>> rawPrefs = new Hashtable<>();
 
-    public static void Initialize() {
-        if (Global.PLATFORM.contains("win"))
-            PATH = System.getProperty("user.home") + "/AppData/Local/rAmbilight/rambilight.conf";
-        else if (Global.PLATFORM.contains("mac"))
-            PATH = System.getProperty("user.home") + "/Library/Application Support/rAmbilight/rambilight.conf";
+    protected static void setPathToSystemRelative(String applicationName, String fileName) {
+        String platformPath;
+
+        String platform = System.getProperty("os.name").toLowerCase();
+        if (platform.contains("win"))
+            platformPath = "/AppData/Local/";
+        else if (platform.contains("mac"))
+            platformPath = "/Library/Application Support/";
         else
-            PATH = System.getProperty("user.home") + "/.rAmbilight/rambilight.conf";
+            platformPath = "/.";
+
+        PATH = System.getProperty("user.home") + platformPath + applicationName + "/" + fileName;
+    }
+
+    protected static void setPathAbsolute(String filePath) {
+        PATH = filePath;
     }
 
     /**
@@ -231,8 +249,7 @@ class PreferencesCore {
     /**
      * Read and parse the content of the config file
      */
-    public static void readFile() {
-        Initialize();
+    protected static void readFile() {
         rawPrefs.clear();
         try {
             String currentModule = "";
@@ -261,18 +278,23 @@ class PreferencesCore {
     /**
      * Write the cache to the config file
      */
-    public static void flushFile() {
-        Initialize();
-        System.out.println(PATH);
-        String serialized = "";
-
+    protected static void flushFile() {
+        String[] fields = new String[rawPrefs.size()];
+        int i = 0;
         for (Entry<String, Hashtable<String, String>> module : rawPrefs.entrySet()) {
-            serialized += "[" + module.getKey() + "]\n";
-            for (Entry<String, String> entry : module.getValue().entrySet())
+            fields[i++] = module.getKey();
+        }
+        Arrays.sort(fields);
+
+        String serialized = "";
+        for (String name : fields) {
+            serialized += "[" + name + "]\n";
+            for (Entry<String, String> entry : rawPrefs.get(name).entrySet())
                 if (!entry.getKey().equals(""))
                     serialized += entry.getKey() + "=" + entry.getValue() + "\n";
             serialized += "\n";
         }
+
         try {
             Files.write(Paths.get(PATH), serialized.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
         } catch (Exception _e) {

@@ -44,9 +44,13 @@ public class LightHandlerCore {
 
     public Light next() {
         if (requiresUpdate())
+            //try {
             return composeColor(lightsToUpdate.remove());
-        else
-            return null;
+        //} catch (Exception e) {
+        //e.printStackTrace();
+        //lightsToUpdate.clear();
+        //}
+        return null;
     }
 
     private Light composeColor(int i) {

@@ -1,7 +1,7 @@
 package com.rambilight.core;
 
+import com.legge.preferences.Preferences;
 import com.rambilight.core.preferences.Global;
-import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.serial.LightHandler;
 import com.rambilight.core.ui.MessageBox;
 import com.rambilight.plugins.Module;
@@ -117,13 +117,17 @@ public class ModuleLoader {
 
     public static Class<?>[] loadExternalModules(Class<?> classLoaderSoruce) throws Exception {
         String pluginDir = Global.pluginPath;  // The root directory of the plugins
-        if (pluginDir.length() == 0)
-            if (Global.PLATFORM.contains("win"))
-                pluginDir = System.getProperty("user.home") + "/AppData/Local/rAmbilight";
-            else if (Global.PLATFORM.contains("mac"))
-                pluginDir = System.getProperty("user.home") + "/Library/Application Support/rAmbilight";
+        if (pluginDir.length() == 0) {
+            String platform = System.getProperty("os.name").toLowerCase();
+            if (platform.contains("win"))
+                pluginDir = "/AppData/Local/";
+            else if (platform.contains("mac"))
+                pluginDir = "/Library/Application Support/";
             else
-                pluginDir = System.getProperty("user.home") + "/.rAmbilight";
+                pluginDir = "/.";
+
+            pluginDir = System.getProperty("user.home") + pluginDir;
+        }
 
         if (!new File(pluginDir).exists())
             new File(pluginDir).mkdir();
@@ -135,7 +139,7 @@ public class ModuleLoader {
         try {   // Caches valid paths
             for (String name : new File(pluginDir).list())
                 if (name.endsWith(".jar") || name.endsWith(".class"))   // Filter away any unwanted classes
-                    TMP_paths.add("file:/" + pluginDir + "/" + name);   // Add the valid paths to the temporary path array
+                    TMP_paths.add("jar:file:/" + pluginDir + "/" + name + "!/");   // Add the valid paths to the temporary path array
         } catch (Exception e) {
 
         }
@@ -145,8 +149,7 @@ public class ModuleLoader {
             urls[i] = new URL(TMP_paths.get(i));
         TMP_paths.clear();  // Just to clarify that this is temporary
 
-        URLClassLoader loader = URLClassLoader.newInstance(urls, classLoaderSoruce.getClassLoader());  // New instance of the class loader that allows the
-        // required subclasses and assets to be loaded
+        URLClassLoader loader = URLClassLoader.newInstance(urls);//, classLoaderSoruce.getClassLoader());  // New instance of the class loader that allows the
         ArrayList<Class<? extends Module>> classes = new ArrayList<>(); // The successfully loaded classes
 
         if (urls.length == 0)
@@ -154,12 +157,13 @@ public class ModuleLoader {
 
         for (URL url : urls) {
             // Parse the path into a name. Remove everything before the last "/"(Path) and after the last "."(Extension)
-
-            String name = url.toString().substring(url.toString().lastIndexOf("/") + 1, url.toString().lastIndexOf("."));
+            String name = url.toString().substring(url.toString().lastIndexOf("plugins/") + 8, url.toString().lastIndexOf("."));
             String postError = "";
 
             try {
-                Class<?> RawClass = Class.forName("com.rambilight.plugins." + name + "." + name, false, loader);    // Creates a link for access to the class
+                //Class<?> RawClass = jarFile.getClass();//loader.loadClass(jarFile.getName().substring(0,jarFile.getName().lastIndexOf(".")));
+                Class<?> RawClass = Class.forName("com.rambilight.plugins." + name + "." + name, false, loader);
+                //Class<?> RawClass = loader.loadClass("com.rambilight.plugins." + name + "." + name);
                 postError = "Loading as asset instead";
                 Class<? extends Module> modulePlugin = RawClass.asSubclass(Module.class);                          // Make sure it's a subclass of "Module"
                 classes.add(modulePlugin);                                                                         // If all goes well, add it to the list.

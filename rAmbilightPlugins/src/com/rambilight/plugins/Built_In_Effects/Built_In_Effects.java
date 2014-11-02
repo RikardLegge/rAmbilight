@@ -11,12 +11,14 @@ import com.rambilight.plugins.Module;
 
 public class Built_In_Effects extends Module {
 
-    private int     currentEffect = 0;
+    private int currentEffect = 0;
 
-    private int     updateDelay   = 50;
-    private int     index         = 0;
-    private boolean istrue        = true;
-    private long    lastStep      = 0;
+    private int     updateDelay = 50;
+    private int     index       = 0;
+    private boolean istrue      = true;
+    private long    lastStep    = 0;
+
+    private static final String[] effects = new String[]{"Circling light", "Knight rider", "Stress test"};
 
     public void step() {
         if (System.currentTimeMillis() - lastStep < updateDelay)
@@ -24,53 +26,55 @@ public class Built_In_Effects extends Module {
         lastStep = System.currentTimeMillis();
 
         switch (currentEffect) {
-        case 0:
-            if (index - 4 < 0)
-                lightHandler.addToUpdateBuffer(Global.numLights - 4 + index, 0, 0, 0);
-            else
-                lightHandler.addToUpdateBuffer(index - 4, 0, 0, 0);
-            lightHandler.addToUpdateBuffer(index, 200, 200, 200);
+            case 0:
+                if (index - 4 < 0)
+                    lightHandler.addToUpdateBuffer(Global.numLights - 4 + index, 0, 0, 0);
+                else
+                    lightHandler.addToUpdateBuffer(index - 4, 0, 0, 0);
+                lightHandler.addToUpdateBuffer(index, 200, 200, 200);
 
-            index = (index + 1) % Global.numLights;
-        break;
-        case 1:
-            for (int i = 0; i < Global.numLights; i++)
-                lightHandler.addToUpdateBuffer(i, (index), (index), (index));
-            index = (index % (250 - 1)) + 15;
-        break;
-        case 2:
+                index = (index + 1) % Global.numLights;
+                break;
+            case 1:
 
-            if (index > 29 + 13) {
-                istrue = false;
-                index = 34+3;
-            } else if (index < 16) {
-                istrue = true;
-                index = 24-3;
-            }
+                if (index > Global.lightLayout[0] + Global.lightLayout[1] - 2) {
+                    istrue = false;
+                    index = Global.lightLayout[0] + Global.lightLayout[1] - 5;
+                }
+                else if (index < Global.lightLayout[0] + 2) {
+                    istrue = true;
+                    index = Global.lightLayout[0] + 5;
+                }
 
-            if (istrue) {
-                index++;
-                lightHandler.addToUpdateBuffer(index - 10, 0, 0, 0);
-                lightHandler.addToUpdateBuffer(index, 250, 0, 0);
-            } else {
-                index--;
-                lightHandler.addToUpdateBuffer(index + 10, 0, 0, 0);
-                lightHandler.addToUpdateBuffer(index, 250, 0, 0);
-            }
-        break;
+                if (istrue) {
+                    index++;
+                    lightHandler.addToUpdateBuffer(index - 10, 0, 0, 0);
+                    lightHandler.addToUpdateBuffer(index, 250, 0, 0);
+                }
+                else {
+                    index--;
+                    lightHandler.addToUpdateBuffer(index + 10, 0, 0, 0);
+                    lightHandler.addToUpdateBuffer(index, 250, 0, 0);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < Global.numLights; i++)
+                    lightHandler.addToUpdateBuffer(i, (index), (index), (index));
+                index = (index % (250 - 1)) + 6;
+                break;
 
-        default:
-        break;
+            default:
+                break;
         }
     }
 
     public CustomCreator getTrayCreator() {
         return () -> {
             MenuItem[] items = new MenuItem[1];
-            int[] effects = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             CheckboxMenuItem[] colorItems = new CheckboxMenuItem[effects.length];
-            for (int i = 0; i < effects.length; i++)
-                colorItems[i] = TrayController.createCheckbox(effects[i] + "", effects[i] == currentEffect, (e) -> {
+            for (int i = 0; i < effects.length; i++) {
+                final int id = i;
+                colorItems[i] = TrayController.createCheckbox(effects[i] + "", id == currentEffect, (e) -> {
                     CheckboxMenuItem item = (CheckboxMenuItem) e.getSource();
 
                     for (CheckboxMenuItem mItem : colorItems)
@@ -82,17 +86,19 @@ public class Built_In_Effects extends Module {
                     for (int j = 0; j < Global.numLights; j++)
                         lightHandler.addToUpdateBuffer(j, 0, 0, 0);
 
-                    currentEffect = Integer.valueOf(item.getLabel());
-                    ((Menu) item.getParent()).setLabel("Effect (" + currentEffect + ")");
+                    currentEffect = id;
+                    ((Menu) item.getParent()).setLabel("Effect (" + effects[currentEffect] + ")");
                 });
-            items[0] = TrayController.createRadioGroup("Effect (" + currentEffect + ")", colorItems, (e) -> {});
+            }
+            items[0] = TrayController.createRadioGroup("Effect (" + effects[currentEffect] + ")", colorItems, (e) -> {
+            });
 
             return items;
         };
     }
 
     public void loadPreferences() {
-        currentEffect = preferences.load("currentEffect", currentEffect);
+        currentEffect = preferences.load("currentEffect", currentEffect) > effects.length - 1 ? currentEffect : preferences.load("currentEffect", currentEffect);
     }
 
     public void savePreferences() {

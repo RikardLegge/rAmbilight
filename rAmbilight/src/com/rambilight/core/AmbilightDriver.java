@@ -1,14 +1,16 @@
 package com.rambilight.core;
 
 import com.legge.Utilities.lMath;
+import com.legge.preferences.Preferences;
 import com.rambilight.core.preferences.Global;
-import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.serial.ComDriver;
 import com.rambilight.core.ui.MessageBox;
 import com.rambilight.core.ui.TrayController;
+import com.rambilight.plugins.Ambilight.Ambilight;
+import com.rambilight.plugins.Built_In_Effects.Built_In_Effects;
+import com.rambilight.plugins.PushBullet.PushBullet;
 
 import javax.swing.*;
-import javax.swing.tree.VariableHeightLayoutCache;
 
 public class AmbilightDriver {
 
@@ -34,11 +36,15 @@ public class AmbilightDriver {
 
         // Safer way to do things...
         try {
+            Preferences.setPathBySystem("rAmbilight", "rAmbilight.conf");
             Preferences.read();
             Global.loadPreferences();
             serialCom = new ComDriver();
 
-            ModuleLoader.loadModules(ModuleLoader.loadExternalModules(AmbilightDriver.class));
+            //ModuleLoader.loadModules(ModuleLoader.loadExternalModules(AmbilightDriver.class));
+            ModuleLoader.loadModule(Ambilight.class);
+            ModuleLoader.loadModule(PushBullet.class);
+            ModuleLoader.loadModule(Built_In_Effects.class);
 
             tray = new TrayController();
 
