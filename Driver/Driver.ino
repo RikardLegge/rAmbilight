@@ -149,7 +149,7 @@ void loop() {
       FastLED.show();      // Update the LEDs
     Serial.write(1);       // I'm ready for more
     Serial.flush();
-    //delay(normalSleep);    // Wait for a very short while
+    delay(normalSleep);    // Wait for a very short while
   } 
 }
 
