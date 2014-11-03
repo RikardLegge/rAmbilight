@@ -1,9 +1,6 @@
 package com.rambilight.core.serial;
 
-import jssc.SerialPort;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
-import jssc.SerialPortException;
+import jssc.*;
 
 /* A modified version of a class i found online that handles the serial communication
  * 
@@ -60,10 +57,14 @@ public class SerialControllerJSSC implements SerialPortEventListener {
         return false;
     }
 
+    public String[] getAvailablePorts() {
+        return SerialPortList.getPortNames();
+    }
+
     /**
      * Is the current serial port open?
      */
-    public boolean isAvailable() {
+    public boolean isOpen() {
         return serialPort != null && serialPort.isOpened();
     }
 

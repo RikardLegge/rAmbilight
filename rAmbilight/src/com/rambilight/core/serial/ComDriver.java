@@ -1,6 +1,7 @@
 package com.rambilight.core.serial;
 
 import com.rambilight.core.Global;
+import com.rambilight.core.ui.MessageBox;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -28,8 +29,48 @@ public class ComDriver {
     }
 
     public void initialize() throws Exception {
+
+        if (Global.serialPort.length() == 0) {
+
+            System.out.println("No serial port specified. Finding most appropriate port...");
+            String[] ports = serial.getAvailablePorts();
+            if (ports.length == 1) {
+                System.out.println("One port found: " + ports[0]);
+
+                String result = MessageBox.Input("Port found!", "Are you sure you want to use this port as an rAmbilight device? (Type 'Yes' or 'No')'\n" + ports[0] + "\n ");
+                if (result != null && !result.toLowerCase().equals("y") && !result.toLowerCase().equals("yes"))
+                    throw new Exception("Some thing other than YES as entered. Shutting down...");
+
+                System.out.println("Activating...");
+                Global.serialPort = ports[0];
+            }
+            else {
+                System.out.println("Available ports:");
+                String portList = "";
+                int i = 0;
+                for (String s : ports) {
+                    System.out.println(s);
+                    portList += i++ + ": " + s + "\n";
+                }
+                System.out.println("");
+
+                String extraMessage = "";
+                while (true) {
+                    String result = MessageBox.Input("Port select", extraMessage + "Which port should be activated? (Type the line number in the box below. 'E' to exit.)\n" + portList);
+                    if (result != null && result.toLowerCase().equals("e"))
+                        throw new Exception("No port was chosen. Shutting down...");
+                    try {
+                        Global.serialPort = ports[Integer.parseInt(result)];
+                        break;
+                    } catch (Exception e) {
+                        extraMessage = result + " isn't a valid input!\n";
+                    }
+                }
+            }
+        }
+
         if (!serial.initialize(Global.serialPort))
-            throw new Exception("Unable to connect to device");
+            throw new Exception("Unable to connect to an rAmbilight enabled device.");
 
         System.out.println("Serial baud rate: " + serial.getDataRate());
         serial.setEventListener((data) -> receivedPacket(data));
@@ -132,6 +173,7 @@ public class ComDriver {
         Light light = null;
         write(ArduinoCommunication.BEGIN_SEND);
         for (int i = 0; i < 12; i++) {
+
             while (lightHandler.requiresUpdate() && !(light = lightHandler.next()).requiresUpdate) ;
             if (light == null)
                 break;

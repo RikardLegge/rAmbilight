@@ -7,14 +7,14 @@ import com.legge.preferences.Preferences;
  */
 public class Global {
 
-    public static final int     VERSION     = 25;
+    public static final int     VERSION     = 26;
     public static       boolean requestExit = false;
     public static       boolean isActive    = false;
 
     public static int      numLights          = 59;
     public static int[]    lightLayout        = new int[]{15, 30, 15};       // Right, Top, Left, Bottom
     public static String[] currentControllers = new String[0];
-    public static String   serialPort         = "/dev/tty.usbmodem1451";//"COM3";
+    public static String   serialPort         = "";//"/dev/tty.usbmodem1451";//"COM3";
 
     public static  String      pluginPath      = "";
     public static  boolean     loadInternal    = false;
