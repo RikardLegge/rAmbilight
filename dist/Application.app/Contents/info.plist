@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+  <dict>
+    <key>CFBundleDevelopmentRegion</key> <string>en</string>
+    <key>CFBundleName</key> <string>rAmbilight</string>
+    <key>CFBundleVersion</key> <string>0.2.5</string>
+    <key>CFBundleShortVersionString</key> <string>rAmbilight 0.2.5</string>
+    <key>CFBundleExecutable</key> <string>ApplicationStub</string>
+    <key>CFBundlePackageType</key> <string>APPL</string>
+    <key>CFBundleSignature</key> <string>????</string>
+    <key>CFBundleGetInfoString</key> <string>Copyright © Rikard Legge, 2014</string>
+    <key>CFBundleIconFile</key> <string>favicon.icns</string>
+    <key>CFBundleAllowMixedLocalizations</key> <true/>
+    <key>CFBundleInfoDictionaryVersion</key> <string>6.0</string>
+    <key>CFBundleIdentifier</key> <string>io.legge.rambilight</string>
+    <key>LSHasLocalizedDisplayName</key> <true/>
+    <key>CFBundleDisplayName</key> <string>rAmbilight</string>
+    <key>NSHighResolutionCapable</key> <true/>
+    <key>LSArchitecturePriority</key>
+    <array>
+      <string>x86_64</string>
+    </array>
+  </dict>
+</plist>
