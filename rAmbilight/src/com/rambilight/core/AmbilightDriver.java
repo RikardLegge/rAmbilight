@@ -1,6 +1,6 @@
 package com.rambilight.core;
 
-import com.legge.utilities.lMath;
+import com.legge.lMath;
 import com.legge.preferences.Preferences;
 import com.rambilight.core.serial.ComDriver;
 import com.rambilight.core.ui.MessageBox;

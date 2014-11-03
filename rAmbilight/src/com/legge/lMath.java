@@ -1,4 +1,4 @@
-package com.legge.Utilities;
+package com.legge;
 
 public class lMath {
 
@@ -26,6 +26,7 @@ public class lMath {
         return sin((rad > 0 ? -(rad - PI / 2) : rad + PI / 2), 1);
     }
 
+    // TODO Untested
     public static double sin(double rad) {
         return sin((rad) % PI, 1);
     }
@@ -44,14 +45,3 @@ public class lMath {
         return fact;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
