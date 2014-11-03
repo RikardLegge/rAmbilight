@@ -153,6 +153,7 @@ public class TrayController {
         popup.removeAll();
     }
 
+
     public void setState(boolean active) {
         Global.isActive = active;
         runToggle.setState(Global.isActive);
