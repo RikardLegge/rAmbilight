@@ -7,23 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilight/assets/com/legge/utilities/WTray_Active.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilightAPI/assets/com/legge/utilities/WTray_Active.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilight/assets/com/legge/utilities/WTray_Idle.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilightAPI/assets/com/legge/utilities/WTray_Idle.png" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rAmbilight/assets/com/legge/utilities/Tray_Active_old.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rAmbilight/assets/com/legge/utilities/Tray_Idle_old.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/preferences/Preferences.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/assets/com/legge/utilities/Tray_Active.png" afterPath="$PROJECT_DIR$/rAmbilight/assets/com/legge/utilities/Tray_Active.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/assets/com/legge/utilities/Tray_Active.png" afterPath="$PROJECT_DIR$/rAmbilightAPI/assets/com/legge/utilities/Tray_Active.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/assets/com/legge/utilities/Tray_Idle.png" afterPath="$PROJECT_DIR$/rAmbilight/assets/com/legge/utilities/Tray_Idle.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/assets/com/legge/utilities/Tray_Idle.png" afterPath="$PROJECT_DIR$/rAmbilightAPI/assets/com/legge/utilities/Tray_Idle.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/AmbilightDriver.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/AmbilightDriver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/META-INF/MANIFEST.MF" afterPath="$PROJECT_DIR$/rAmbilight/src/META-INF/MANIFEST.MF" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="rAmbilight.iws" />
@@ -51,7 +36,21 @@
     <favorites_list name="rambilight" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="lMath.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/legge/utilities/lMath.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6693227" vertical-offset="0" max-vertical-offset="810">
+              <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+              <folding>
+                <element signature="method#sin#1;class#lMath#0" expanded="false" />
+                <element signature="method#factorial#0;class#lMath#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -941,7 +940,11 @@
       <created>1414959287132</created>
       <updated>1414959287132</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added a new menu bar icon.&#10;Added automatic detection of USB devices.&#10;Added more Ambilight modes.">
+      <created>1414973485165</created>
+      <updated>1414973485165</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -966,12 +969,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="43" y="23" width="2005" height="1257" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32961375" sideWeight="0.49974528" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32961375" sideWeight="0.49974528" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32618025" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32618025" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2274678" sideWeight="0.49974528" order="7" side_tool="true" content_ui="tabs" />
@@ -981,7 +984,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299748" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23688233" sideWeight="0.49946523" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23688233" sideWeight="0.49946523" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24890283" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1019,7 +1022,8 @@
     <MESSAGE value="Small changes.&#10;Untested experimental change in the handeling of preferences." />
     <MESSAGE value="Small fixes and restructuring.&#10;Tested the new preference handling." />
     <MESSAGE value="Added a new menu bar icon.&#10;Added automatic detection of USB devices.&#10;Added more Ambilight modes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added a new menu bar icon.&#10;Added automatic detection of USB devices.&#10;Added more Ambilight modes." />
+    <MESSAGE value="something...." />
+    <option name="LAST_COMMIT_MESSAGE" value="something...." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1029,21 +1033,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/sh/Ambilight.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="108">
-          <caret line="0" column="40" selection-start-line="0" selection-start-column="40" selection-end-line="0" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/rAmbilight.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17167382" vertical-offset="0" max-vertical-offset="699">
-          <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/rAmbilightPlugins.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.25751072" vertical-offset="0" max-vertical-offset="699">
@@ -1421,24 +1410,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/legge/utilities/lMath.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35667107" vertical-offset="0" max-vertical-offset="846">
-          <caret line="16" column="44" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
-          <folding>
-            <element signature="e#664#665#0" expanded="true" />
-            <element signature="method#sin#1;class#lMath#0" expanded="false" />
-            <element signature="method#factorial#0;class#lMath#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.28533685" vertical-offset="2790" max-vertical-offset="4248">
           <caret line="173" column="47" selection-start-line="173" selection-start-column="47" selection-end-line="173" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="753">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1434263" vertical-offset="0" max-vertical-offset="753">
+          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="28512">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/legge/utilities/lMath.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6693227" vertical-offset="0" max-vertical-offset="810">
+          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding>
+            <element signature="method#sin#1;class#lMath#0" expanded="false" />
+            <element signature="method#factorial#0;class#lMath#0" expanded="false" />
           </folding>
         </state>
       </provider>
