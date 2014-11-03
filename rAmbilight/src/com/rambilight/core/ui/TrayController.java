@@ -157,7 +157,7 @@ public class TrayController {
         Global.isActive = active;
         runToggle.setState(Global.isActive);
         runToggle.setLabel(Global.isActive ? "Active" : "Active");
-        trayIcon.setToolTip(Global.isActive ? "Running..." : null);
+        trayIcon.setToolTip(Global.isActive ? "rAmbilight" : null);
         trayIcon.setImage(Global.isActive ? Image_Active : Image_Idle);
 
     }
