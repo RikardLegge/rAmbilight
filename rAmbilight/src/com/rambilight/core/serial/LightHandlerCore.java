@@ -8,7 +8,8 @@ import java.util.Queue;
 
 public class LightHandlerCore {
 
-    private int                        numLights;              // Total numbe of lights
+    private int numLights;              // Total numbe of lights
+    private static int threshhold = 3;
     private Light[]                    colorBuffer;            // List of the colors of the respective lights
     private Queue<Integer>             lightsToUpdate;         // List of lights that require updating
     private Hashtable<String, Light[]> identifiableColorBuffer;
@@ -69,7 +70,7 @@ public class LightHandlerCore {
         g = Math.max(Math.min(g, 252), 0);
         b = Math.max(Math.min(b, 252), 0);
 
-        if (light.r != r || light.g != g || light.b != b) {
+        if (diff(light.r, r) > threshhold || diff(light.g, g) > threshhold || diff(light.b, b) > threshhold) {
             light.r = r;
             light.g = g;
             light.b = b;
@@ -80,7 +81,11 @@ public class LightHandlerCore {
         }
     }
 
-    public Light[] getColorBuffer(){
+    private int diff(int a, int b) {
+        return Math.abs(a - b);
+    }
+
+    public Light[] getColorBuffer() {
         return colorBuffer;
     }
 }
