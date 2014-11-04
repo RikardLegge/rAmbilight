@@ -2,7 +2,9 @@ package com.rambilight.core.serial;
 
 import com.rambilight.core.AmbilightDriver;
 
-/** Class for handling the Lights and what to output */
+/**
+ * Class for handling the Lights and what to output
+ */
 public class LightHandler {
 
     LightHandlerCore lightHandler;
@@ -16,5 +18,9 @@ public class LightHandler {
 
     public void addToUpdateBuffer(int id, int r, int g, int b) {
         lightHandler.addToUpdateBuffer(name, id, r, g, b);
+    }
+
+    public Light[] getColorBuffer() {
+        return lightHandler.getColorBuffer();
     }
 }

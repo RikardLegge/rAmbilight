@@ -13,19 +13,20 @@
 #define BEGIN_SEND 255
 #define BEGIN_SEND_PREFS 253
 
-#define  NUM_LEDS 120     // The maximum number of LEDs
+#define NUM_LEDS 120     // The maximum number of LEDs
 
 CRGB leds[NUM_LEDS];      // The current LED value
 CRGB leds_TargetValue[NUM_LEDS];  // The buffered LED value
 
 void setup() {
 
-  delay(2000);  // sanity check delay - allows reprogramming if accidently blowing power w/leds
+  delay(2000);  // sanity check delay - allows reprogramming if accidentally blowing power w/leds
 
-  Serial.begin(DATA_RATE);   // Starts the serial comunications port
+  Serial.begin(DATA_RATE);   // Starts the serial communication port
 
   LEDS.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);  // Sets WS2812B as the selected LED microcontroller
   LEDS.clear();              // Clear all the LED values
+  FastLED.show();
 }
 /*
  1: ready.
@@ -36,11 +37,11 @@ void setup() {
  */
 
 // Editable
-int smoothStep = 6;       // Stepsize for the lights
-int numActiveLeds = 59;    // Number of active LEDs that are handled
-int normalSleep = 6;      // The ordinary sleep time
+float smoothStep = 0;       // Step size for the lights
+int numActiveLeds = 60;    // Number of active LEDs that are handled
 
 // Static
+int frameSleep = 6;
 int buff[4];               // LED read buffer
 int buffi;                 // Variable that is used for many things. Mostly as itt
 unsigned long lastPing = 0;// When was i last pinged?
@@ -55,6 +56,7 @@ void loop() {
       buffi = 0;
       while(true){
         if(Serial.available() > 0){
+          lastPing = millis();
           buff[buffi] = Serial.read();
           if(buff[buffi] == END_SEND){
             break;
@@ -68,15 +70,16 @@ void loop() {
           } 
           else
             buffi++;
-        } 
-        else if(differance(millis(), lastPing) > 10) // Break if timed out.
+          continue;
+        }else if(difference(millis(), lastPing) > 5) // Break if timed out.
           break;
+        delay(1);
       }
     } 
     else if(buffi == END_SEND){ // Is PING or END
       //Ping...
     }
-    else if(buffi == BEGIN_SEND_PREFS){ // Is preferences. Read the comming 2 bytes. Key, Value
+    else if(buffi == BEGIN_SEND_PREFS){ // Is preferences. Read the coming 2 bytes. Key, Value
       if(Serial.available() >= 2){
         switch(Serial.read()){
         case NUMBER_OF_LEDS:
@@ -94,12 +97,7 @@ void loop() {
             smoothStep = 1;
           break;
         case FRAME_DELAY:
-          normalSleep = Serial.read();
-          if(normalSleep > 2000) 
-            normalSleep = 2000;
-          else if(normalSleep < 0) 
-            normalSleep = 0;
-          break;
+          Serial.read();
         case CLEAR_BUFFER:
           Serial.read();
           for(int i = 0; i < NUM_LEDS; i++){
@@ -120,59 +118,75 @@ void loop() {
       }
     } 
     else { // Other. Print out what might have gone wrong
-      Serial.write(buffi);
-      Serial.flush();
+      while(Serial.available() > 0 && buffi > 0){
+        switch(buffi){
+          case BEGIN_SEND:
+            buffi = -1;
+          break;
+          case END_SEND:
+            Serial.read();
+            buffi = -1;
+          break;
+          default:
+            Serial.read();
+          break;
+        }
+        buffi = Serial.peek();
+      }
     }
   }
 
-  delta = differance(millis(), lastPing);
+  delta = difference(millis(), lastPing);
 
-  if(delta < 3000) // If i was pinged recently
+  if(delta < 3000){
     sleeping = 0;
-  else if (sleeping == 0){ // Else if i havn''t prepared for sleep mode
+    Serial.write(1);       // I'm ready for more
+    Serial.flush();
+
+    delay(frameSleep);    // Wait for a very short while
+
+    if(ColorSmoothing())    // If something has changed
+        FastLED.show();      // Update the LEDs
+  } else if(sleeping == 0) {
     for(int i = 0; i < numActiveLeds; i++){
-      //leds_TargetValue[i] = CRGB(0,0,0);
       leds_TargetValue[i].r = 0;
       leds_TargetValue[i].g = 0;
       leds_TargetValue[i].b = 0;
     }
-    sleeping = 2;
-  } 
-  else if (delta > 4000){ // Else sleep
     sleeping = 1;
+  } else if(sleeping == 1 && ColorSmoothing()){
+    delay(frameSleep);     // Sleep for a while
+    FastLED.show();
+  } else {
+     sleeping = 2;
+     delay(1000);
   }
-  if(sleeping == 1){ // If i'm sleeping.
-    delay(1000);     // Sleep for a while
-  } 
-  else {
-    if(ColorSmoothening()) // If sometghing has changed
-      FastLED.show();      // Update the LEDs
-    Serial.write(1);       // I'm ready for more
-    Serial.flush();
-    delay(normalSleep);    // Wait for a very short while
-  } 
 }
 
 
-// Variables for ColorSmoothening
+// Variables for Color Smoothing
 boolean requiresUpdate;
 int i, j;
-int l, lt; 
+int l, lt;
+int stepSize;
+float stepDecimal;
 
-// Collor smothening of the lights. Returns true if something has changed.
-boolean ColorSmoothening(){
+// Color smothering of the lights. Returns true if something has changed.
+boolean ColorSmoothing(){
   requiresUpdate = false;
+  stepDecimal = (51 - smoothStep) / 10;
   for(i = 0; i < numActiveLeds; i++){
     for(j = 0; j < 3; j++){
       l = leds[i][j];
       lt = leds_TargetValue[i][j];
       if(l != lt){
-        if(differance(l,lt) <= smoothStep)
+        stepSize = 51-smoothStep + (difference(l,lt) - 255)/stepDecimal;
+        if(difference(l,lt) <= stepSize)
           l = lt;
         else if(l < lt)
-          l += smoothStep;
+          l += stepSize;
         else if(l > lt)
-          l -= smoothStep;
+          l -= stepSize;
 
         if(l != leds[i][j]){
           requiresUpdate = true;
@@ -184,17 +198,7 @@ boolean ColorSmoothening(){
   return requiresUpdate;
 }
 
-// Simple differance calculation
-int differance(int v1, int v2){
+// Simple difference calculation
+int difference(int v1, int v2){
   return abs(v1-v2);
 }
-
-
-
-
-
-
-
-
-
-

@@ -16,7 +16,7 @@ public class ComDriver {
     private long lastReceived           = 0;
     private long ticksSinceLastReceived = 0;    // 1 tick > ~10ms.
 
-    private boolean writtenPrefs = false;
+    private boolean writtenPrefs      = false;
 
     public ComDriver() {
         lightHandler = new LightHandlerCore(Global.numLights);
@@ -186,7 +186,6 @@ public class ComDriver {
     private void flushPreferences() {
         writePreference(ArduinoCommunication.CLEAR_BUFFER, ArduinoCommunication.NULL);
         writePreference(ArduinoCommunication.NUMBER_OF_LEDS, Global.numLights);
-        writePreference(ArduinoCommunication.FRAME_DELAY, Global.lightFrameDelay);
         writePreference(ArduinoCommunication.SMOOTH_STEP, Global.lightStepSize);
     }
 

@@ -39,17 +39,12 @@ public class LightHandlerCore {
     }
 
     public boolean requiresUpdate() {
-        return lightsToUpdate.size() > 0;
+        return lightsToUpdate.peek() != null;
     }
 
     public Light next() {
         if (requiresUpdate())
-            //try {
-            return composeColor(lightsToUpdate.remove());
-        //} catch (Exception e) {
-        //e.printStackTrace();
-        //lightsToUpdate.clear();
-        //}
+            return composeColor(lightsToUpdate.poll());
         return null;
     }
 
@@ -83,5 +78,9 @@ public class LightHandlerCore {
                 colorBuffer[id].requiresUpdate = true;
             }
         }
+    }
+
+    public Light[] getColorBuffer(){
+        return colorBuffer;
     }
 }

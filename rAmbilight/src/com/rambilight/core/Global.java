@@ -14,13 +14,12 @@ public class Global {
     public static int      numLights          = 59;
     public static int[]    lightLayout        = new int[]{15, 30, 15};       // Right, Top, Left, Bottom
     public static String[] currentControllers = new String[0];
-    public static String   serialPort         = "";//"/dev/tty.usbmodem1451";//"COM3";
+    public static String   serialPort         = "";
 
-    public static  String      pluginPath      = "";
-    public static  boolean     loadInternal    = false;
-    public static  int         lightStepSize   = 6;
-    public static  int         lightFrameDelay = 6;
-    private static Preferences preferences     = new Preferences("Core");
+    public static  String      pluginPath    = "";
+    public static  boolean     loadInternal  = false;
+    public static  int         lightStepSize = 0;
+    private static Preferences preferences   = new Preferences("Core");
 
     /**
      * Loads the variables from cache
@@ -34,7 +33,6 @@ public class Global {
         Global.pluginPath = preferences.load("pluginPath", Global.pluginPath);
 
         Global.lightStepSize = preferences.load("lightStepSize", Global.lightStepSize);
-        Global.lightFrameDelay = preferences.load("lightFrameDelay", Global.lightFrameDelay);
         Global.serialPort = preferences.load("serialPort", Global.serialPort);
 
         numLights = 0;
@@ -54,7 +52,6 @@ public class Global {
         preferences.save("pluginPath", Global.pluginPath);
 
         preferences.save("lightStepSize", lightStepSize);
-        preferences.save("lightFrameDelay", Global.lightFrameDelay);
         preferences.save("serialPort", Global.serialPort);
 
         preferences.save("VERSION", Global.VERSION);
