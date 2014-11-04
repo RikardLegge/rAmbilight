@@ -53,7 +53,7 @@ public class AmbilightDriver {
             serialCom.initialize();
         } catch (Exception e) {
             e.printStackTrace();
-            MessageBox.Error(e.getMessage()); // Displays an error box in case of something happens
+            MessageBox.Error(e.getMessage() + "\nShutting down..."); // Displays an error box in case of something happens
             exit(-1);
             return;
         }

@@ -25,6 +25,6 @@ public class LightHandler {
         visulizer.setColor(l, r, g, b);
     }
 
-    public Light[] getColorBuffer() {return null;}
+    public Light[] getColorBuffer() {return visulizer.getColorBuffer();}
 
 }

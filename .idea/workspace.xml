@@ -7,11 +7,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilight/arduino/driver-dev/driver-dev.ino" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilight/arduino/driver/driver.ino" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rAmbilight/Driver/driver/Driver.ino" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilight/Driver/FastLED.zip" afterPath="$PROJECT_DIR$/rAmbilight/arduino/FastLED.zip" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/rAmbilight/Driver/Driver.ino" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/AmbilightDriver.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/AmbilightDriver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/Global.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/Global.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Visulizer.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Visulizer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/arduino/driver/driver.ino" afterPath="$PROJECT_DIR$/rAmbilight/arduino/driver/driver.ino" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="rAmbilight.iws" />
@@ -39,7 +43,76 @@
     <favorites_list name="rambilight" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="Ambilight.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.57515526" vertical-offset="7997" max-vertical-offset="9846">
+              <caret line="469" column="17" selection-start-line="469" selection-start-column="17" selection-end-line="469" selection-end-column="17" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1582#1583#0" expanded="true" />
+                <element signature="e#1630#1631#0" expanded="true" />
+                <element signature="e#2291#2292#0" expanded="true" />
+                <element signature="e#2339#2340#0" expanded="true" />
+                <element signature="e#13071#13072#0" expanded="true" />
+                <element signature="e#13150#13151#0" expanded="true" />
+                <element signature="e#16083#16084#0" expanded="true" />
+                <element signature="e#16131#16132#0" expanded="true" />
+                <element signature="e#16633#16634#0" expanded="true" />
+                <element signature="e#16680#16681#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Runner.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/Runner.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="288">
+              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding>
+                <element signature="e#306#307#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Visulizer.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Visulizer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="239" max-vertical-offset="2124">
+              <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+              <folding>
+                <element signature="e#615#642#0" expanded="true" />
+                <element signature="e#3577#3578#0" expanded="true" />
+                <element signature="e#3611#3612#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Debugger.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Debugger.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="37" max-vertical-offset="756">
+              <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Global.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/Global.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
+              <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -71,32 +144,33 @@
         <option value="$PROJECT_DIR$/rAmbilight/assets/com/rikardlegge/ambilightDriver/AssetLoader.java" />
         <option value="$PROJECT_DIR$/rAmbilight/assets/com/legge/utilities/AssetLoader.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/legge/Utilities/lMath.java" />
-        <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/AmbilightDriver.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/plugins/Module.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/leggel/preferences/Preferences.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/plugins/Module.java" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/PushBullet/PushBullet.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/MessageBox.java" />
-        <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Visulizer.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/legge/preferences/Preferences.java" />
-        <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/Global.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Debugger.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/legge/preferences/Preferences.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ModuleLoader.java" />
-        <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/TrayController.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/TrayController.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/legge/preferences/lMath.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/legge/utilities/lMath.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/legge/lMath.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandler.java" />
-        <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java" />
-        <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" />
-        <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
         <option value="$PROJECT_DIR$/rAmbilight/Driver/Driver.ino" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java" />
         <option value="$PROJECT_DIR$/rAmbilight/Driver/Driver-exterimental.ino" />
+        <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" />
+        <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java" />
+        <option value="$PROJECT_DIR$/rAmbilight/arduino/driver/driver.ino" />
+        <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java" />
+        <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/Global.java" />
+        <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Visulizer.java" />
+        <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/AmbilightDriver.java" />
+        <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
       </list>
     </option>
   </component>
@@ -104,10 +178,10 @@
     <option name="alwaysShowArtifactId" value="true" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="43" />
-    <option name="y" value="23" />
-    <option name="width" value="2005" />
-    <option name="height" value="1257" />
+    <option name="x" value="38" />
+    <option name="y" value="43" />
+    <option name="width" value="1970" />
+    <option name="height" value="1201" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -328,37 +402,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilightAPI" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rambilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="serial" />
+              <option name="myItemId" value="dev" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -594,16 +638,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dist" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -629,7 +663,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="recentsLimit" value="5" />
     <property name="dynamic.classpath" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="cle&#9;ACTION&#9;CleanGradleProject&#10;clean&#9;ACTION&#9;CleanGradleProject&#10;make&#9;ACTION&#9;CompileDirty&#10;artifa&#9;ACTION&#9;Maven.AlwaysShowArtifactId&#10;arti&#9;ACTION&#9;BuildArtifact&#10;artif&#9;ACTION&#9;BuildArtifact&#10;build&#9;ACTION&#9;ActivateBuildVariantsToolWindow&#10;spelling&#9;null&#9;null&#10;spell&#9;null&#9;null&#10;maven&#9;ACTION&#9;Maven.GlobalProjectMenu&#10;project struc&#9;ACTION&#9;ShowProjectStructureSettings&#10;structure&#9;ACTION&#9;ShowProjectStructureSettings" />
+    <property name="SearchEverywhereHistoryKey" value="find&#9;ACTION&#9;Find&#10;view breakp&#9;ACTION&#9;ViewBreakpoints&#10;view break&#9;ACTION&#9;ViewBreakpoints&#10;break&#9;ACTION&#9;ToggleBreakpointAction&#10;cle&#9;ACTION&#9;CleanGradleProject&#10;clean&#9;ACTION&#9;CleanGradleProject&#10;make&#9;ACTION&#9;CompileDirty&#10;artifa&#9;ACTION&#9;Maven.AlwaysShowArtifactId&#10;arti&#9;ACTION&#9;BuildArtifact&#10;artif&#9;ACTION&#9;BuildArtifact&#10;build&#9;ACTION&#9;ActivateBuildVariantsToolWindow&#10;spelling&#9;null&#9;null&#10;spell&#9;null&#9;null&#10;maven&#9;ACTION&#9;Maven.GlobalProjectMenu&#10;project struc&#9;ACTION&#9;ShowProjectStructureSettings&#10;structure&#9;ACTION&#9;ShowProjectStructureSettings" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/rAmbilight/LICENSE" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/rAmbilight/src/com/legge" />
@@ -835,7 +869,13 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="rAmbilightPlugins" />
       <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -969,7 +1009,11 @@
       <created>1415068975368</created>
       <updated>1415068975368</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Second optimization attempt. Failed....">
+      <created>1415120922543</created>
+      <updated>1415120922543</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -993,26 +1037,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="43" y="23" width="2005" height="1257" extended-state="6" />
-    <editor active="false" />
+    <frame x="38" y="43" width="1970" height="1201" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32961375" sideWeight="0.49974528" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32618025" sideWeight="0.49974528" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14788097" sideWeight="0.49974528" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32618025" sideWeight="0.49974528" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22660944" sideWeight="0.49974528" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22542831" sideWeight="0.49974528" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875538" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299748" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23688233" sideWeight="0.49946523" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24859908" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31275934" sideWeight="0.49946523" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19139004" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26330027" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1058,7 +1102,16 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <default-breakpoints>
+        <breakpoint type="java-exception">
+          <dependency id="0" />
+          <properties />
+        </breakpoint>
+      </default-breakpoints>
+      <option name="time" value="44" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -1066,34 +1119,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="907">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/sh/Built_In_Effects.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.048913043" vertical-offset="0" max-vertical-offset="736">
-          <caret line="2" column="27" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/sh/Ambilight.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.048913043" vertical-offset="0" max-vertical-offset="736">
-          <caret line="2" column="27" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/sh/PushBullet.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.048913043" vertical-offset="0" max-vertical-offset="736">
-          <caret line="2" column="27" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/src.zip!/java/lang/StrictMath.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33288044" vertical-offset="1285" max-vertical-offset="28944">
@@ -1179,13 +1204,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Visulizer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22050716" vertical-offset="268" max-vertical-offset="2016">
-          <caret line="36" column="31" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/MessageBox.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1786108" vertical-offset="0" max-vertical-offset="907">
@@ -1193,31 +1211,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/Global.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.099228226" vertical-offset="0" max-vertical-offset="907">
-          <caret line="5" column="44" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/plugins/Module.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45644984" vertical-offset="0" max-vertical-offset="907">
-          <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/plugins/Module.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.27783903" vertical-offset="0" max-vertical-offset="907">
           <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Debugger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63506067" vertical-offset="0" max-vertical-offset="907">
-          <caret line="32" column="21" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -1251,19 +1248,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35667107" vertical-offset="882" max-vertical-offset="3168">
-          <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
-          <folding>
-            <element signature="e#833#834#0" expanded="true" />
-            <element signature="e#873#874#0" expanded="true" />
-            <element signature="e#2092#2093#0" expanded="true" />
-            <element signature="e#2158#2159#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="753">
@@ -1283,13 +1267,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="28512">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/TrayController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60422164" vertical-offset="789" max-vertical-offset="1926">
-          <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1315,14 +1292,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/AmbilightDriver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03166227" vertical-offset="0" max-vertical-offset="3006">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/legge/lMath.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="594">
@@ -1335,7 +1304,7 @@
         <state vertical-scroll-proportion="0.3119266" vertical-offset="1222" max-vertical-offset="3330">
           <caret line="83" column="13" selection-start-line="83" selection-start-column="13" selection-end-line="83" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1348,56 +1317,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45360824" vertical-offset="0" max-vertical-offset="873">
-          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/Light.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35051546" vertical-offset="0" max-vertical-offset="873">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/TrayController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3539519" vertical-offset="231" max-vertical-offset="1296">
           <caret line="35" column="36" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="36" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.91752577" vertical-offset="7533" max-vertical-offset="9486">
-          <caret line="481" column="5" selection-start-line="481" selection-start-column="5" selection-end-line="481" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/arduino/driver/driver.ino">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.9484536" vertical-offset="828" max-vertical-offset="3762">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="576">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding>
-            <element signature="e#490#491#0" expanded="true" />
-            <element signature="e#555#556#0" expanded="true" />
-            <element signature="e#594#595#0" expanded="true" />
-            <element signature="e#646#647#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1409,22 +1333,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36082473" vertical-offset="135" max-vertical-offset="1008">
-          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#LightHandlerCore#0;class#LightHandlerCore#0" expanded="false" />
-            <element signature="method#registerModule#0;class#LightHandlerCore#0" expanded="false" />
-            <element signature="method#next#0;class#LightHandlerCore#0" expanded="false" />
-            <element signature="method#composeColor#0;class#LightHandlerCore#0" expanded="false" />
-            <element signature="e#3161#3162#0" expanded="true" />
-            <element signature="e#3199#3200#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.082474224" vertical-offset="0" max-vertical-offset="1170">
@@ -1433,10 +1341,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/arduino/driver-dev/driver-dev.ino">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.45360824" vertical-offset="0" max-vertical-offset="3636">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#6168#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/arduino/driver/driver.ino">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.4318442" vertical-offset="827" max-vertical-offset="2808">
+          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#5524#0" expanded="false" />
+            <element signature="e#0#5524#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22680412" vertical-offset="0" max-vertical-offset="3096">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49828178" vertical-offset="213" max-vertical-offset="1350">
-          <caret line="165" column="5" selection-start-line="165" selection-start-column="5" selection-end-line="165" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.45360824" vertical-offset="90" max-vertical-offset="1062">
+          <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
           <folding>
             <element signature="method#ComDriver#0;class#ComDriver#0" expanded="false" />
             <element signature="method#initialize#0;class#ComDriver#0" expanded="false" />
@@ -1447,19 +1384,158 @@
             <element signature="method#write#1;class#ComDriver#0" expanded="false" />
             <element signature="method#flushBuffer#0;class#ComDriver#0" expanded="false" />
             <element signature="method#flushLights#0;class#ComDriver#0" expanded="false" />
+            <element signature="method#flushPreferences#0;class#ComDriver#0" expanded="false" />
             <element signature="method#writePreference#0;class#ComDriver#0" expanded="false" />
             <element signature="class#Gateway#0;class#ComDriver#0" expanded="false" />
             <element signature="method#serialGateway#0;class#ComDriver#0" expanded="false" />
+            <element signature="class#ArduinoCommunication#0;class#ComDriver#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/arduino/driver-dev/driver-dev.ino">
+    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/plugins/Module.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45360824" vertical-offset="0" max-vertical-offset="3636">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.13399504" vertical-offset="0" max-vertical-offset="806">
+          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20099255" vertical-offset="0" max-vertical-offset="806">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/Light.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22332506" vertical-offset="0" max-vertical-offset="806">
+          <caret line="10" column="11" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.30769232" vertical-offset="22" max-vertical-offset="972">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding>
-            <element signature="e#0#6168#0" expanded="false" />
+            <element signature="imports" expanded="true" />
+            <element signature="method#LightHandlerCore#0;class#LightHandlerCore#0" expanded="false" />
+            <element signature="method#registerModule#0;class#LightHandlerCore#0" expanded="false" />
+            <element signature="method#next#0;class#LightHandlerCore#0" expanded="false" />
+            <element signature="method#composeColor#0;class#LightHandlerCore#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/TrayController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8523573" vertical-offset="789" max-vertical-offset="1926">
+          <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26799008" vertical-offset="0" max-vertical-offset="806">
+          <caret line="14" column="7" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+          <folding>
+            <element signature="e#595#596#0" expanded="true" />
+            <element signature="e#641#642#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/src.zip!/java/awt/Component.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8429752" vertical-offset="54474" max-vertical-offset="173952">
+          <caret line="3327" column="5" selection-start-line="3327" selection-start-column="5" selection-end-line="3327" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/Global.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
+          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Debugger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="37" max-vertical-offset="756">
+          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/lib/rt.jar!/sun/awt/image/IntegerInterleavedRaster.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="247" max-vertical-offset="954">
+          <caret line="26" column="28" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/lib/rt.jar!/sun/misc/Unsafe.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5504163" vertical-offset="5147" max-vertical-offset="6228">
+          <caret line="320" column="23" selection-start-line="320" selection-start-column="0" selection-end-line="321" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/Runner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="288">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding>
+            <element signature="e#306#307#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Visulizer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="239" max-vertical-offset="2124">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding>
+            <element signature="e#615#642#0" expanded="true" />
+            <element signature="e#3577#3578#0" expanded="true" />
+            <element signature="e#3611#3612#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/AmbilightDriver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39711192" vertical-offset="624" max-vertical-offset="3006">
+          <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.57515526" vertical-offset="7997" max-vertical-offset="9846">
+          <caret line="469" column="17" selection-start-line="469" selection-start-column="17" selection-end-line="469" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1582#1583#0" expanded="true" />
+            <element signature="e#1630#1631#0" expanded="true" />
+            <element signature="e#2291#2292#0" expanded="true" />
+            <element signature="e#2339#2340#0" expanded="true" />
+            <element signature="e#13071#13072#0" expanded="true" />
+            <element signature="e#13150#13151#0" expanded="true" />
+            <element signature="e#16083#16084#0" expanded="true" />
+            <element signature="e#16131#16132#0" expanded="true" />
+            <element signature="e#16633#16634#0" expanded="true" />
+            <element signature="e#16680#16681#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1518,7 +1594,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>rAmbilight</last-edited>
+          <last-edited>dist</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

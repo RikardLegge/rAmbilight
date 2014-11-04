@@ -1,7 +1,7 @@
 #include <FastLED.h>      // The LED library
 
 #define DATA_PIN 6        // The pin on the Arduino to use for the LED PWM.
-#define DATA_RATE 256000//115200  // The speed of the transmission
+#define DATA_RATE 512000//256000//115200  // The speed of the transmission
 
 #define NULL 0
 #define NUMBER_OF_LEDS 1
@@ -71,7 +71,7 @@ void loop() {
           else
             buffi++;
           continue;
-        }else if(difference(millis(), lastPing) > 5) // Break if timed out.
+        }else if(difference(millis(), lastPing) > 2) // Break if timed out.
           break;
         delay(1);
       }
@@ -140,9 +140,9 @@ void loop() {
 
   if(delta < 3000){
     sleeping = 0;
+
     Serial.write(1);       // I'm ready for more
     Serial.flush();
-
     delay(frameSleep);    // Wait for a very short while
 
     if(ColorSmoothing())    // If something has changed

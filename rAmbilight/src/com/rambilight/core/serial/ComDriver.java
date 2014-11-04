@@ -172,7 +172,7 @@ public class ComDriver {
 
         Light light = null;
         write(ArduinoCommunication.BEGIN_SEND);
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 14; i++) {
 
             while (lightHandler.requiresUpdate() && !(light = lightHandler.next()).requiresUpdate) ;
             if (light == null)

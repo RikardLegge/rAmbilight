@@ -14,7 +14,7 @@ public class SerialControllerJSSC implements SerialPortEventListener {
     public SerialPort serialPort;
     private SerialEventListener serialEvent = (data) -> {
     };
-    private int                 dataRate    = 256000;//115200;      // Default bits per second for COM port.
+    private int                 dataRate    = 512000;//256000;//115200;      // Default bits per second for COM port.
 
     public SerialControllerJSSC() {
     }

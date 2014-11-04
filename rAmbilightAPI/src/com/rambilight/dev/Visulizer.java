@@ -11,6 +11,7 @@ import java.awt.Rectangle;
 import javax.swing.*;
 
 import com.rambilight.core.Global;
+import com.rambilight.core.serial.Light;
 
 /*
  * Original source
@@ -26,12 +27,14 @@ import com.rambilight.core.Global;
 public class Visulizer extends JFrame {
 
     private Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-    private int[][] alrgb;
+    private Light[] colorBuffer;
 
     protected Visulizer() {
-        alrgb = new int[Global.numLights][];
+        colorBuffer = new Light[Global.numLights];
+        for (int i = 0; i < Global.numLights; i++)
+            colorBuffer[i] = new Light(i, 0, 0, 0);
 
-        setTitle("rAmiligt Visualizer");
+        setTitle("rAmbiligt Visualizer");
         try {
             setIconImage(new ImageIcon(Visulizer.class.getResource("Tray_Active.png")).getImage());
         } catch (Exception e) {
@@ -67,8 +70,9 @@ public class Visulizer extends JFrame {
         int h = getHeight();
         int w = getWidth();
         int hd = h / 15;
-        int wd = w / 29;
+        int wd = w / 30;
         int light = 0;
+
 
         if (Global.lightLayout.length > 0)
             for (int i = 0; i < Global.lightLayout[0]; i++) {
@@ -94,16 +98,19 @@ public class Visulizer extends JFrame {
                 g.fillRect(wd * i, h - a, wd, a);
                 light++;
             }
+
     }
 
     public void setColor(int l, int r, int g, int b) {
         if (l >= 0 && l <= Global.numLights) {
-            if (alrgb[l] == null)
-                alrgb[l] = new int[3];
-            alrgb[l][0] = Math.max(Math.min(r, 252), 0);
-            alrgb[l][1] = Math.max(Math.min(g, 252), 0);
-            alrgb[l][2] = Math.max(Math.min(b, 252), 0);
+            colorBuffer[l].r = Math.max(Math.min(r, 252), 0);
+            colorBuffer[l].g = Math.max(Math.min(g, 252), 0);
+            colorBuffer[l].b = Math.max(Math.min(b, 252), 0);
         }
+    }
+
+    public Light[] getColorBuffer() {
+        return colorBuffer;
     }
 
     protected void update() {
@@ -111,9 +118,9 @@ public class Visulizer extends JFrame {
     }
 
     private Color getColor(int l) {
-        if (alrgb[l] == null)
+        if (colorBuffer[l] == null)
             return Color.black;
         else
-            return new Color(alrgb[l][0], alrgb[l][1], alrgb[l][2]);
+            return new Color(colorBuffer[l].r, colorBuffer[l].g, colorBuffer[l].b);
     }
 }
