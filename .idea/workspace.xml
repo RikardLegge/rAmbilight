@@ -6,19 +6,8 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="Enabled a full Intellij workspace.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilight/Driver/FastLED.zip" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/Light.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rAmbilight/Driver/FastLED-3.0.1.zip" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/rAmbilight.app/Contents/Resources/Java/Application.jar" afterPath="$PROJECT_DIR$/dist/rAmbilight.app/Contents/Resources/Java/Application.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" />
+    <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/Driver/Driver.ino" afterPath="$PROJECT_DIR$/rAmbilight/Driver/Driver.ino" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandler.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/me.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/me.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="rAmbilight.iws" />
@@ -47,11 +36,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Driver.ino" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Driver.ino" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/rAmbilight/Driver/Driver.ino">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2061" max-vertical-offset="3762">
-              <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.36082473" vertical-offset="2889" max-vertical-offset="3762">
+              <caret line="178" column="27" selection-start-line="178" selection-start-column="27" selection-end-line="178" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -80,11 +69,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Global.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Global.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.58762884" vertical-offset="297" max-vertical-offset="1170">
-              <caret line="45" column="42" selection-start-line="45" selection-start-column="42" selection-end-line="45" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1170">
+              <caret line="25" column="7" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -160,8 +149,8 @@
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" />
-        <option value="$PROJECT_DIR$/rAmbilight/Driver/Driver.ino" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
+        <option value="$PROJECT_DIR$/rAmbilight/Driver/Driver.ino" />
       </list>
     </option>
   </component>
@@ -974,7 +963,11 @@
       <created>1415041230072</created>
       <updated>1415041230072</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Stability improvements.&#10;Better color correction and stepping.">
+      <created>1415067557371</created>
+      <updated>1415067557371</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1056,7 +1049,8 @@
     <MESSAGE value="Intellisense profile backup." />
     <MESSAGE value="Changed hover message from 'running...' to 'rAmbilight'." />
     <MESSAGE value="Enabled a full Intellij workspace." />
-    <option name="LAST_COMMIT_MESSAGE" value="Enabled a full Intellij workspace." />
+    <MESSAGE value="Stability improvements.&#10;Better color correction and stepping." />
+    <option name="LAST_COMMIT_MESSAGE" value="Stability improvements.&#10;Better color correction and stepping." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1298,6 +1292,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="28512">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1427,14 +1422,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/Driver/Driver.ino">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2061" max-vertical-offset="3762">
-          <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/TrayController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3539519" vertical-offset="231" max-vertical-offset="1296">
@@ -1453,8 +1440,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.58762884" vertical-offset="297" max-vertical-offset="1170">
-          <caret line="45" column="42" selection-start-line="45" selection-start-column="42" selection-end-line="45" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1170">
+          <caret line="25" column="7" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/Driver/Driver.ino">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36082473" vertical-offset="2889" max-vertical-offset="3762">
+          <caret line="178" column="27" selection-start-line="178" selection-start-column="27" selection-end-line="178" selection-end-column="27" />
           <folding />
         </state>
       </provider>

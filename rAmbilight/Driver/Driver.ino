@@ -174,13 +174,13 @@ float stepDecimal;
 // Color smothering of the lights. Returns true if something has changed.
 boolean ColorSmoothing(){
   requiresUpdate = false;
-  stepDecimal = (51 - smoothStep) / 10;
+  stepDecimal = (54.0 + smoothStep) / 10.0;
   for(i = 0; i < numActiveLeds; i++){
     for(j = 0; j < 3; j++){
       l = leds[i][j];
       lt = leds_TargetValue[i][j];
       if(l != lt){
-        stepSize = 51-smoothStep + (difference(l,lt) - 255)/stepDecimal;
+        stepSize = 50.0-smoothStep + (difference(l,lt) - 255.0)/stepDecimal;
         if(difference(l,lt) <= stepSize)
           l = lt;
         else if(l < lt)
