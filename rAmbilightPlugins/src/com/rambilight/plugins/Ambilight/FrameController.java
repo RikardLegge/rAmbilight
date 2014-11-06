@@ -1,29 +1,11 @@
 package com.rambilight.plugins.Ambilight;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
 
 /*
  * Original source
@@ -32,31 +14,34 @@ import javax.swing.border.LineBorder;
  * Only edited to suite my needs. Full credit to the original author
  */
 
-/** Frame controller for selecting the area of the ambilight screen capture */
+/**
+ * Frame controller for selecting the area of the ambilight screen capture
+ */
 public class FrameController extends JFrame implements MouseMotionListener, MouseListener {
 
     private static final long serialVersionUID = 1L;
-    private Point             start_drag;
-    private Point             start_loc;
-    Toolkit                   toolkit          = Toolkit.getDefaultToolkit();
-    private int               minWidth;
-    private int               minHeight;
-    private Point             initialLocation;
-    int                       cursorArea       = 10;
-    Rectangle                 screen           = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-    private int               DIFF_MIN_WIDTH   = 30;
-    private int               DIFF_MIN_HEIGHT  = 30;
+    private Point start_drag;
+    private Point start_loc;
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    private int   minWidth;
+    private int   minHeight;
+    private Point initialLocation;
+    int       cursorArea = 10;
+    Rectangle screen     = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+    private int DIFF_MIN_WIDTH  = 30;
+    private int DIFF_MIN_HEIGHT = 30;
 
-    private int               border_TMP;
-    private int               border;
+    private int border_TMP;
+    private int border;
 
-    private JTextField        textField;
-    private JPanel            viewContainer;
+    private JTextField textField;
+    private String     textFieldOldInput;
+    private JPanel     viewContainer;
 
-    private CallbackHandle    callbackHandle;
+    private CallbackHandle callbackHandle;
 
     public FrameController(Point initialLocation, Dimension initialDimension, int border, CallbackHandle callbackHandle) {
-        
+
         this.initialLocation = initialLocation;
         this.callbackHandle = callbackHandle;
         minWidth = 400;
@@ -72,7 +57,8 @@ public class FrameController extends JFrame implements MouseMotionListener, Mous
         setTitle("Change capture rectangle");
         try {
             setIconImage(new ImageIcon(FrameController.class.getResource("Tray_Active.png")).getImage());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         this.setSize(initialDimension.width, initialDimension.height);
 
         minWidth -= DIFF_MIN_WIDTH;
@@ -81,7 +67,7 @@ public class FrameController extends JFrame implements MouseMotionListener, Mous
         setLocation(initialLocation);
         setUndecorated(true);
         setOpacity(.80f);
-        setAlwaysOnTop( true );
+        setAlwaysOnTop(true);
 
         CreateContent();
     }
@@ -92,30 +78,28 @@ public class FrameController extends JFrame implements MouseMotionListener, Mous
         viewContainer.setBorder(new LineBorder(Color.RED, border));
 
         JPanel headerPanel = new JPanel(new CenterLayout());// new
-                                                            // FlowLayout(FlowLayout.CENTER,
-                                                            // 0, 2));
+        // FlowLayout(FlowLayout.CENTER,
+        // 0, 2));
         headerPanel.setPreferredSize(new Dimension(getSize().width, getSize().height));
         headerPanel.addMouseListener(this);
         headerPanel.addMouseMotionListener(this);
 
-        textField = new JTextField(getX() + ", " + getY() + " / " + getWidth() + "x" + getHeight());
+        textField = new JTextField();
+        textField.setText(getX() + ", " + getY() + " / " + getWidth() + "x" + getHeight());
         textField.setBorder(new LineBorder(Color.WHITE, 0));
         textField.setOpaque(false);
         // textField.setEditable(false);
         textField.setFont(new Font(textField.getFont().getFamily(), Font.PLAIN, 50));
-        textField.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                String[] parsed = textField.getText().split(", ");
-                int x = Integer.parseInt(parsed[0]);
-                parsed = parsed[1].split(" / ");
-                int y = Integer.parseInt(parsed[0]);
-                setLocation(x, y);
-                parsed = parsed[1].split("x");
-                int w = Integer.parseInt(parsed[0]);
-                int h = Integer.parseInt(parsed[1]);
-                setSize(w, h);
-            }
+        textField.addActionListener((e) -> {
+            String[] parsed = textField.getText().split(",");
+            int x = Integer.parseInt(parsed[0].trim());
+            parsed = parsed[1].split("/");
+            int y = Integer.parseInt(parsed[0].trim());
+            setLocation(x, y);
+            parsed = parsed[1].split("x");
+            int w = Integer.parseInt(parsed[0].trim());
+            int h = Integer.parseInt(parsed[1].trim());
+            setSize(w, h);
         });
         headerPanel.add(textField, BorderLayout.CENTER);
 
@@ -134,7 +118,8 @@ public class FrameController extends JFrame implements MouseMotionListener, Mous
         return new Point((int) (view_location.getX() + cursor.getX()), (int) (view_location.getY() + cursor.getY()));
     }
 
-    @Override public void mouseDragged(MouseEvent e) {
+    @Override
+    public void mouseDragged(MouseEvent e) {
         moveOrFullResizeFrame(e);
         textField.setText(getX() + ", " + getY() + " / " + getWidth() + "x" + getHeight());
     }
@@ -180,7 +165,8 @@ public class FrameController extends JFrame implements MouseMotionListener, Mous
             setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
-    @Override public void mouseClicked(MouseEvent e) {
+    @Override
+    public void mouseClicked(MouseEvent e) {
         Object sourceObject = e.getSource();
         if (sourceObject instanceof JPanel) {
             if (e.getClickCount() == 2) {
@@ -203,7 +189,8 @@ public class FrameController extends JFrame implements MouseMotionListener, Mous
 
             setLocation(newX, newY);
 
-        } else if (!getCursor().equals(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR))) {
+        }
+        else if (!getCursor().equals(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR))) {
             int oldLocationX = (int) getLocation().getX();
             int oldLocationY = (int) getLocation().getY();
             int newLocationX = (int) (this.start_loc.getX() + offset.getX());
@@ -240,7 +227,8 @@ public class FrameController extends JFrame implements MouseMotionListener, Mous
                 newHeight = getHeight() - (newLocationY - oldLocationY);
                 newLocationX = (int) getLocation().getX();
                 setLocation = true;
-            } else if (E_Resize)
+            }
+            else if (E_Resize)
                 newHeight = getHeight();
             else if (S_Resize)
                 newWidth = getWidth();
@@ -249,14 +237,17 @@ public class FrameController extends JFrame implements MouseMotionListener, Mous
                 newWidth = getWidth();
                 newHeight = getHeight() - (newLocationY - oldLocationY);
                 setLocation = true;
-            } else if (NW_Resize) {
+            }
+            else if (NW_Resize) {
                 newWidth = getWidth() - (newLocationX - oldLocationX);
                 newHeight = getHeight() - (newLocationY - oldLocationY);
                 setLocation = true;
-            } else if (NE_Resize) {
+            }
+            else if (NE_Resize) {
                 newHeight = getHeight() - (newLocationY - oldLocationY);
                 newLocationX = (int) getLocation().getX();
-            } else if (SW_Resize) {
+            }
+            else if (SW_Resize) {
                 newWidth = getWidth() - (newLocationX - oldLocationX);
                 newLocationY = (int) getLocation().getY();
                 setLocation = true;
@@ -287,35 +278,47 @@ public class FrameController extends JFrame implements MouseMotionListener, Mous
         }
     }
 
-    @Override public void mousePressed(MouseEvent e) {
+    @Override
+    public void mousePressed(MouseEvent e) {
         this.start_drag = getScreenLocation(e, this);
         this.start_loc = this.getLocation();
     }
 
-    @Override public void mouseEntered(MouseEvent e) {}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-    @Override public void mouseExited(MouseEvent e) {}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
-    @Override public void mouseReleased(MouseEvent e) {
+    @Override
+    public void mouseReleased(MouseEvent e) {
         border = border_TMP;
         viewContainer.setBorder(new LineBorder(Color.RED, border));
     }
-    
-    /** Callback handle for when the frame controller overlay closes */
+
+    /**
+     * Callback handle for when the frame controller overlay closes
+     */
     public interface CallbackHandle {
 
         void onWindowClose(Point position, Dimension dimension, int border);
     }
 }
 
-/** Layout manager for centering of it's content */
+/**
+ * Layout manager for centering of it's content
+ */
 class CenterLayout implements LayoutManager, java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public void addLayoutComponent(String name, Component comp) {}
+    public void addLayoutComponent(String name, Component comp) {
+    }
 
-    public void removeLayoutComponent(Component comp) {}
+    public void removeLayoutComponent(Component comp) {
+    }
 
     public Dimension preferredLayoutSize(Container target) {
         return target.getPreferredSize();

@@ -12,9 +12,13 @@ public class SerialControllerJSSC implements SerialPortEventListener {
 
     // Declares a couple of variables for the serial communication
     public SerialPort serialPort;
-    private SerialEventListener serialEvent = (data) -> {
+    private SerialEventListener serialEvent           = (data) -> {
     };
-    private int                 dataRate    = 512000;//256000;//115200;      // Default bits per second for COM port.
+    private SerialEventListener serialConnectEvent    = (data) -> {
+    };
+    private SerialEventListener serialDisconnectEvent = (data) -> {
+    };
+    private int                 dataRate              = 512000;//256000;//115200;      // Default bits per second for COM port.
 
     public SerialControllerJSSC() {
     }
@@ -49,10 +53,10 @@ public class SerialControllerJSSC implements SerialPortEventListener {
             int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR; // Prepare mask
             serialPort.setEventsMask(mask); // Set mask
             serialPort.addEventListener(this); // Add SerialPortEventListener
-            Thread.sleep(4000); // Milliseconds to block while waiting for port open
+            Thread.sleep(2000); // Milliseconds to block while waiting for port open
             return true;
         } catch (SerialPortException | InterruptedException ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
         return false;
     }
@@ -84,24 +88,28 @@ public class SerialControllerJSSC implements SerialPortEventListener {
                             e.printStackTrace();
                         }
                 } catch (SerialPortException e) {
-                    System.err.println(e.toString());
+                    e.printStackTrace();
                 }
             }
         }
         else if (event.isCTS()) {// If CTS line has changed state
             if (event.getEventValue() == 1) {// If line is ON
                 System.out.println("CTS - ON");
+                serialConnectEvent.Recived(-1);
             }
             else {
                 System.out.println("CTS - OFF");
+                serialDisconnectEvent.Recived(-1);
             }
         }
         else if (event.isDSR()) {// /If DSR line has changed state
             if (event.getEventValue() == 1) {// If line is ON
                 System.out.println("DSR - ON");
+                serialConnectEvent.Recived(-1);
             }
             else {
                 System.out.println("DSR - OFF");
+                serialDisconnectEvent.Recived(-1);
             }
         }
     }
@@ -111,6 +119,14 @@ public class SerialControllerJSSC implements SerialPortEventListener {
      */
     public void setEventListener(SerialEventListener serialEvent) {
         this.serialEvent = serialEvent;
+    }
+
+    public void setConnectedListener(SerialEventListener serialEvent) {
+        this.serialConnectEvent = serialEvent;
+    }
+
+    public void setDisconnectedListener(SerialEventListener serialEvent) {
+        this.serialDisconnectEvent = serialEvent;
     }
 
     /**

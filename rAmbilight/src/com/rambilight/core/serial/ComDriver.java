@@ -16,12 +16,14 @@ public class ComDriver {
     private long lastReceived           = 0;
     private long ticksSinceLastReceived = 0;    // 1 tick > ~10ms.
 
-    private boolean writtenPrefs      = false;
+    private boolean writtenPrefs = false;
 
     public ComDriver() {
         lightHandler = new LightHandlerCore(Global.numLights);
         serial = new SerialControllerJSSC();
         serialBuffer = new LinkedList<>();
+
+        serial.setEventListener((data) -> receivedPacket(data));
     }
 
     public LightHandlerCore getLightHandler() {
@@ -38,7 +40,7 @@ public class ComDriver {
                 System.out.println("One port found: " + ports[0]);
 
                 String result = MessageBox.Input("Port found!", "Are you sure you want to use this port as an rAmbilight device? (Type 'Yes' or 'No')'\n" + ports[0] + "\n ");
-                if (result != null && !result.toLowerCase().equals("y") && !result.toLowerCase().equals("yes"))
+                if (result == null || (!result.toLowerCase().equals("y") && !result.toLowerCase().equals("yes")))
                     throw new Exception("Some thing other than YES as entered. Shutting down...");
 
                 System.out.println("Activating...");
@@ -73,7 +75,6 @@ public class ComDriver {
             throw new Exception("Unable to connect to an rAmbilight enabled device.");
 
         System.out.println("Serial baud rate: " + serial.getDataRate());
-        serial.setEventListener((data) -> receivedPacket(data));
         lastReceived = System.currentTimeMillis();
     }
 
@@ -82,10 +83,15 @@ public class ComDriver {
         serialGateway(Gateway.ping);
     }
 
-    public void update() {
+    public void update() throws Exception {
         long now = System.currentTimeMillis();
         ticksSinceLastReceived++;
         if (now - lastReceived > 3000 && ticksSinceLastReceived > 250) {
+            if (serial.getAvailablePorts().length == 0) {
+                Global.requestExit = true;
+                throw new Exception("The serial device can no longer be found.\n Please reinsert it and restart the application. \n\n Exiting...");
+            }
+
             boolean cache = Global.isActive;
             try {
                 Global.isActive = false;
@@ -119,6 +125,7 @@ public class ComDriver {
     private void receivedPacket(int data) {
         lastReceived = System.currentTimeMillis();
         ticksSinceLastReceived = 0;
+
         switch (data) {
             case 1: // Ready
                 if (!writtenPrefs) {
@@ -172,12 +179,9 @@ public class ComDriver {
 
         Light light = null;
         write(ArduinoCommunication.BEGIN_SEND);
-        for (int i = 0; i < 14; i++) {
-
-            while (lightHandler.requiresUpdate() && !(light = lightHandler.next()).requiresUpdate) ;
-            if (light == null)
+        for (int i = 0; i < 13; i++) {
+            if((light = lightHandler.next()) == null)
                 break;
-            light.requiresUpdate = false;
             write(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
         }
         write(ArduinoCommunication.END_SEND);

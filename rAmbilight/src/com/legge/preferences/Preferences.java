@@ -26,7 +26,7 @@ public class Preferences {
     }
 
     /**
-     * Loads a int[] from cache
+     * Loads a String from cache
      *
      * @param name     Name of the variable to load
      * @param fallback If the variable isn't found, use the fallback
@@ -37,7 +37,7 @@ public class Preferences {
     }
 
     /**
-     * Loads a int[] from cache
+     * Loads a int from cache
      *
      * @param name     Name of the variable to load
      * @param fallback If the variable isn't found, use the fallback
@@ -49,7 +49,7 @@ public class Preferences {
     }
 
     /**
-     * Loads a int[] from cache
+     * Loads a boolean from cache
      *
      * @param name     Name of the variable to load
      * @param fallback If the variable isn't found, use the fallback
@@ -110,8 +110,8 @@ public class Preferences {
             arr = new String[loaded.length];
         else
             arr = new String[length];
-
         System.arraycopy(loaded, 0, arr, 0, arr.length);
+
         return arr;
     }
 
@@ -200,6 +200,15 @@ public class Preferences {
     public static void setPathAbsolute(String filePath) {
         PreferencesCore.setPathAbsolute(filePath);
     }
+
+    public static String getPathToFile() {
+        return PreferencesCore.PATH;
+    }
+
+    public static String getPathToFolder() {
+        String path = getPathToFile();
+        return path.substring(0, path.lastIndexOf("/"));
+    }
 }
 
 /**
@@ -232,7 +241,7 @@ class PreferencesCore {
      * Loads a value from cache
      */
     protected static String load(String module, String name, String fallback) {
-        if (rawPrefs.get(module).containsKey(name))
+        if (rawPrefs.get(module) != null && rawPrefs.get(module).containsKey(name))
             return rawPrefs.get(module).get(name);
         return fallback;
     }
@@ -254,9 +263,10 @@ class PreferencesCore {
             String currentModule = "";
             List<String> lines = Files.readAllLines(Paths.get(PATH));
             for (String line : lines) {
+                line = line.trim();
                 if (line.length() == 0 || line.charAt(0) == '#')
                     continue;
-                else if (line.trim().subSequence(0, 1).equals("[")) {
+                else if (line.subSequence(0, 1).equals("[")) {
                     currentModule = line.substring(1, line.length() - 1).trim();
                     rawPrefs.put(currentModule, new Hashtable<>());
                 }
@@ -269,7 +279,6 @@ class PreferencesCore {
         } catch (IOException e) {
             System.out.println("The config file was not found. Using defaults.");
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("The config file is corrupt. Using defaults.");
         }
     }
@@ -292,6 +301,14 @@ class PreferencesCore {
     protected static void flushFile() {
 
         String serialized = "";
+
+        serialized += "################################## IMPORTANT ##################################\n";
+        serialized += "# Please don't edit this configuration file while the application is running. #\n";
+        serialized += "# This is because the preferences are only read on startup and then rewritten #\n";
+        serialized += "# on application exit. So, any changes made whilst the application is running #\n";
+        serialized += "# will be discarded                                                           #\n";
+        serialized += "################################## IMPORTANT ##################################\n\n";
+
         for (String moduleName : getSortedTable(rawPrefs)) {
             serialized += "[" + moduleName + "]\n";
 

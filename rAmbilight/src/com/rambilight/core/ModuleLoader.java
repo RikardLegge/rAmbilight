@@ -141,7 +141,7 @@ public class ModuleLoader {
                 if (name.endsWith(".jar") || name.endsWith(".class"))   // Filter away any unwanted classes
                     TMP_paths.add("jar:file:/" + pluginDir + "/" + name + "!/");   // Add the valid paths to the temporary path array
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         URL[] urls = new URL[TMP_paths.size()]; // Required by the classLoader to load the selected paths
@@ -170,7 +170,7 @@ public class ModuleLoader {
                 System.err.println("Successfully loaded module '" + name + "'.");
             } catch (Exception e) {
                 System.err.println("Unable to load plugin '" + name + "'. " + postError);
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         }
         Class<?>[] toRet = new Class<?>[classes.size()];

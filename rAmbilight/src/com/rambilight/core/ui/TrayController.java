@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -22,6 +23,7 @@ public class TrayController {
     private CheckboxMenuItem              runToggle;
     private Menu                          inputs;
     private MenuItem                      exit;
+    private MenuItem                      openConfig;
     private Hashtable<String, MenuItem[]> itemGroups;
 
     // assets for the tray
@@ -77,8 +79,18 @@ public class TrayController {
             runToggle = createCheckbox(Global.isActive ? "Active" : "Active", Global.isActive,
                     (e) -> setState(e.getStateChange() == ItemEvent.SELECTED));
 
-            inputs = createRadioGroup("Modules", inputslist, (e) -> {});
+            inputs = createRadioGroup("Modules", inputslist, (e) -> {
+            });
             exit = createItem("Quit rAmbilight", (e) -> AmbilightDriver.requestExit());
+            openConfig = createItem("Reveal configuration", (e) -> {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().open(new File(Global.preferencesPath));
+                    } catch (Exception ex) {
+                        MessageBox.Error("Unable to reveal configuration located at: \n" + Global.preferencesPath);
+                    }
+                }
+            });
 
             // Add a listener for when the module changes
             ModuleLoader.addOnChangeListener((s) -> {
@@ -119,6 +131,7 @@ public class TrayController {
             }
 
         popup.addSeparator();
+        popup.add(openConfig);
         popup.add(exit);
 
         setState(Global.isActive);
@@ -160,7 +173,6 @@ public class TrayController {
         runToggle.setLabel(Global.isActive ? "Active" : "Active");
         trayIcon.setToolTip(Global.isActive ? "rAmbilight" : null);
         trayIcon.setImage(Global.isActive ? Image_Active : Image_Idle);
-
     }
 
     public static CheckboxMenuItem createCheckbox(String name, boolean state, ItemListener handle) {

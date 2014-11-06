@@ -39,13 +39,27 @@ public class LightHandlerCore {
         }
     }
 
+    public void sanityCheck() {
+        if (lightsToUpdate.size() > 0 && lightsToUpdate.peek() == null) {
+            lightsToUpdate.clear();
+            for (Light light : colorBuffer)
+                light.requiresUpdate = false;
+        }
+    }
+
     public boolean requiresUpdate() {
         return lightsToUpdate.peek() != null;
     }
 
     public Light next() {
-        if (requiresUpdate())
-            return composeColor(lightsToUpdate.poll());
+        if (requiresUpdate()) {
+            Integer lightid = lightsToUpdate.remove();
+            if (lightid == null)
+                return next();
+            Light nextLight = composeColor(lightid);
+            nextLight.requiresUpdate = false;
+            return nextLight;
+        }
         return null;
     }
 

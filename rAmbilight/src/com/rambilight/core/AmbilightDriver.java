@@ -3,6 +3,7 @@ package com.rambilight.core;
 import com.legge.lMath;
 import com.legge.preferences.Preferences;
 import com.rambilight.core.serial.ComDriver;
+import com.rambilight.core.serial.LightHandlerCore;
 import com.rambilight.core.ui.MessageBox;
 import com.rambilight.core.ui.TrayController;
 import com.rambilight.plugins.Ambilight.Ambilight;
@@ -36,6 +37,8 @@ public class AmbilightDriver {
         // Safer way to do things...
         try {
             Preferences.setPathBySystem("rAmbilight", "rAmbilight.conf");
+            Global.preferencesPath = Preferences.getPathToFolder();
+
             Preferences.read();
             Global.loadPreferences();
             serialCom = new ComDriver();
@@ -146,6 +149,7 @@ public class AmbilightDriver {
                             suspended = false;
                         ModuleLoader.step();
                         serialCom.update();
+                        serialCom.getLightHandler().sanityCheck();
                         try {
                             Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
                         } catch (InterruptedException e) {
@@ -162,6 +166,7 @@ public class AmbilightDriver {
                             Thread.sleep(500);
                         } catch (InterruptedException e) {
                             System.out.println("Thread sleep was interrupted.");
+                            e.printStackTrace();
                         }
                     }
                 } catch (Exception e) {

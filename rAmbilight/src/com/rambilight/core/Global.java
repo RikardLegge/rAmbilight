@@ -7,24 +7,26 @@ import com.legge.preferences.Preferences;
  */
 public class Global {
 
-    public static final int     VERSION     = 26;
-    public static       boolean requestExit = false;
-    public static       boolean isActive    = false;
+    public static final int     VERSION         = 26;
+    public static       boolean requestExit     = false;
+    public static       boolean isActive        = true;
+    public static       String  preferencesPath = "";
 
     public static int      numLights          = 59;
     public static int[]    lightLayout        = new int[]{15, 30, 15};       // Right, Top, Left, Bottom
-    public static String[] currentControllers = new String[0];
+    public static String[] currentControllers = new String[]{"Ambilight"};
     public static String   serialPort         = "";
 
-    public static  String      pluginPath    = "";
-    public static  boolean     loadInternal  = false;
-    public static  int         lightStepSize = 0;
-    private static Preferences preferences   = new Preferences("Core");
+    public static String  pluginPath    = "";
+    public static boolean loadInternal  = false;
+    public static int     lightStepSize = 0;
+    private static Preferences preferences;
 
     /**
      * Loads the variables from cache
      */
     public static void loadPreferences() {
+        preferences = new Preferences("Core");
         Global.isActive = preferences.load("isActive", Global.isActive);
         Global.currentControllers = preferences.load("currentControllers", Global.currentControllers, -1);
 
