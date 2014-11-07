@@ -3,12 +3,8 @@ package com.rambilight.core;
 import com.legge.lMath;
 import com.legge.preferences.Preferences;
 import com.rambilight.core.serial.ComDriver;
-import com.rambilight.core.serial.LightHandlerCore;
 import com.rambilight.core.ui.MessageBox;
 import com.rambilight.core.ui.TrayController;
-import com.rambilight.plugins.Ambilight.Ambilight;
-import com.rambilight.plugins.Built_In_Effects.Built_In_Effects;
-import com.rambilight.plugins.PushBullet.PushBullet;
 
 import javax.swing.*;
 
@@ -43,10 +39,10 @@ public class AmbilightDriver {
             Global.loadPreferences();
             serialCom = new ComDriver();
 
-            //ModuleLoader.loadModules(ModuleLoader.loadExternalModules(AmbilightDriver.class));
-            ModuleLoader.loadModule(Ambilight.class);
-            ModuleLoader.loadModule(PushBullet.class);
-            ModuleLoader.loadModule(Built_In_Effects.class);
+            ModuleLoader.loadModules(ModuleLoader.loadExternalModules(AmbilightDriver.class));
+            //    ModuleLoader.loadModule(Ambilight.class);
+            //    ModuleLoader.loadModule(PushBullet.class);
+            //    ModuleLoader.loadModule(Built_In_Effects.class);
 
             tray = new TrayController();
 

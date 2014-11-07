@@ -116,13 +116,14 @@ public class ModuleLoader {
 
     // TODO Not currently working...
     public static Class<?>[] loadExternalModules(Class<?> classLoaderSoruce) throws Exception {
+
         String pluginDir = Global.pluginPath;  // The root directory of the plugins
         if (pluginDir.length() == 0) {
             String platform = System.getProperty("os.name").toLowerCase();
             if (platform.contains("win"))
-                pluginDir = "/AppData/Local/";
+                pluginDir = "/AppData/Local/rAmbilight";
             else if (platform.contains("mac"))
-                pluginDir = "/Library/Application Support/";
+                pluginDir = "/Library/Application Support/rAmbilight";
             else
                 pluginDir = "/.";
 
@@ -139,22 +140,20 @@ public class ModuleLoader {
         try {   // Caches valid paths
             for (String name : new File(pluginDir).list())
                 if (name.endsWith(".jar") || name.endsWith(".class"))   // Filter away any unwanted classes
-                    TMP_paths.add("jar:file:/" + pluginDir + "/" + name + "!/");   // Add the valid paths to the temporary path array
+                    TMP_paths.add(pluginDir + "/" + name);   // Add the valid paths to the temporary path array
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         URL[] urls = new URL[TMP_paths.size()]; // Required by the classLoader to load the selected paths
         for (int i = 0; i < TMP_paths.size(); i++)
-            urls[i] = new URL(TMP_paths.get(i));
-        TMP_paths.clear();  // Just to clarify that this is temporary
-
-        URLClassLoader loader = URLClassLoader.newInstance(urls);//, classLoaderSoruce.getClassLoader());  // New instance of the class loader that allows the
+            urls[i] = (new File(TMP_paths.get(i))).toURL();
+        //TMP_paths.clear();  // Just to clarify that this is temporary
+        URLClassLoader loader = URLClassLoader.newInstance(urls, classLoaderSoruce.getClassLoader());//, classLoaderSoruce.getClassLoader());  // New instance of the class loader that allows the
         ArrayList<Class<? extends Module>> classes = new ArrayList<>(); // The successfully loaded classes
 
         if (urls.length == 0)
             MessageBox.Error("No plugins found in the plugin folder '" + pluginDir + "'");
-
         for (URL url : urls) {
             // Parse the path into a name. Remove everything before the last "/"(Path) and after the last "."(Extension)
             String name = url.toString().substring(url.toString().lastIndexOf("plugins/") + 8, url.toString().lastIndexOf("."));
@@ -162,7 +161,8 @@ public class ModuleLoader {
 
             try {
                 //Class<?> RawClass = jarFile.getClass();//loader.loadClass(jarFile.getName().substring(0,jarFile.getName().lastIndexOf(".")));
-                Class<?> RawClass = Class.forName("com.rambilight.plugins." + name + "." + name, false, loader);
+                // Class<?> RawClass = Class.forName("com.rambilight.plugins." + name + "." + name, false, loader);
+                Class<?> RawClass = loader.loadClass("com.rambilight.plugins." + name + "." + name);
                 //Class<?> RawClass = loader.loadClass("com.rambilight.plugins." + name + "." + name);
                 postError = "Loading as asset instead";
                 Class<? extends Module> modulePlugin = RawClass.asSubclass(Module.class);                          // Make sure it's a subclass of "Module"

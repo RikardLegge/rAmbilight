@@ -15,7 +15,7 @@ public class PushBullet extends Module {
     Hashtable<String, String> colors       = new Hashtable<>();
     int[]                     currentColor = new int[]{0, 0, 0};
     int                       currentStage = -1;
-    int[]                     animation    = new int[]{1, 0, 1, 0};
+    int[]                     animation    = new int[]{1, 0, 1, 0, 1};
 
     long lastStep = 0;
 
