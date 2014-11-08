@@ -9,44 +9,8 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="Cleanup &amp; bugfixes">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/Build_rAmbilight_API.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Hello_World/Hello_World.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilightPlugins/sh/Hello_World.sh" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/META-INF/MANIFEST.MF" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialController.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/TrayController.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Tray_Active.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rAmbilightPlugins/sh/mainfest.mf" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/AmbilightDriver.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Main.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Debugger.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/Debugger.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Visulizer.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/Visualizer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/Build_rAmbilight.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/Build_rAmbilight.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Built_In_Effects/Built_In_Effects.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Built_In_Effects/Built_In_Effects.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/Global.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/Global.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/Light.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/Light.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandler.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/META-INF/MANIFEST.MF" afterPath="$PROJECT_DIR$/rAmbilight/src/META-INF/MANIFEST.MF" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/MessageBox.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/MessageBox.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/MessageBox.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/MessageBox.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/plugins/Module.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/plugins/Module.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ModuleLoader.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ModuleLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/legge/preferences/Preferences.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/legge/preferences/Preferences.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/Runner.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/Runner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java" />
+    <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/TrayController.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/TrayController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/TrayController.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/TrayController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/sh/build.sh" afterPath="$PROJECT_DIR$/rAmbilightPlugins/sh/build.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/arduino/driver-dev/driver-dev.ino" afterPath="$PROJECT_DIR$/rAmbilight/arduino/driver-dev/driver-dev.ino" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/legge/lMath.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/legge/lMath.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/rAmbilight.iml" afterPath="$PROJECT_DIR$/rAmbilight/rAmbilight.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/rAmbilightPlugins.iml" afterPath="$PROJECT_DIR$/rAmbilightPlugins/rAmbilightPlugins.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="rAmbilight.iws" />
@@ -74,7 +38,29 @@
     <favorites_list name="rambilight" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="TrayController.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/TrayController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.38819876" vertical-offset="740" max-vertical-offset="3168">
+              <caret line="64" column="54" selection-start-line="64" selection-start-column="54" selection-end-line="64" selection-end-column="54" />
+              <folding>
+                <element signature="method#setState#0;class#TrayController#0" expanded="false" />
+                <element signature="method#addToTrayController#0;class#TrayController#0" expanded="false" />
+                <element signature="method#createCheckbox#0;class#TrayController#0" expanded="false" />
+                <element signature="method#createItem#0;class#TrayController#0" expanded="false" />
+                <element signature="method#createGroup#0;class#TrayController#0" expanded="false" />
+                <element signature="method#createRadioGroup#0;class#TrayController#0" expanded="false" />
+                <element signature="class#CheckboxMenuItemStateChanged#0;class#TrayController#0" expanded="false" />
+                <element signature="class#MenuItemStateChanged#0;class#TrayController#0" expanded="false" />
+                <element signature="class#RadioGroupStateChanged#0;class#TrayController#0" expanded="false" />
+                <element signature="class#CustomCreator#0;class#TrayController#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -130,7 +116,6 @@
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialController.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/MessageBox.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java" />
-        <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/TrayController.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/legge/lMath.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandler.java" />
@@ -138,6 +123,7 @@
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ModuleLoader.java" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/Runner.java" />
+        <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/TrayController.java" />
       </list>
     </option>
   </component>
@@ -366,6 +352,20 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="Ambilight.java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rAmbilight" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rAmbilightPlugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sh" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -607,7 +607,7 @@
       <recent name="com.rambilight.core.serial" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.API Development">
+  <component name="RunManager" selected="Application.rAmbilight">
     <configuration default="false" name="PushBullet" type="BashConfigurationType" factoryName="Bash" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="INTERPRETER_PATH" value="/bin/bash" />
@@ -642,6 +642,19 @@
       <envs />
       <module name="rAmbilightPlugins" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/rAmbilightPlugins/sh/Ambilight.sh" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Hello_World.sh" type="BashConfigurationType" factoryName="Bash" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/rAmbilightPlugins/sh" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <module name="rAmbilightPlugins" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/rAmbilightPlugins/sh/Hello_World.sh" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
@@ -844,19 +857,21 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <list size="6">
+    <list size="7">
       <item index="0" class="java.lang.String" itemvalue="Application.API Development" />
       <item index="1" class="java.lang.String" itemvalue="Application.rAmbilight" />
       <item index="2" class="java.lang.String" itemvalue="Bash.Built In Effects" />
       <item index="3" class="java.lang.String" itemvalue="Bash.PushBullet" />
       <item index="4" class="java.lang.String" itemvalue="Bash.Ambilight" />
       <item index="5" class="java.lang.String" itemvalue="Bash.Ambilight.sh" />
+      <item index="6" class="java.lang.String" itemvalue="Bash.Hello_World.sh" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Bash.Ambilight" />
-        <item index="1" class="java.lang.String" itemvalue="Bash.Ambilight.sh" />
-        <item index="2" class="java.lang.String" itemvalue="Bash.PushBullet" />
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="Bash.Hello_World.sh" />
+        <item index="1" class="java.lang.String" itemvalue="Bash.Ambilight" />
+        <item index="2" class="java.lang.String" itemvalue="Bash.Ambilight.sh" />
+        <item index="3" class="java.lang.String" itemvalue="Bash.PushBullet" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
@@ -959,7 +974,11 @@
       <created>1415363877841</created>
       <updated>1415363877842</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Cleanup &amp; bugfixes">
+      <created>1415449212714</created>
+      <updated>1415449212714</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -984,7 +1003,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="43" y="23" width="1637" height="1027" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.49974528" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -995,7 +1014,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32618025" sideWeight="0.49974528" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25347593" sideWeight="0.49974528" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25347593" sideWeight="0.49974528" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875538" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299748" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -1389,28 +1408,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/TrayController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.57014924" vertical-offset="500" max-vertical-offset="1170">
-          <caret line="250" column="0" selection-start-line="250" selection-start-column="0" selection-end-line="250" selection-end-column="0" />
-          <folding>
-            <element signature="method#TrayController#0;class#TrayController#0" expanded="false" />
-            <element signature="method#setState#0;class#TrayController#0" expanded="false" />
-            <element signature="method#setTrayController#0;class#TrayController#0" expanded="false" />
-            <element signature="method#setActiveInputType#0;class#TrayController#0" expanded="false" />
-            <element signature="method#addToTrayController#0;class#TrayController#0" expanded="false" />
-            <element signature="method#createCheckbox#0;class#TrayController#0" expanded="false" />
-            <element signature="method#createItem#0;class#TrayController#0" expanded="false" />
-            <element signature="method#createGroup#0;class#TrayController#0" expanded="false" />
-            <element signature="method#createRadioGroup#0;class#TrayController#0" expanded="false" />
-            <element signature="class#CheckboxMenuItemStateChanged#0;class#TrayController#0" expanded="false" />
-            <element signature="class#MenuItemStateChanged#0;class#TrayController#0" expanded="false" />
-            <element signature="class#RadioGroupStateChanged#0;class#TrayController#0" expanded="false" />
-            <element signature="class#CustomCreator#0;class#TrayController#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5432836" vertical-offset="266" max-vertical-offset="936">
@@ -1627,6 +1624,25 @@
           <caret line="38" column="45" selection-start-line="38" selection-start-column="45" selection-end-line="38" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/TrayController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38819876" vertical-offset="740" max-vertical-offset="3168">
+          <caret line="64" column="54" selection-start-line="64" selection-start-column="54" selection-end-line="64" selection-end-column="54" />
+          <folding>
+            <element signature="method#setState#0;class#TrayController#0" expanded="false" />
+            <element signature="method#addToTrayController#0;class#TrayController#0" expanded="false" />
+            <element signature="method#createCheckbox#0;class#TrayController#0" expanded="false" />
+            <element signature="method#createItem#0;class#TrayController#0" expanded="false" />
+            <element signature="method#createGroup#0;class#TrayController#0" expanded="false" />
+            <element signature="method#createRadioGroup#0;class#TrayController#0" expanded="false" />
+            <element signature="class#CheckboxMenuItemStateChanged#0;class#TrayController#0" expanded="false" />
+            <element signature="class#MenuItemStateChanged#0;class#TrayController#0" expanded="false" />
+            <element signature="class#RadioGroupStateChanged#0;class#TrayController#0" expanded="false" />
+            <element signature="class#CustomCreator#0;class#TrayController#0" expanded="false" />
           </folding>
         </state>
       </provider>

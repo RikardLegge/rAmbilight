@@ -64,7 +64,7 @@ public class TrayController {
                 try {
                     String moduleName = target.getLabel();
                     System.out.println(moduleName);
-                    if (!target.getState())
+                    if (target.getState())
                         ModuleLoader.deactivateModule(moduleName);
                     else
                         ModuleLoader.activateModule(moduleName);
