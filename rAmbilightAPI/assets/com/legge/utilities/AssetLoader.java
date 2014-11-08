@@ -7,6 +7,12 @@ import javax.swing.ImageIcon;
 
 public class AssetLoader {
 
+    /**
+     * @param path        Path of the image relative the asset loader
+     * @param description Description of the image
+     * @return An image loaded from the specified file
+     * @throws FileNotFoundException
+     */
     public static Image getImage(String path, String description) throws FileNotFoundException {
         Image image = (new ImageIcon(AssetLoader.class.getResource(path), description)).getImage();
         if (image == null)

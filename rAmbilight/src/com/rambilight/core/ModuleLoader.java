@@ -38,7 +38,12 @@ public class ModuleLoader {
             System.err.println("Unable to load module '" + name + "' since it isn't a subclass of " + Module.class.getSimpleName());
     }
 
-    public static Class<?>[] loadExternalModules(Class<?> classLoaderSoruce) throws Exception {
+    /**
+     * @param classLoaderSorurce The source which must be part of the same context as the Modules class
+     * @return Array of the found classes
+     * @throws Exception
+     */
+    public static Class<?>[] loadExternalModules(Class<?> classLoaderSorurce) throws Exception {
 
         String pluginPath = Global.applicationSupportPath + "/plugins";
         if (!new File(pluginPath).exists())
@@ -49,31 +54,28 @@ public class ModuleLoader {
             for (String name : new File(pluginPath).list())
                 // Filter away any unwanted files
                 if (name.endsWith(".jar") || name.endsWith(".class"))
-                    urls.add((new File(pluginPath + "/" + name)).toURL());
+                    //urls.add((new File(pluginPath + "/" + name)).toURL());
+                    urls.add(new URL("file:" + pluginPath + "/" + name));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        URLClassLoader loader = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]), classLoaderSoruce.getClassLoader());
+        URLClassLoader loader = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]), classLoaderSorurce.getClassLoader());
         ArrayList<Class<? extends Module>> classes = new ArrayList<>();
 
         if (urls.size() == 0)
             MessageBox.Error("No plugins found in the plugin folder '" + pluginPath + "'");
         for (URL url : urls) {
-            // If an error occurred, give feedback based on where the exception was thrown
-            String postError = "";
-
             // Parse the path into a name. Remove everything before the last "/"(Path) and after the last "."(Extension)
             String name = url.toString().substring(url.toString().lastIndexOf("plugins/") + 8, url.toString().lastIndexOf("."));
             try {
                 Class<?> unknownClass = loader.loadClass(packageName + "." + name + "." + name);
-                postError = "Loading as asset instead.";
 
                 // Make sure it's a subclass of "Module" and if all goes well, add it to the list.
                 classes.add(unknownClass.asSubclass(Module.class));
                 System.out.println("Successfully loaded module '" + name + "'.");
             } catch (Exception e) {
-                System.err.println("Unable to load plugin '" + name + "'. " + postError);
+                System.err.println("Failed to load '" + name + "' as a Module.");
             }
         }
         return classes.toArray(new Class<?>[classes.size()]);
@@ -140,7 +142,9 @@ public class ModuleLoader {
             for (String moduleName : activeModules)
                 loadedModules.get(moduleName).step();
         } catch (Exception e) {
-            e.printStackTrace();
+            // An exception is triggered since the TrayController thread needs to modify the active Modules list.
+            // This is by design, but might be changed in a later version
+            //e.printStackTrace();
         }
     }
 

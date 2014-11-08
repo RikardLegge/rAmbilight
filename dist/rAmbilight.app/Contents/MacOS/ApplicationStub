@@ -27,4 +27,4 @@ fi
 exec "$JAVACMD" -classpath "$progdir/../Resources/Java/*" \
        -Dapple.laf.useScreenMenuBar=true \
        -Dapple.awt.UIElement=true \
-       com.rambilight.core.AmbilightDriver
+       com.rambilight.core.Main
