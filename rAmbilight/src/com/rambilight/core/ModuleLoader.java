@@ -91,11 +91,12 @@ public class ModuleLoader {
         }
         if (!loadedModules.containsKey(name)) {
             Module newModule = (Module) (availableModules.get(name)).newInstance();
+            loadedModules.put(name, newModule);
+
             newModule.lightHandler = new LightHandler(name);
             newModule.preferences = new Preferences(name);
             newModule.loadPreferences();
             newModule.loaded();
-            loadedModules.put(name, newModule);
         }
 
         activeModules.add(name);
