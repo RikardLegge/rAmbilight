@@ -1,5 +1,8 @@
 package com.rambilight.core.serial;
 
+/*
+ * The class which wraps each Light into a manageable packet
+ */
 public class Light {
 
     public int     id;

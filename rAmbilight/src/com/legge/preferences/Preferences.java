@@ -1,5 +1,7 @@
 package com.legge.preferences;
 
+import com.rambilight.core.Global;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,60 +16,27 @@ public class Preferences {
     // The module which this preference handler communicates with
     String module;
 
-    /**
-     * Create a new instance of the class that is associated with a specific part of the application
-     *
-     * @param moduleName The name of the module. Must be unique.
-     */
     public Preferences(String moduleName) {
         module = moduleName;
         if (!PreferencesCore.rawPrefs.containsKey(module))
             PreferencesCore.rawPrefs.put(module, new Hashtable<>());
     }
 
-    /**
-     * Loads a String from cache
-     *
-     * @param name     Name of the variable to load
-     * @param fallback If the variable isn't found, use the fallback
-     * @return The value in cache
-     */
+
     public String load(String name, String fallback) {
         return PreferencesCore.load(module, name, fallback);
     }
 
-    /**
-     * Loads a int from cache
-     *
-     * @param name     Name of the variable to load
-     * @param fallback If the variable isn't found, use the fallback
-     * @return The value in cache
-     */
     public int load(String name, int fallback) {
         String loaded = PreferencesCore.load(module, name, "null");
         return !loaded.equals("null") ? Integer.valueOf(loaded) : fallback;
     }
 
-    /**
-     * Loads a boolean from cache
-     *
-     * @param name     Name of the variable to load
-     * @param fallback If the variable isn't found, use the fallback
-     * @return The value in cache
-     */
     public boolean load(String name, boolean fallback) {
         String loaded = PreferencesCore.load(module, name, "null");
         return !loaded.equals("null") ? Boolean.valueOf(loaded) : fallback;
     }
 
-    /**
-     * Loads an int[] from cache
-     *
-     * @param name     Name of the variable to load
-     * @param fallback If the variable isn't found, use the fallback
-     * @param length   Length of the returned array. Use -1 to use the contents length instead of one specified
-     * @return The value in cache
-     */
     public int[] load(String name, int[] fallback, int length) {
         String[] loaded = PreferencesCore.load(module, name, "null").split(",");
 
@@ -91,14 +60,6 @@ public class Preferences {
         return arr;
     }
 
-    /**
-     * Loads a String[] from cache
-     *
-     * @param name     Name of the variable to load
-     * @param fallback If the variable isn't found, use the fallback
-     * @param length   Length of the returned array. Use -1 to use the contents length instead of one specified
-     * @return The value in cache
-     */
     public String[] load(String name, String[] fallback, int length) {
         String[] loaded = PreferencesCore.load(module, name, "null").split(",");
 
@@ -115,42 +76,19 @@ public class Preferences {
         return arr;
     }
 
-    /**
-     * Writes a string to cache
-     *
-     * @param name  Key
-     * @param value Value
-     */
+
     public void save(String name, String value) {
         PreferencesCore.save(module, name, value);
     }
 
-    /**
-     * Writes an int to cache
-     *
-     * @param name  Key
-     * @param value Value
-     */
     public void save(String name, int value) {
         PreferencesCore.save(module, name, String.valueOf(value));
     }
 
-    /**
-     * Writes a boolean to cache
-     *
-     * @param name  Key
-     * @param value Value
-     */
     public void save(String name, boolean value) {
         PreferencesCore.save(module, name, String.valueOf(value));
     }
 
-    /**
-     * Writes a int[] to cache
-     *
-     * @param name   Key
-     * @param values Values
-     */
     public void save(String name, int[] values) {
         String serialized = "";
         if (values.length > 0)
@@ -162,12 +100,6 @@ public class Preferences {
         PreferencesCore.save(module, name, serialized.substring(0, serialized.length() - 1));
     }
 
-    /**
-     * Writes a String[] to cache
-     *
-     * @param name   Key
-     * @param values Values
-     */
     public void save(String name, String[] values) {
         String serialized = "";
         if (values.length > 0)
@@ -179,22 +111,18 @@ public class Preferences {
         PreferencesCore.save(module, name, serialized.substring(0, serialized.length() - 1));
     }
 
-    /**
-     * Flush the cache and write it to a file
-     */
+
     public static void flush() {
         PreferencesCore.flushFile();
     }
 
-    /**
-     * Reads a file into cache
-     */
     public static void read() {
         PreferencesCore.readFile();
     }
 
-    public static void setPathBySystem(String applicationName, String fileName) {
-        PreferencesCore.setPathToSystemRelative(applicationName, fileName);
+
+    public static void setPathToDefault() {
+        PreferencesCore.setPathToDefault();
     }
 
     public static void setPathAbsolute(String filePath) {
@@ -203,11 +131,6 @@ public class Preferences {
 
     public static String getPathToFile() {
         return PreferencesCore.PATH;
-    }
-
-    public static String getPathToFolder() {
-        String path = getPathToFile();
-        return path.substring(0, path.lastIndexOf("/"));
     }
 }
 
@@ -219,18 +142,8 @@ class PreferencesCore {
     protected static String PATH;
     protected static Hashtable<String, Hashtable<String, String>> rawPrefs = new Hashtable<>();
 
-    protected static void setPathToSystemRelative(String applicationName, String fileName) {
-        String platformPath;
-
-        String platform = System.getProperty("os.name").toLowerCase();
-        if (platform.contains("win"))
-            platformPath = "/AppData/Local/";
-        else if (platform.contains("mac"))
-            platformPath = "/Library/Application Support/";
-        else
-            platformPath = "/.";
-
-        PATH = System.getProperty("user.home") + platformPath + applicationName + "/" + fileName;
+    protected static void setPathToDefault() {
+        PATH = Global.applicationSupportPath + "/" + Global.APPLICATIONNAME + ".conf";
     }
 
     protected static void setPathAbsolute(String filePath) {
@@ -286,7 +199,6 @@ class PreferencesCore {
     /**
      * Write the cache to the config file
      */
-
     private static String[] getSortedTable(Hashtable<String, ?> table) {
         String[] fields = new String[table.size()];
         int i = 0;

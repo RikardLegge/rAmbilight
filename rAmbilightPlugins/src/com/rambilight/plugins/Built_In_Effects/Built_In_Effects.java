@@ -70,30 +70,18 @@ public class Built_In_Effects extends Module {
 
     public CustomCreator getTrayCreator() {
         return () -> {
-            MenuItem[] items = new MenuItem[1];
+
             CheckboxMenuItem[] colorItems = new CheckboxMenuItem[effects.length];
-            for (int i = 0; i < effects.length; i++) {
-                final int id = i;
-                colorItems[i] = TrayController.createCheckbox(effects[i] + "", id == currentEffect, (e) -> {
-                    CheckboxMenuItem item = (CheckboxMenuItem) e.getSource();
 
-                    for (CheckboxMenuItem mItem : colorItems)
-                        if (!mItem.getLabel().equalsIgnoreCase(item.getLabel()))
-                            mItem.setState(false);
-
-                    index = 0;
-
-                    for (int j = 0; j < Global.numLights; j++)
-                        lightHandler.addToUpdateBuffer(j, 0, 0, 0);
-
-                    currentEffect = id;
-                    ((Menu) item.getParent()).setLabel("Effect (" + effects[currentEffect] + ")");
-                });
-            }
-            items[0] = TrayController.createRadioGroup("Effect (" + effects[currentEffect] + ")", colorItems, (e) -> {
+            for (int i = 0; i < effects.length; i++)
+                colorItems[i] = TrayController.createCheckbox(effects[i] + "", i == currentEffect, null);
+            Menu effsel = TrayController.createRadioGroup("Effect (" + effects[currentEffect] + ")", colorItems, (target, i, parent) -> {
+                for (int j = 0; j < Global.numLights; j++)
+                    lightHandler.addToUpdateBuffer(j, 0, 0, 0);
+                parent.setLabel("Effect (" + effects[currentEffect = i] + ")");
             });
 
-            return items;
+            return new MenuItem[]{effsel};
         };
     }
 

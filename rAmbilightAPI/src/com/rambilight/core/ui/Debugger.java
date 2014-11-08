@@ -1,30 +1,27 @@
-package com.rambilight.dev;
+package com.rambilight.core.ui;
 
-import javax.swing.UIManager;
-
-import com.rambilight.core.Global;
 import com.legge.preferences.Preferences;
+import com.rambilight.core.Global;
 import com.rambilight.core.serial.LightHandler;
 import com.rambilight.plugins.Module;
 
+import javax.swing.*;
+
 public class Debugger {
 
-    private Visulizer visulizer;
-    private TrayController   trayController;
-
     public Debugger(Module module) throws Exception {
-        
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             System.err.println("Unable to set a custom look and feel.");
         }
-        
-        visulizer = new Visulizer();
-        trayController = new TrayController();
+
+        Visualizer visulizer = new Visualizer();
+        TrayController trayController = new TrayController();
 
         module.lightHandler = new LightHandler(visulizer);
-        module.preferences = new Preferences("Built In Effets");
+        module.preferences = new Preferences(module.getClass().getSimpleName());
         module.loaded();
         trayController.addToTrayController(module.getTrayCreator());
 
@@ -37,5 +34,12 @@ public class Debugger {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            else
+                try {
+                    Thread.sleep(500);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
     }
 }

@@ -6,23 +6,63 @@ import com.rambilight.core.ui.TrayController.CustomCreator;
 
 public abstract class Module {
 
+    /*
+     * A pointer to the light handler which is connected to this module
+     */
     public LightHandler lightHandler;
-    public Preferences  preferences;
 
-    public void loaded() {}
+    /*
+     * A pointer to the Preference handler which is connected to this module
+     */
+    public Preferences preferences;
 
-    public void resume() {}
+    /*
+     * Callback on initial load
+     */
+    public void loaded() {
+    }
 
-    public void step() {}
+    /*
+     * Callback when resumed from an idle state
+     */
+    public void resume() {
+    }
 
-    public void suspend() {}
+    /*
+     * Stepping function with a interval of 10ms
+     */
+    public void step() {
+    }
 
-    public void dispose() {}
+    /*
+     * Callback when suspended into an idle state
+     */
+    public void suspend() {
+    }
 
-    public void savePreferences() {}
+    /*
+     * Callback when disposed
+     */
+    public void dispose() {
+    }
 
-    public void loadPreferences() {}
-    
-    public abstract CustomCreator getTrayCreator();
-    
+    /*
+     * Callback when the preferences should be saved
+     */
+    public void savePreferences() {
+    }
+
+    /*
+     * Callback when the preferences should be loaded
+     */
+    public void loadPreferences() {
+    }
+
+    /*
+     * Function to create a custom part of the tray item list
+     */
+    public CustomCreator getTrayCreator() {
+        return null;
+    }
+
 }

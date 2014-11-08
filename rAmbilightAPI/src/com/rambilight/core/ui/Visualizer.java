@@ -1,4 +1,4 @@
-package com.rambilight.dev;
+package com.rambilight.core.ui;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -17,26 +17,31 @@ import com.rambilight.core.serial.Light;
  * Original source
  * http://stackoverflow.com/questions/1190168/pass-mouse-events-to-applications-behind-from-a-java-ui
  * 
- * Only edited to suite my needs. Full credit to the original author
+ * Edited to suite my needs. Credit to the original author
  */
 
 /**
  * Frame controller for selecting the area of the ambilight screen capture
  */
 @SuppressWarnings("serial")
-public class Visulizer extends JFrame {
+public class Visualizer extends JFrame {
 
     private Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
     private Light[] colorBuffer;
 
-    protected Visulizer() {
+    /**
+     * The visualizer is not available outside of the API environment.
+     * Therefor, don't call it from a module!
+     */
+    @Deprecated
+    public Visualizer() {
         colorBuffer = new Light[Global.numLights];
         for (int i = 0; i < Global.numLights; i++)
             colorBuffer[i] = new Light(i, 0, 0, 0);
 
         setTitle("rAmbiligt Visualizer");
         try {
-            setIconImage(new ImageIcon(Visulizer.class.getResource("Tray_Active.png")).getImage());
+            setIconImage(new ImageIcon(Visualizer.class.getResource("Tray_Active.png")).getImage());
         } catch (Exception e) {
         }
 
@@ -63,6 +68,10 @@ public class Visulizer extends JFrame {
         pack();
         setVisible(true);
         com.sun.awt.AWTUtilities.setWindowOpaque(this, false);
+    }
+
+    protected void update() {
+        repaint();
     }
 
     private void drawOutline(Graphics2D g) {
@@ -109,15 +118,15 @@ public class Visulizer extends JFrame {
         }
     }
 
+    public Light getLight(int light) {
+        return colorBuffer[light];
+    }
+
     public Light[] getColorBuffer() {
         return colorBuffer;
     }
 
-    protected void update() {
-        repaint();
-    }
-
-    private Color getColor(int l) {
+    public Color getColor(int l) {
         if (colorBuffer[l] == null)
             return Color.black;
         else

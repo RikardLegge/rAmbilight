@@ -8,11 +8,13 @@ import java.util.Queue;
 
 public class LightHandlerCore {
 
-    private int numLights;              // Total numbe of lights
-    private static int threshhold = 3;
-    private Light[]                    colorBuffer;            // List of the colors of the respective lights
-    private Queue<Integer>             lightsToUpdate;         // List of lights that require updating
+    private static final int threshold = 3;                     // Threshold for when a light actually has changed color
+    private int numLights;                                      // Total number of lights
+
+    private Light[]                    colorBuffer;             // List of the colors of the respective lights
+    private Queue<Integer>             lightsToUpdate;          // List of lights that require updating
     private Hashtable<String, Light[]> identifiableColorBuffer;
+
 
     public LightHandlerCore(int numLights) {
         this.numLights = numLights;
@@ -39,16 +41,43 @@ public class LightHandlerCore {
         }
     }
 
-    public void sanityCheck() {
-        if (lightsToUpdate.size() > 0 && lightsToUpdate.peek() == null) {
-            lightsToUpdate.clear();
-            for (Light light : colorBuffer)
-                light.requiresUpdate = false;
+
+    public boolean addToUpdateBuffer(String name, int id, int r, int g, int b) {
+        Light light = identifiableColorBuffer.get(name)[id];
+
+        r = Math.max(Math.min(r, 252), 0);
+        g = Math.max(Math.min(g, 252), 0);
+        b = Math.max(Math.min(b, 252), 0);
+
+        if (diff(light.r, r) > threshold || diff(light.g, g) > threshold || diff(light.b, b) > threshold) {
+            light.r = r;
+            light.g = g;
+            light.b = b;
+            if (!colorBuffer[id].requiresUpdate) {
+                lightsToUpdate.add(id);
+                colorBuffer[id].requiresUpdate = true;
+            }
+            return true;
         }
+        return false;
     }
 
     public boolean requiresUpdate() {
         return lightsToUpdate.peek() != null;
+    }
+
+    public int getNumLightsToUpdate() {
+        return lightsToUpdate.size();
+    }
+
+
+    public void remove() {
+        if (requiresUpdate()) {
+            Integer lightid = lightsToUpdate.remove();
+            if (lightid == null)
+                return;
+            colorBuffer[lightid].requiresUpdate = false;
+        }
     }
 
     public Light next() {
@@ -61,6 +90,23 @@ public class LightHandlerCore {
             return nextLight;
         }
         return null;
+    }
+
+    public Light peek() {
+        if (requiresUpdate()) {
+            Integer lightid = lightsToUpdate.peek();
+            if (lightid == null)
+                return peek();
+            Light nextLight = composeColor(lightid);
+            nextLight.requiresUpdate = false;
+            return nextLight;
+        }
+        return null;
+    }
+
+
+    public Light[] getColorBuffer() {
+        return colorBuffer;
     }
 
     private Light composeColor(int i) {
@@ -77,29 +123,16 @@ public class LightHandlerCore {
         return colorBuffer[i];
     }
 
-    public void addToUpdateBuffer(String name, int id, int r, int g, int b) {
-        Light light = identifiableColorBuffer.get(name)[id];
-
-        r = Math.max(Math.min(r, 252), 0);
-        g = Math.max(Math.min(g, 252), 0);
-        b = Math.max(Math.min(b, 252), 0);
-
-        if (diff(light.r, r) > threshhold || diff(light.g, g) > threshhold || diff(light.b, b) > threshhold) {
-            light.r = r;
-            light.g = g;
-            light.b = b;
-            if (!colorBuffer[id].requiresUpdate) {
-                lightsToUpdate.add(id);
-                colorBuffer[id].requiresUpdate = true;
-            }
-        }
-    }
-
     private int diff(int a, int b) {
         return Math.abs(a - b);
     }
 
-    public Light[] getColorBuffer() {
-        return colorBuffer;
+    public void sanityCheck() {
+        if (lightsToUpdate.size() > 0 && lightsToUpdate.peek() == null) {
+            lightsToUpdate.clear();
+            for (Light light : colorBuffer)
+                light.requiresUpdate = false;
+        }
     }
+
 }

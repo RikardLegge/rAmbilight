@@ -18,10 +18,12 @@ import java.util.List;
 public class ModuleLoader {
 
     // Fields for saving the modules as well as attributes that are related to them
-    private static Hashtable<String, Class<?>> availableModules  = new Hashtable<>();
-    private static Hashtable<String, Module>   loadedModules     = new Hashtable<>();
-    private static List<String>                activeModules     = new ArrayList<>();
-    private static List<OnChangeListener>      onChangeListeners = new ArrayList<>();
+    private static final String                      packageName       = "com.rambilight.plugins";
+    private static       Hashtable<String, Class<?>> availableModules  = new Hashtable<>();
+    private static       Hashtable<String, Module>   loadedModules     = new Hashtable<>();
+    private static       List<String>                activeModules     = new ArrayList<>();
+    private static       List<OnChangeListener>      onChangeListeners = new ArrayList<>();
+
 
     public static void loadModules(Class<?> modules[]) {
         for (Class<?> module : modules)
@@ -35,6 +37,48 @@ public class ModuleLoader {
         else
             System.err.println("Unable to load module '" + name + "' since it isn't a subclass of " + Module.class.getSimpleName());
     }
+
+    public static Class<?>[] loadExternalModules(Class<?> classLoaderSoruce) throws Exception {
+
+        String pluginPath = Global.applicationSupportPath + "/plugins";
+        if (!new File(pluginPath).exists())
+            new File(pluginPath).mkdir();
+
+        ArrayList<URL> urls = new ArrayList<>();
+        try {
+            for (String name : new File(pluginPath).list())
+                // Filter away any unwanted files
+                if (name.endsWith(".jar") || name.endsWith(".class"))
+                    urls.add((new File(pluginPath + "/" + name)).toURL());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        URLClassLoader loader = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]), classLoaderSoruce.getClassLoader());
+        ArrayList<Class<? extends Module>> classes = new ArrayList<>();
+
+        if (urls.size() == 0)
+            MessageBox.Error("No plugins found in the plugin folder '" + pluginPath + "'");
+        for (URL url : urls) {
+            // If an error occurred, give feedback based on where the exception was thrown
+            String postError = "";
+
+            // Parse the path into a name. Remove everything before the last "/"(Path) and after the last "."(Extension)
+            String name = url.toString().substring(url.toString().lastIndexOf("plugins/") + 8, url.toString().lastIndexOf("."));
+            try {
+                Class<?> unknownClass = loader.loadClass(packageName + "." + name + "." + name);
+                postError = "Loading as asset instead.";
+
+                // Make sure it's a subclass of "Module" and if all goes well, add it to the list.
+                classes.add(unknownClass.asSubclass(Module.class));
+                System.out.println("Successfully loaded module '" + name + "'.");
+            } catch (Exception e) {
+                System.err.println("Unable to load plugin '" + name + "'. " + postError);
+            }
+        }
+        return classes.toArray(new Class<?>[classes.size()]);
+    }
+
 
     public static void activateModule(String name) throws Exception {
         if (name == null)
@@ -57,12 +101,6 @@ public class ModuleLoader {
             listener.onChange(name);
     }
 
-    public static Module getModuleByName(String name) {
-        if (activeModules.contains(name))
-            return loadedModules.get(name);
-        return null;
-    }
-
     public static void deactivateModule(String name) throws Exception {
         if (name == null)
             return;
@@ -72,6 +110,22 @@ public class ModuleLoader {
             listener.onChange(name);
     }
 
+
+    public static Module getModuleByName(String name) {
+        if (activeModules.contains(name))
+            return loadedModules.get(name);
+        return null;
+    }
+
+    public static List<String> getActiveModules() {
+        return activeModules;
+    }
+
+    public static Hashtable<String, Class<?>> getAvailableModules() {
+        return availableModules;
+    }
+
+
     public static void addOnChangeListener(OnChangeListener onChangeListener) {
         onChangeListeners.add(onChangeListener);
     }
@@ -79,6 +133,7 @@ public class ModuleLoader {
     public static void removeOnChangeListener(OnChangeListener onChangeListener) {
         onChangeListeners.remove(onChangeListener);
     }
+
 
     public static void step() {
         try {
@@ -94,14 +149,6 @@ public class ModuleLoader {
             loadedModules.get(moduleName).suspend();
     }
 
-    public static List<String> getActiveModules() {
-        return activeModules;
-    }
-
-    public static Hashtable<String, Class<?>> getAvailableModules() {
-        return availableModules;
-    }
-
     public static void dispose() {
         loadedModules.forEach((key, module) -> {
             module.savePreferences();
@@ -112,72 +159,6 @@ public class ModuleLoader {
     public static interface OnChangeListener {
 
         public void onChange(String name);
-    }
-
-    // TODO Not currently working...
-    public static Class<?>[] loadExternalModules(Class<?> classLoaderSoruce) throws Exception {
-
-        String pluginDir = Global.pluginPath;  // The root directory of the plugins
-        if (pluginDir.length() == 0) {
-            String platform = System.getProperty("os.name").toLowerCase();
-            if (platform.contains("win"))
-                pluginDir = "/AppData/Local/rAmbilight";
-            else if (platform.contains("mac"))
-                pluginDir = "/Library/Application Support/rAmbilight";
-            else
-                pluginDir = "/.";
-
-            pluginDir = System.getProperty("user.home") + pluginDir;
-        }
-
-        if (!new File(pluginDir).exists())
-            new File(pluginDir).mkdir();
-        pluginDir += "/plugins";
-        if (!new File(pluginDir).exists())
-            new File(pluginDir).mkdir();
-
-        ArrayList<String> TMP_paths = new ArrayList<>();  // A Temporary variable to store the path before creating a URL array.
-        try {   // Caches valid paths
-            for (String name : new File(pluginDir).list())
-                if (name.endsWith(".jar") || name.endsWith(".class"))   // Filter away any unwanted classes
-                    TMP_paths.add(pluginDir + "/" + name);   // Add the valid paths to the temporary path array
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        URL[] urls = new URL[TMP_paths.size()]; // Required by the classLoader to load the selected paths
-        for (int i = 0; i < TMP_paths.size(); i++)
-            urls[i] = (new File(TMP_paths.get(i))).toURL();
-        //TMP_paths.clear();  // Just to clarify that this is temporary
-        URLClassLoader loader = URLClassLoader.newInstance(urls, classLoaderSoruce.getClassLoader());//, classLoaderSoruce.getClassLoader());  // New instance of the class loader that allows the
-        ArrayList<Class<? extends Module>> classes = new ArrayList<>(); // The successfully loaded classes
-
-        if (urls.length == 0)
-            MessageBox.Error("No plugins found in the plugin folder '" + pluginDir + "'");
-        for (URL url : urls) {
-            // Parse the path into a name. Remove everything before the last "/"(Path) and after the last "."(Extension)
-            String name = url.toString().substring(url.toString().lastIndexOf("plugins/") + 8, url.toString().lastIndexOf("."));
-            String postError = "";
-
-            try {
-                //Class<?> RawClass = jarFile.getClass();//loader.loadClass(jarFile.getName().substring(0,jarFile.getName().lastIndexOf(".")));
-                // Class<?> RawClass = Class.forName("com.rambilight.plugins." + name + "." + name, false, loader);
-                Class<?> RawClass = loader.loadClass("com.rambilight.plugins." + name + "." + name);
-                //Class<?> RawClass = loader.loadClass("com.rambilight.plugins." + name + "." + name);
-                postError = "Loading as asset instead";
-                Class<? extends Module> modulePlugin = RawClass.asSubclass(Module.class);                          // Make sure it's a subclass of "Module"
-                classes.add(modulePlugin);                                                                         // If all goes well, add it to the list.
-                System.err.println("Successfully loaded module '" + name + "'.");
-            } catch (Exception e) {
-                System.err.println("Unable to load plugin '" + name + "'. " + postError);
-                e.printStackTrace();
-            }
-        }
-        Class<?>[] toRet = new Class<?>[classes.size()];
-        for (int i = 0; i < classes.size(); i++)
-            toRet[i] = classes.get(i);
-
-        return toRet;
     }
 
 }

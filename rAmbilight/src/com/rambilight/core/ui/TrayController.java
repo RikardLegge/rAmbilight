@@ -1,13 +1,11 @@
 package com.rambilight.core.ui;
 
 import com.legge.utilities.AssetLoader;
-import com.rambilight.core.AmbilightDriver;
+import com.rambilight.core.Main;
 import com.rambilight.core.ModuleLoader;
 import com.rambilight.core.Global;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.Enumeration;
@@ -55,12 +53,18 @@ public class TrayController {
 
             // Gets a list of all available modules from the ModuleLoader
             Enumeration<String> controllerKeys = ModuleLoader.getAvailableModules().keys();
-            ItemListener inputsHandler = (e) -> {
-                CheckboxMenuItem item = (CheckboxMenuItem) e.getSource();
+            CheckboxMenuItem[] inputslist = new CheckboxMenuItem[ModuleLoader.getAvailableModules().size()];
+            int i = 0;
+            while (controllerKeys.hasMoreElements())
+                inputslist[i++] = createCheckbox(controllerKeys.nextElement(), false, null);
+
+            // Create static controls for the tray
+            runToggle = createCheckbox(Global.isActive ? "Active" : "Active", Global.isActive, (target, selected) -> setState(selected));
+            inputs = createGroup("Modules", inputslist, (target, index, parent) -> {
                 try {
-                    System.out.println(item.getLabel());
-                    String moduleName = item.getLabel();
-                    if (!item.getState())
+                    String moduleName = target.getLabel();
+                    System.out.println(moduleName);
+                    if (!target.getState())
                         ModuleLoader.deactivateModule(moduleName);
                     else
                         ModuleLoader.activateModule(moduleName);
@@ -69,27 +73,15 @@ public class TrayController {
                     e1.printStackTrace();
                     System.err.println("Unable to create the selected module: " + e1.getMessage());
                 }
-            };
-            CheckboxMenuItem[] inputslist = new CheckboxMenuItem[ModuleLoader.getAvailableModules().size()];
-            int i = 0;
-            while (controllerKeys.hasMoreElements())
-                inputslist[i++] = createCheckbox(controllerKeys.nextElement(), false, inputsHandler);
-
-            // Create static controls for the tray
-            runToggle = createCheckbox(Global.isActive ? "Active" : "Active", Global.isActive,
-                    (e) -> setState(e.getStateChange() == ItemEvent.SELECTED));
-
-            inputs = createRadioGroup("Modules", inputslist, (e) -> {
             });
-            exit = createItem("Quit rAmbilight", (e) -> AmbilightDriver.requestExit());
-            openConfig = createItem("Reveal configuration", (e) -> {
-                if (Desktop.isDesktopSupported()) {
+            exit = createItem("Quit rAmbilight", (target) -> Main.requestExit());
+            openConfig = createItem("Reveal configuration", (target) -> {
+                if (Desktop.isDesktopSupported())
                     try {
-                        Desktop.getDesktop().open(new File(Global.preferencesPath));
+                        Desktop.getDesktop().open(new File(Global.applicationSupportPath));
                     } catch (Exception ex) {
-                        MessageBox.Error("Unable to reveal configuration located at: \n" + Global.preferencesPath);
+                        MessageBox.Error("Unable to reveal configuration located at: \n" + Global.applicationSupportPath);
                     }
-                }
             });
 
             // Add a listener for when the module changes
@@ -108,12 +100,13 @@ public class TrayController {
         }
     }
 
-    public void addToTrayController(String name, CustomCreator customCreator) {
-        MenuItem[] items;
-        if (!itemGroups.containsKey(name)) {
-            items = customCreator.create();
-            itemGroups.put(name, items);
-        }
+
+    public void setState(boolean active) {
+        Global.isActive = active;
+        runToggle.setState(Global.isActive);
+        runToggle.setLabel(Global.isActive ? "Active" : "Active");
+        trayIcon.setToolTip(Global.isActive ? "rAmbilight" : null);
+        trayIcon.setImage(Global.isActive ? Image_Active : Image_Idle);
     }
 
     private void setTrayController() {
@@ -162,40 +155,13 @@ public class TrayController {
             inputs.setLabel("Modules");
     }
 
-    public void purge() {
-        popup.removeAll();
-    }
 
-
-    public void setState(boolean active) {
-        Global.isActive = active;
-        runToggle.setState(Global.isActive);
-        runToggle.setLabel(Global.isActive ? "Active" : "Active");
-        trayIcon.setToolTip(Global.isActive ? "rAmbilight" : null);
-        trayIcon.setImage(Global.isActive ? Image_Active : Image_Idle);
-    }
-
-    public static CheckboxMenuItem createCheckbox(String name, boolean state, ItemListener handle) {
-        CheckboxMenuItem item = new CheckboxMenuItem(name);
-        item.setState(state);
-        item.addItemListener(handle);
-        return item;
-    }
-
-    public static MenuItem createItem(String name, ActionListener handle) {
-        MenuItem item = new MenuItem(name);
-        item.addActionListener(handle);
-        return item;
-    }
-
-    public static Menu createRadioGroup(String name, CheckboxMenuItem[] items, ItemListener handle) {
-        Menu item = new Menu(name);
-
-        for (CheckboxMenuItem subitem : items) {
-            subitem.addItemListener(handle);
-            item.add(subitem);
+    public void addToTrayController(String name, CustomCreator customCreator) {
+        MenuItem[] items;
+        if (!itemGroups.containsKey(name)) {
+            items = customCreator.create();
+            itemGroups.put(name, items);
         }
-        return item;
     }
 
     public void removeItem(MenuComponent item) {
@@ -204,6 +170,95 @@ public class TrayController {
 
     public void remove() {
         tray.remove(trayIcon);
+    }
+
+    public void purge() {
+        popup.removeAll();
+    }
+
+
+    public static CheckboxMenuItem createCheckbox(String name, boolean state, CheckboxMenuItemStateChanged handle) {
+        CheckboxMenuItem item = new CheckboxMenuItem(name);
+        item.setState(state);
+        if (handle != null)
+            item.addItemListener((e) -> {
+                CheckboxMenuItem target = (CheckboxMenuItem) e.getSource();
+                handle.call(target, target.getState());
+            });
+        return item;
+    }
+
+    public static MenuItem createItem(String name, MenuItemStateChanged handle) {
+        MenuItem item = new MenuItem(name);
+        if (handle != null)
+            item.addActionListener((e) -> {
+                handle.call((MenuItem) e.getSource());
+            });
+        return item;
+    }
+
+    public static Menu createGroup(String name, CheckboxMenuItem[] items, RadioGroupStateChanged handle) {
+        Menu item = new Menu(name);
+
+        ItemListener listener = (e) -> {
+            CheckboxMenuItem target = (CheckboxMenuItem) e.getSource();
+            int index = -1;
+            int i = 0;
+            for (CheckboxMenuItem itemi : items) {
+                if (itemi.getLabel().equals(target.getLabel())) {
+                    index = i;
+                    break;
+                }
+                i++;
+            }
+            target.setState(true);
+            if (handle != null)
+                handle.call(target, index, item);
+        };
+
+        for (CheckboxMenuItem subitem : items) {
+            subitem.addItemListener(listener);
+            item.add(subitem);
+        }
+        return item;
+    }
+
+    public static Menu createRadioGroup(String name, CheckboxMenuItem[] items, RadioGroupStateChanged handle) {
+        Menu item = new Menu(name);
+
+        ItemListener listener = (e) -> {
+            CheckboxMenuItem target = (CheckboxMenuItem) e.getSource();
+            int index = -1;
+            int i = 0;
+            for (CheckboxMenuItem itemi : items) {
+                if (itemi.getLabel().equals(target.getLabel()))
+                    index = i;
+                itemi.setState(false);
+                i++;
+            }
+            target.setState(true);
+            if (handle != null)
+                handle.call(target, index, item);
+        };
+
+        for (CheckboxMenuItem subitem : items) {
+            subitem.addItemListener(listener);
+            item.add(subitem);
+        }
+        return item;
+    }
+
+
+    public interface CheckboxMenuItemStateChanged {
+        public void call(CheckboxMenuItem target, boolean selected);
+    }
+
+    public interface MenuItemStateChanged {
+        public void call(MenuItem target);
+    }
+
+    public interface RadioGroupStateChanged {
+        public void call(CheckboxMenuItem target, int index, MenuItem parent);
     }
 
     public interface CustomCreator {
