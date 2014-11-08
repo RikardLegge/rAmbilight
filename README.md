@@ -1,18 +1,26 @@
 ## rAmbilight
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+rAmbilight is a home brew project to allow anyone to get a hold of  an easy to use, efficient, affordable Ambient lighting system. It started out as a project for school, but has since then developed into a framework which allows easy manipulation of addressable light strips, using an Arduino micro controller.
 
-## Code Example
+## Hello World
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+Below is a simple class which which shows just how easy the API is to use. Everything which has to be 
 
-## Motivation
+```
+#!java
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+// Create a class which extends the Module class included in the API
+public class HelloWorld extends Module {
+    // Function which is called when the module is loaded
+    public void loaded() {
+        // Sets light "1" to red.
+        lightHandler.addToUpdateBuffer(1, 255, 0, 0);
+    }
+```
 
 ## Installation
 
-Provide code examples and explanations of how to get the project.
+Installation is as easy as adding the rAmbilightAPI.jar file to the projects dependency paths. 
 
 ## API Reference
 
@@ -24,8 +32,8 @@ Describe and show how to run the tests with code examples.
 
 ## Contributors
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+Rikard Legge  - rikard.legge@gmail.com
 
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
+Copyright Rikard Legge, All rights reserved.
