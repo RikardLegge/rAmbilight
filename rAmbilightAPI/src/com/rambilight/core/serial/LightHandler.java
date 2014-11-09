@@ -17,7 +17,6 @@ public class LightHandler {
     /**
      * WARNING: Not allowed to be called from inside of a class
      */
-    @Deprecated
     public LightHandler(Visualizer visulizer) {
         this.visulizer = visulizer;
     }

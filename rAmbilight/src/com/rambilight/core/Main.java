@@ -5,6 +5,7 @@ import com.legge.preferences.Preferences;
 import com.rambilight.core.serial.ComDriver;
 import com.rambilight.core.ui.MessageBox;
 import com.rambilight.core.ui.TrayController;
+import jssc.SerialNativeInterface;
 
 import javax.swing.*;
 
@@ -23,10 +24,11 @@ public class Main {
         // Arguments: String, invert?, switch every other?
         System.out.println(invert("This is the recursive function that was needed in the program. The sinus of 45 is " + lMath.rsin(lMath.toRad(45)) + " and the tangent of -60 is " + lMath.tan(lMath.toRad(-60)) + ". These values are calculated using power series.", true, true));
 
+        System.setProperty("apple.laf.useScreenMenuBar", "false");
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "rAmbilight");
+        System.setProperty(SerialNativeInterface.PROPERTY_JSSC_NO_TIOCEXCL, SerialNativeInterface.PROPERTY_JSSC_NO_TIOCEXCL);
         // Set the UI to a theme that resembles the platform specific one.
         try {
-            System.setProperty("apple.laf.useScreenMenuBar", "false");
-            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "rAmbilight");
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             System.err.println("Unable to set the look and feel.");
@@ -44,11 +46,11 @@ public class Main {
             ModuleLoader.loadModules(ModuleLoader.loadExternalModules(Main.class));
 
             tray = new TrayController();
+            tray.disableRun("Loading...");
 
             for (String moduleName : Global.currentControllers)
                 ModuleLoader.activateModule(moduleName);
-
-            serialCom.initialize();
+            tray.disableRun("No device connected");
         } catch (Exception e) {
             e.printStackTrace();
             String message = e.getMessage();
@@ -99,26 +101,43 @@ public class Main {
         public void run() {
             while (!Global.requestExit)
                 try {
-                    if (Global.isActive) {
-                        if (suspended)
-                            suspended = false;
-                        ModuleLoader.step();
-                        serialCom.update();
-                        serialCom.getLightHandler().sanityCheck();
-                        try {
-                            Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
-                        } catch (InterruptedException e) {
-                            System.err.println("An error occurred in the main thread.");
-                            e.printStackTrace();
+                    if (Global.isSerialConnectionActive)
+                        if (Global.isActive) {
+                            if (suspended)
+                                suspended = false;
+                            ModuleLoader.step();
+                            if (!serialCom.update()) {
+                                tray.disableRun("No device connected");
+                                continue;
+                            }
+
+                            serialCom.getLightHandler().sanityCheck();
+                            try {
+                                Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
+                            } catch (InterruptedException e) {
+                                System.err.println("An error occurred in the main thread.");
+                                e.printStackTrace();
+                            }
                         }
-                    }
+                        else {
+                            if (!suspended) {
+                                suspended = true;
+                                ModuleLoader.suspend();
+                            }
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                System.out.println("Thread sleep was interrupted.");
+                                e.printStackTrace();
+                            }
+                        }
                     else {
-                        if (!suspended) {
-                            suspended = true;
-                            ModuleLoader.suspend();
+                        if (serialCom.serialPortsAvailable()) {
+                            if (serialCom.initialize())
+                                tray.enableRun();
                         }
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             System.out.println("Thread sleep was interrupted.");
                             e.printStackTrace();

@@ -51,6 +51,9 @@ public class TrayController {
             trayIcon.addActionListener((e) -> setState(!Global.isActive));
             tray.add(trayIcon);
 
+            // Create static controls for the tray
+            runToggle = createCheckbox(Global.isActive ? "Active" : "Active", Global.isActive, (target, selected) -> setState(selected));
+
             // Gets a list of all available modules from the ModuleLoader
             Enumeration<String> controllerKeys = ModuleLoader.getAvailableModules().keys();
             CheckboxMenuItem[] inputslist = new CheckboxMenuItem[ModuleLoader.getAvailableModules().size()];
@@ -58,13 +61,10 @@ public class TrayController {
             while (controllerKeys.hasMoreElements())
                 inputslist[i++] = createCheckbox(controllerKeys.nextElement(), false, null);
 
-            // Create static controls for the tray
-            runToggle = createCheckbox(Global.isActive ? "Active" : "Active", Global.isActive, (target, selected) -> setState(selected));
             inputs = createGroup("Modules", inputslist, (target, index, parent) -> {
                 try {
                     String moduleName = target.getLabel();
-                    System.out.println(moduleName);
-                    if (target.getState())
+                    if (!target.getState())
                         ModuleLoader.deactivateModule(moduleName);
                     else
                         ModuleLoader.activateModule(moduleName);
@@ -102,11 +102,26 @@ public class TrayController {
 
 
     public void setState(boolean active) {
+        if (!runToggle.isEnabled())
+            return;
         Global.isActive = active;
         runToggle.setState(Global.isActive);
-        runToggle.setLabel(Global.isActive ? "Active" : "Active");
+        runToggle.setLabel(Global.isActive ? "Deactivate" : "Activate");
         trayIcon.setToolTip(Global.isActive ? "rAmbilight" : null);
         trayIcon.setImage(Global.isActive ? Image_Active : Image_Idle);
+    }
+
+    public void disableRun(String label) {
+        runToggle.setState(Global.isActive);
+        runToggle.setLabel("Inactive (" + label + ")");
+        trayIcon.setToolTip(label);
+        trayIcon.setImage(Image_Idle);
+        runToggle.setEnabled(false);
+    }
+
+    public void enableRun() {
+        runToggle.setEnabled(true);
+        setState(Global.isActive);
     }
 
     private void setTrayController() {
@@ -211,7 +226,6 @@ public class TrayController {
                 }
                 i++;
             }
-            target.setState(true);
             if (handle != null)
                 handle.call(target, index, item);
         };

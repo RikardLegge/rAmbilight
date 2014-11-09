@@ -184,7 +184,6 @@ public class TrayController {
                 }
                 i++;
             }
-            target.setState(true);
             if (handle != null)
                 handle.call(target, index, item);
         };

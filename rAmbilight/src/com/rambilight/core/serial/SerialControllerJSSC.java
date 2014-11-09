@@ -2,6 +2,9 @@ package com.rambilight.core.serial;
 
 import jssc.*;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 /* A modified version of a class i found online that handles the serial communication
  * 
  * I don't remember the source, but that person deserves credit for their effort!
@@ -12,20 +15,46 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
 
     SerialPort serialPort;
 
-    public boolean initialize(String serialName) {
-        serialPort = new SerialPort(serialName);
+    int initializeReturn = 0;
+
+    public synchronized int initialize(String serialName) {
+        initializeReturn = 2;
+        CountDownLatch latch = new CountDownLatch(1);
+        Thread thread = new Thread(() -> {
+            serialPort = new SerialPort(serialName);
+            try {
+                serialPort.openPort(); // Open port
+                serialPort.setParams(dataRate, 8, 1, SerialPort.PARITY_NONE); // Set params
+                int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR; // Prepare mask
+                serialPort.setEventsMask(mask); // Set mask
+                serialPort.addEventListener(this); // Add SerialPortEventListener
+
+                initializeReturn = 0;
+            } catch (SerialPortException ex) {
+                ex.printStackTrace();
+                initializeReturn = 1;
+            }
+            latch.countDown();
+        });
+        thread.run();
+
         try {
-            serialPort.openPort(); // Open port
-            serialPort.setParams(dataRate, 8, 1, SerialPort.PARITY_MARK); // Set params
-            int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR; // Prepare mask
-            serialPort.setEventsMask(mask); // Set mask
-            serialPort.addEventListener(this); // Add SerialPortEventListener
-            Thread.sleep(2000); // Milliseconds to block while waiting for port open
-            return true;
-        } catch (SerialPortException | InterruptedException ex) {
-            ex.printStackTrace();
+            long timeBefore = System.currentTimeMillis();
+            latch.await(3, TimeUnit.SECONDS);
+            if (System.currentTimeMillis() - timeBefore > 3000) {
+                thread.stop();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return false;
+
+        try {
+            Thread.sleep(4000); // Milliseconds to block while waiting for port open
+        } catch (Exception e) {
+
+        }
+
+        return initializeReturn;
     }
 
     public String[] getAvailablePorts() {
@@ -36,15 +65,31 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
         return serialPort != null && serialPort.isOpened();
     }
 
-    public void close() {
-        if (serialPort != null) {
-            System.out.print("Closing port...");
-            try {
-                serialPort.closePort();
-                System.out.println(" Closed!");
-            } catch (SerialPortException e) {
-                e.printStackTrace();
+    public synchronized void close() {
+        CountDownLatch latch = new CountDownLatch(1);
+        Thread thread = new Thread(() -> {
+            if (serialPort != null) {
+                System.out.print("Closing port...");
+                try {
+                    serialPort.purgePort(1);
+                    serialPort.purgePort(2);
+                    serialPort.closePort();
+                    System.out.println(" Closed!");
+                } catch (SerialPortException e) {
+                    e.printStackTrace();
+                }
             }
+            latch.countDown();
+        });
+        thread.run();
+
+        try {
+            long timeBefore = System.currentTimeMillis();
+            latch.await(1, TimeUnit.SECONDS);
+            if (System.currentTimeMillis() - timeBefore > 1000)
+                thread.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

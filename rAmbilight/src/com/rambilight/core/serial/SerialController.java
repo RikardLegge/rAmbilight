@@ -29,7 +29,7 @@ public abstract class SerialController {
      * @param serialName Name of the serialPort
      * @return Indicator of sucess
      */
-    public abstract boolean initialize(String serialName);
+    public abstract int initialize(String serialName);
 
     /**
      * @return The current serial data-rate

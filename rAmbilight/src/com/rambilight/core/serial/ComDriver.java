@@ -18,6 +18,8 @@ public class ComDriver {
 
     private boolean writtenPrefs = false;
 
+    private boolean displayedBusyMessage = false;
+
     public ComDriver() {
         lightHandler = new LightHandlerCore(Global.numLights);
         serial = new SerialControllerJSSC();
@@ -31,7 +33,7 @@ public class ComDriver {
         return lightHandler;
     }
 
-    public void initialize() throws Exception {
+    public boolean initialize() throws Exception {
 
         String[] ports = serial.getAvailablePorts();
         boolean foundPort = false;
@@ -79,11 +81,25 @@ public class ComDriver {
             }
         }
 
-        if (!serial.initialize(Global.serialPort))
-            throw new Exception("Unable to connect to an rAmbilight enabled device.");
+        int errorCode = serial.initialize(Global.serialPort);
 
-        System.out.println("Serial baud rate: " + serial.getDataRate());
         lastReceived = System.currentTimeMillis();
+        ticksSinceLastReceived = 0;
+
+        if (errorCode == 1)
+            if (displayedBusyMessage)
+                return false;
+            else {
+                displayedBusyMessage = true;
+                throw new Exception("The port seems to be used by another application, please close any other application which might communicate with the device.");
+            }
+        else if (errorCode == 2)
+            return false;
+
+        displayedBusyMessage = false;
+        System.out.println("Serial baud rate: " + serial.getDataRate());
+        Global.isSerialConnectionActive = true;
+        return true;
     }
 
     public void close() {
@@ -91,11 +107,16 @@ public class ComDriver {
             serial.close();
     }
 
-    public void update() throws Exception {
+    public boolean update() {
         long now = System.currentTimeMillis();
         ticksSinceLastReceived++;
-        if (now - lastReceived > 3000 && ticksSinceLastReceived > 250) {
-            if (serial.getAvailablePorts().length == 0) {
+        if (now - lastReceived > 4000 && ticksSinceLastReceived > 450) {
+            Global.isSerialConnectionActive = false;
+            System.err.println("The system seems to have halted.");
+            MessageBox.Error("Unable to connect to the device, please unplug and reinsert the USB device.\nPress OK when this has been done.\n\nWARNING: DON'T QUIT the application while the serial port is in this state, since it will lock it. To fix this, just force close all other instances of the application.\n\nThere is a known bug which causes this problem, which hopefully will be fixed in on of the upcoming releases.\nUntil then, when this window pops up, please just reinsert the USB device \n\nBest regards\nThe rAmbilight development team.");
+            return false;
+
+            /*if (serial.getAvailablePorts().length == 0) {
                 Global.requestExit = true;
                 throw new Exception("The serial device can no longer be found.\n Please reinsert it and restart the application. \n\n Exiting...");
             }
@@ -119,10 +140,15 @@ public class ComDriver {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Global.isActive = cache;
+            Global.isActive = cache;*/
         }
         else if (now - lastPing > 750)
             ping();
+        return true;
+    }
+
+    public boolean serialPortsAvailable() {
+        return serial.getAvailablePorts().length > 0;
     }
 
 

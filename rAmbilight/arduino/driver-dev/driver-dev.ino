@@ -159,11 +159,8 @@ void loop() {
     Serial.flush();
 
     delta = difference(millis(), lastRealData);
-    if(delta > 1000)
-        if(delta < 5000)
-            delay(frameSleep*2);    // Wait for a very short while
-        else
-            delay(frameSleep*10);
+    if(delta > 5000)
+        delay(frameSleep*10); // Wait for a longer while to spare system resources on the host device
     else
         delay(frameSleep);    // Wait for a very short while
 

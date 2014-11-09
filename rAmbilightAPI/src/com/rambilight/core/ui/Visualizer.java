@@ -33,7 +33,6 @@ public class Visualizer extends JFrame {
      * The visualizer is not available outside of the API environment.
      * Therefor, don't call it from a module!
      */
-    @Deprecated
     public Visualizer() {
         colorBuffer = new Light[Global.numLights];
         for (int i = 0; i < Global.numLights; i++)
