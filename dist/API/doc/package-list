@@ -1,5 +1,4 @@
-com.legge.preferences
-com.rambilight.core
-com.rambilight.core.serial
-com.rambilight.core.ui
+com.rambilight.core.api
+com.rambilight.core.api.Light
+com.rambilight.core.api.ui
 com.rambilight.plugins

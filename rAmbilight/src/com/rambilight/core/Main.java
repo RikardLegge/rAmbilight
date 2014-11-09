@@ -2,14 +2,12 @@ package com.rambilight.core;
 
 import com.legge.lMath;
 import com.legge.preferences.Preferences;
+import com.rambilight.core.api.Global;
 import com.rambilight.core.serial.ComDriver;
-import com.rambilight.core.ui.MessageBox;
-import com.rambilight.core.ui.TrayController;
-import jssc.SerialNativeInterface;
+import com.rambilight.core.api.ui.MessageBox;
+import com.rambilight.core.api.ui.TrayController;
 
 import javax.swing.*;
-import java.net.InetAddress;
-import java.util.Date;
 
 public class Main {
 

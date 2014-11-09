@@ -1,6 +1,6 @@
 package com.legge.preferences;
 
-import com.rambilight.core.Global;
+import com.rambilight.core.api.Global;
 
 import java.io.IOException;
 import java.nio.file.Files;

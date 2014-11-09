@@ -3,9 +3,9 @@ package com.rambilight.plugins.PushBullet;
 import java.awt.MenuItem;
 import java.util.Hashtable;
 
-import com.rambilight.core.Global;
-import com.rambilight.core.ui.MessageBox;
-import com.rambilight.core.ui.TrayController.CustomCreator;
+import com.rambilight.core.api.Global;
+import com.rambilight.core.api.ui.MessageBox;
+import com.rambilight.core.api.ui.TrayController;
 import com.rambilight.plugins.Module;
 import com.rambilight.plugins.PushBullet.PushBulletEndpoint.PushBulletEndpointListener;
 
@@ -68,7 +68,7 @@ public class PushBullet extends Module {
         }
     }
 
-    public CustomCreator getTrayCreator() {
+    public TrayController.CustomCreator getTrayCreator() {
         return () -> {
             return new MenuItem[0];
         };

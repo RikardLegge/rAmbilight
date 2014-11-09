@@ -1,6 +1,7 @@
 package com.rambilight.core.serial;
 
 import com.rambilight.core.ModuleLoader;
+import com.rambilight.core.api.Light.Light;
 
 import java.util.Hashtable;
 import java.util.LinkedList;

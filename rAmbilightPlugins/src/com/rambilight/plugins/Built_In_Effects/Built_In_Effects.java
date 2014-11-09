@@ -4,9 +4,8 @@ import java.awt.CheckboxMenuItem;
 import java.awt.Menu;
 import java.awt.MenuItem;
 
-import com.rambilight.core.Global;
-import com.rambilight.core.ui.TrayController;
-import com.rambilight.core.ui.TrayController.CustomCreator;
+import com.rambilight.core.api.Global;
+import com.rambilight.core.api.ui.TrayController;
 import com.rambilight.plugins.Module;
 
 public class Built_In_Effects extends Module {
@@ -68,7 +67,7 @@ public class Built_In_Effects extends Module {
         }
     }
 
-    public CustomCreator getTrayCreator() {
+    public TrayController.CustomCreator getTrayCreator() {
         return () -> {
 
             CheckboxMenuItem[] colorItems = new CheckboxMenuItem[effects.length];

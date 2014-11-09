@@ -1,7 +1,7 @@
 package com.rambilight.plugins.Hello_World;
 
-import com.rambilight.core.Global;
-import com.rambilight.core.ui.TrayController;
+import com.rambilight.core.api.Global;
+import com.rambilight.core.api.ui.TrayController;
 import com.rambilight.plugins.Module;
 
 import java.awt.*;

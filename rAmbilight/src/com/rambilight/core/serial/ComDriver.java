@@ -1,10 +1,9 @@
 package com.rambilight.core.serial;
 
-import com.rambilight.core.Global;
-import com.rambilight.core.ui.MessageBox;
+import com.rambilight.core.api.Global;
+import com.rambilight.core.api.Light.Light;
+import com.rambilight.core.api.ui.MessageBox;
 
-import java.net.InetAddress;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.Queue;
 

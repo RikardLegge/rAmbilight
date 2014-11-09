@@ -1,8 +1,9 @@
 package com.rambilight.core;
 
 import com.legge.preferences.Preferences;
-import com.rambilight.core.serial.LightHandler;
-import com.rambilight.core.ui.MessageBox;
+import com.rambilight.core.api.Global;
+import com.rambilight.core.api.Light.LightHandler;
+import com.rambilight.core.api.ui.MessageBox;
 import com.rambilight.plugins.Module;
 
 import java.io.File;

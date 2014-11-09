@@ -1,8 +1,8 @@
 package com.rambilight.plugins;
 
 import com.legge.preferences.Preferences;
-import com.rambilight.core.serial.LightHandler;
-import com.rambilight.core.ui.TrayController.CustomCreator;
+import com.rambilight.core.api.Light.LightHandler;
+import com.rambilight.core.api.ui.TrayController.CustomCreator;
 
 public abstract class Module {
 
