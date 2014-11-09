@@ -43,13 +43,17 @@ public class LightHandlerCore {
 
 
     public boolean addToUpdateBuffer(String name, int id, int r, int g, int b) {
+        return addToUpdateBuffer(name, id, r, g, b, false);
+    }
+
+    private boolean addToUpdateBuffer(String name, int id, int r, int g, int b, boolean force) {
         Light light = identifiableColorBuffer.get(name)[id];
 
         r = Math.max(Math.min(r, 252), 0);
         g = Math.max(Math.min(g, 252), 0);
         b = Math.max(Math.min(b, 252), 0);
 
-        if (diff(light.r, r) > threshold || diff(light.g, g) > threshold || diff(light.b, b) > threshold) {
+        if (diff(light.r, r) > threshold || diff(light.g, g) > threshold || diff(light.b, b) > threshold || force) {
             light.r = r;
             light.g = g;
             light.b = b;
@@ -133,6 +137,12 @@ public class LightHandlerCore {
             for (Light light : colorBuffer)
                 light.requiresUpdate = false;
         }
+    }
+
+    public void reset() {
+        lightsToUpdate.clear();
+        for (int i = 0; i < numLights; i++)
+            lightsToUpdate.add(i);
     }
 
 }

@@ -73,9 +73,9 @@ public class ModuleLoader {
 
                 // Make sure it's a subclass of "Module" and if all goes well, add it to the list.
                 classes.add(unknownClass.asSubclass(Module.class));
-                System.out.println("Successfully loaded module '" + name + "'.");
+                System.out.println("Successfully loaded module '" + name + "'");
             } catch (Exception e) {
-                System.err.println("Failed to load '" + name + "' as a Module.");
+                System.err.println("Failed to load '" + name + "' as a Module");
             }
         }
         return classes.toArray(new Class<?>[classes.size()]);
@@ -143,6 +143,7 @@ public class ModuleLoader {
             for (String moduleName : activeModules)
                 loadedModules.get(moduleName).step();
         } catch (Exception e) {
+            e.printStackTrace();
             // An exception is triggered since the TrayController thread needs to modify the active Modules list.
             // This is by design, but might be changed in a later version
             //e.printStackTrace();

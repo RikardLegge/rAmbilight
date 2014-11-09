@@ -3,6 +3,8 @@ package com.rambilight.core.serial;
 import com.rambilight.core.Global;
 import com.rambilight.core.ui.MessageBox;
 
+import java.net.InetAddress;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -26,6 +28,12 @@ public class ComDriver {
         serialBuffer = new LinkedList<>();
 
         serial.setEventListener((data) -> receivedPacket(data));
+        serial.setDisconnectedListener((data) -> {
+            if (Global.isSerialConnectionActive) {
+                System.out.println("Lost connection to the USB device.");
+                Global.isSerialConnectionActive = false;
+            }
+        });
     }
 
 
@@ -87,11 +95,13 @@ public class ComDriver {
         ticksSinceLastReceived = 0;
 
         if (errorCode == 1)
-            if (displayedBusyMessage)
+            if (displayedBusyMessage) {
+                System.out.println("The port seems to be used by another application");
                 return false;
+            }
             else {
                 displayedBusyMessage = true;
-                throw new Exception("The port seems to be used by another application, please close any other application which might communicate with the device.");
+                throw new Exception("The port seems to be used by another application, please close any other application which might communicate with the device.\nIf you don't know of any application which might be running and be connected to the USB device, try removing and reinserting the USB cable it into the computer.");
             }
         else if (errorCode == 2)
             return false;
@@ -99,22 +109,23 @@ public class ComDriver {
         displayedBusyMessage = false;
         System.out.println("Serial baud rate: " + serial.getDataRate());
         Global.isSerialConnectionActive = true;
+        lightHandler.reset();
         return true;
     }
 
-    public void close() {
-        if (serial.isOpen())
-            serial.close();
+    public boolean close() {
+        return !serial.isOpen() || serial.close();
     }
 
     public boolean update() {
         long now = System.currentTimeMillis();
         ticksSinceLastReceived++;
-        if (now - lastReceived > 4000 && ticksSinceLastReceived > 450) {
-            Global.isSerialConnectionActive = false;
-            System.err.println("The system seems to have halted.");
-            MessageBox.Error("Unable to connect to the device, please unplug and reinsert the USB device.\nPress OK when this has been done.\n\nWARNING: DON'T QUIT the application while the serial port is in this state, since it will lock it. To fix this, just force close all other instances of the application.\n\nThere is a known bug which causes this problem, which hopefully will be fixed in on of the upcoming releases.\nUntil then, when this window pops up, please just reinsert the USB device \n\nBest regards\nThe rAmbilight development team.");
-            return false;
+        if (ticksSinceLastReceived > 200 && Global.isSerialConnectionActive) {
+            if (now - lastReceived > 4000) {
+                Global.isSerialConnectionActive = false;
+                System.err.println("The system seems to have halted.");
+                MessageBox.Error("If you recently unplugged the USB device and haven't reinserted it, you can ignore this message!\n\nUnable to connect to the device, please unplug and reinsert the USB device.\nPress OK when this has been done.\n\nWARNING: DON'T QUIT the application while the serial port is in this state, since it will lock it. To fix this, just force close all other instances of the application.\n\nNOTE: There is a known bug which causes this problem, which hopefully will be fixed in on of the upcoming releases.\nUntil then, when this window pops up, please just reinsert the USB device \n\nRegards\nThe rAmbilight development team");
+                return false;
 
             /*if (serial.getAvailablePorts().length == 0) {
                 Global.requestExit = true;
@@ -141,6 +152,14 @@ public class ComDriver {
                 e.printStackTrace();
             }
             Global.isActive = cache;*/
+            }
+            else if (now - lastReceived > 2000) {
+                System.out.println("Lost connection to the USB device.");
+                Global.isSerialConnectionActive = false;
+                return false;
+            }
+            else if (now - lastPing > 750)
+                ping();
         }
         else if (now - lastPing > 750)
             ping();

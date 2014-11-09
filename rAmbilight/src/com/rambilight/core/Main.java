@@ -8,6 +8,8 @@ import com.rambilight.core.ui.TrayController;
 import jssc.SerialNativeInterface;
 
 import javax.swing.*;
+import java.net.InetAddress;
+import java.util.Date;
 
 public class Main {
 
@@ -26,7 +28,7 @@ public class Main {
 
         System.setProperty("apple.laf.useScreenMenuBar", "false");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "rAmbilight");
-        System.setProperty(SerialNativeInterface.PROPERTY_JSSC_NO_TIOCEXCL, SerialNativeInterface.PROPERTY_JSSC_NO_TIOCEXCL);
+        //System.setProperty(SerialNativeInterface.PROPERTY_JSSC_NO_TIOCEXCL, SerialNativeInterface.PROPERTY_JSSC_NO_TIOCEXCL);
         // Set the UI to a theme that resembles the platform specific one.
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -66,7 +68,9 @@ public class Main {
             exit(-1);
             return;
         }
-        new Thread(new Runtime()).start();
+        Thread thread = new Thread(new Runtime());
+        thread.setName("rAmbilight Runtime");
+        thread.run();
     }
 
     /**
@@ -99,55 +103,57 @@ public class Main {
         boolean suspended;
 
         public void run() {
-            while (!Global.requestExit)
-                try {
-                    if (Global.isSerialConnectionActive)
-                        if (Global.isActive) {
-                            if (suspended)
-                                suspended = false;
-                            ModuleLoader.step();
-                            if (!serialCom.update()) {
-                                tray.disableRun("No device connected");
-                                continue;
-                            }
+            while (true)
+                if (!Global.requestExit)
+                    try {
+                        if (Global.isSerialConnectionActive)
+                            if (Global.isActive) {
+                                if (suspended)
+                                    suspended = false;
+                                ModuleLoader.step();
+                                if (!serialCom.update())
+                                    continue;
 
-                            serialCom.getLightHandler().sanityCheck();
-                            try {
-                                Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
-                            } catch (InterruptedException e) {
-                                System.err.println("An error occurred in the main thread.");
-                                e.printStackTrace();
+                                serialCom.getLightHandler().sanityCheck();
+                                try {
+                                    Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
+                                } catch (InterruptedException e) {
+                                    System.err.println("An error occurred in the main thread.");
+                                    e.printStackTrace();
+                                }
                             }
-                        }
+                            else {
+                                if (!suspended) {
+                                    suspended = true;
+                                    ModuleLoader.suspend();
+                                }
+                                try {
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e) {
+                                    System.out.println("Thread sleep was interrupted.");
+                                    e.printStackTrace();
+                                }
+                            }
                         else {
-                            if (!suspended) {
-                                suspended = true;
-                                ModuleLoader.suspend();
+                            if (tray.isRunEnabled())
+                                tray.disableRun("No device connected");
+                            if (serialCom.serialPortsAvailable()) {
+                                if (serialCom.initialize())
+                                    tray.enableRun();
                             }
                             try {
-                                Thread.sleep(500);
+                                Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 System.out.println("Thread sleep was interrupted.");
                                 e.printStackTrace();
                             }
                         }
-                    else {
-                        if (serialCom.serialPortsAvailable()) {
-                            if (serialCom.initialize())
-                                tray.enableRun();
-                        }
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            System.out.println("Thread sleep was interrupted.");
-                            e.printStackTrace();
-                        }
+                    } catch (Exception e) {
+                        MessageBox.Error(e.getMessage()); // Displays an error box in case of something happens
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    MessageBox.Error(e.getMessage()); // Displays an error box in case of something happens
-                    e.printStackTrace();
-                }
-            exit(0);
+                else
+                    exit(0);
         }
     }
 
@@ -157,6 +163,10 @@ public class Main {
      * @code Error code, 0 for safe exit
      */
     private static void exit(int code) {
+        if (!serialCom.close()) {
+            MessageBox.Error("WARNING: Did not exit since the application was unable to close the serial port.\nPlease disconnect the USB device and try again.\n\nThis is a safety measure, since closing the program in the current state might make the USB device unusable until force quiting the rAmbilight process");
+            return;
+        }
         try {
             ModuleLoader.dispose();
             Global.currentControllers = ModuleLoader.getActiveModules().toArray(new String[ModuleLoader.getActiveModules().size()]);
@@ -168,11 +178,6 @@ public class Main {
         }
         try {
             tray.remove();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            serialCom.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

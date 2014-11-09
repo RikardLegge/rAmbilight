@@ -18,20 +18,26 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
     int initializeReturn = 0;
 
     public synchronized int initialize(String serialName) {
+
         initializeReturn = 2;
         CountDownLatch latch = new CountDownLatch(1);
         Thread thread = new Thread(() -> {
-            serialPort = new SerialPort(serialName);
+            SerialPort tmpSerialPort = new SerialPort(serialName);
             try {
-                serialPort.openPort(); // Open port
-                serialPort.setParams(dataRate, 8, 1, SerialPort.PARITY_NONE); // Set params
+                System.out.print("Opening port... ");
+                tmpSerialPort.openPort(); // Open port
+                tmpSerialPort.setParams(dataRate, 8, 1, SerialPort.PARITY_NONE); // Set params
                 int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR; // Prepare mask
-                serialPort.setEventsMask(mask); // Set mask
-                serialPort.addEventListener(this); // Add SerialPortEventListener
+                tmpSerialPort.setEventsMask(mask); // Set mask
+                tmpSerialPort.addEventListener(this); // Add SerialPortEventListener
 
+                close();
+                serialPort = tmpSerialPort;
                 initializeReturn = 0;
+                System.out.println("OPEN!");
             } catch (SerialPortException ex) {
-                ex.printStackTrace();
+                System.out.println("FAILED!");
+                //ex.printStackTrace();
                 initializeReturn = 1;
             }
             latch.countDown();
@@ -48,10 +54,14 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
             e.printStackTrace();
         }
 
-        try {
-            Thread.sleep(4000); // Milliseconds to block while waiting for port open
-        } catch (Exception e) {
+        if (initializeReturn == 0) {
+            System.out.print("Waiting for port to get ready...");
+            try {
+                Thread.sleep(4000); // Milliseconds to block while waiting for port open
+            } catch (Exception e) {
 
+            }
+            System.out.println(" COMPLETE!");
         }
 
         return initializeReturn;
@@ -65,16 +75,19 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
         return serialPort != null && serialPort.isOpened();
     }
 
-    public synchronized void close() {
+    public synchronized boolean close() {
         CountDownLatch latch = new CountDownLatch(1);
         Thread thread = new Thread(() -> {
             if (serialPort != null) {
-                System.out.print("Closing port...");
+                System.out.print("Closing port... ");
                 try {
-                    serialPort.purgePort(1);
-                    serialPort.purgePort(2);
+                    serialPort.removeEventListener();
+                } catch (SerialPortException e) {
+                    e.printStackTrace();
+                }
+                try {
                     serialPort.closePort();
-                    System.out.println(" Closed!");
+                    System.out.println("Closed!");
                 } catch (SerialPortException e) {
                     e.printStackTrace();
                 }
@@ -85,12 +98,16 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
 
         try {
             long timeBefore = System.currentTimeMillis();
-            latch.await(1, TimeUnit.SECONDS);
-            if (System.currentTimeMillis() - timeBefore > 1000)
+            latch.await(2, TimeUnit.SECONDS);
+            if (System.currentTimeMillis() - timeBefore > 1500) {
+                System.out.println("Unable to close port.");
                 thread.stop();
+                return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return true;
     }
 
 

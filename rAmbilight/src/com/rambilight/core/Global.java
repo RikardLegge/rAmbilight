@@ -21,11 +21,9 @@ public class Global {
     public static String   serialPort         = "";
     public static int      compressionLevel   = 1;  // Not yet implemented
 
-    public static int lightStepSize = 0;
+    public static int     lightStepSize            = 0;
     public static boolean isSerialConnectionActive = false;
     private static Preferences preferences;
-
-
 
     public static void generateApplicationSupportPath() {
         String platform = System.getProperty("os.name").toLowerCase();

@@ -106,10 +106,15 @@ public class TrayController {
             return;
         Global.isActive = active;
         runToggle.setState(Global.isActive);
-        runToggle.setLabel(Global.isActive ? "Deactivate" : "Activate");
+        runToggle.setLabel(Global.isActive ? "Active" : "Activate");
         trayIcon.setToolTip(Global.isActive ? "rAmbilight" : null);
         trayIcon.setImage(Global.isActive ? Image_Active : Image_Idle);
     }
+
+    public boolean isRunEnabled() {
+        return runToggle.isEnabled();
+    }
+
 
     public void disableRun(String label) {
         runToggle.setState(Global.isActive);

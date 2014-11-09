@@ -49,7 +49,7 @@ public abstract class SerialController {
     /**
      * Safely close the COM port
      */
-    public abstract void close();
+    public abstract boolean close();
 
 
     /**
