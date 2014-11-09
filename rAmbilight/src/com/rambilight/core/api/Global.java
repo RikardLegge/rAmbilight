@@ -9,11 +9,12 @@ import java.io.File;
  */
 public class Global {
 
-    public static final int     VERSION                = 26;
-    public static final String  APPLICATIONNAME        = "rAmbilight";
-    public static       boolean requestExit            = false;
-    public static       boolean isActive               = true;
-    public static       String  applicationSupportPath = "";
+    public static final int    VERSION         = 26;
+    public static final String APPLICATIONNAME = "rAmbilight";
+
+    public static boolean requestExit            = false;
+    public static boolean isActive               = true;
+    public static String  applicationSupportPath = "";
 
     public static int      numLights          = 60;
     public static int[]    lightLayout        = new int[]{15, 30, 15};       // Right, Top, Left, Bottom
@@ -23,19 +24,11 @@ public class Global {
 
     public static int     lightStepSize            = 0;
     public static boolean isSerialConnectionActive = false;
+
     private static Preferences preferences;
 
     public static void generateApplicationSupportPath() {
-        String platform = System.getProperty("os.name").toLowerCase();
-        if (platform.contains("win"))
-            applicationSupportPath = "/AppData/Local/";
-        else if (platform.contains("mac"))
-            applicationSupportPath = "/Library/Application Support/";
-        else
-            applicationSupportPath = "/.";
-
-        applicationSupportPath = System.getProperty("user.home") + applicationSupportPath + APPLICATIONNAME;
-
+        applicationSupportPath = Platform.getApplicationSupportPath(APPLICATIONNAME);
         if (!new File(applicationSupportPath).exists())
             new File(applicationSupportPath).mkdir();
     }

@@ -10,99 +10,9 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="Restructure for a clearer API structure">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Platform.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/legge/preferences/Preferences.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/legge/preferences/package-frame.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/legge/preferences/package-summary.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/legge/preferences/package-tree.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/Global.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/Main.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ModuleLoader.OnChangeListener.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ModuleLoader.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/package-frame.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/package-summary.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/package-tree.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/serial/ComDriver.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/serial/Light.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/serial/LightHandler.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/serial/LightHandlerCore.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/serial/SerialController.SerialEventListener.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/serial/SerialController.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/serial/SerialControllerJSSC.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/serial/package-frame.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/serial/package-summary.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/serial/package-tree.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ui/Debugger.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ui/MessageBox.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ui/TrayController.CheckboxMenuItemStateChanged.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ui/TrayController.CustomCreator.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ui/TrayController.MenuItemStateChanged.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ui/TrayController.RadioGroupStateChanged.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ui/TrayController.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ui/Visualizer.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ui/package-frame.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ui/package-summary.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/core/ui/package-tree.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-16.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-17.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-18.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Music/Music.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Global.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Global.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/Light.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Light/Light.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandler.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Light/LightHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/MessageBox.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/ui/MessageBox.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ui/TrayController.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/ui/TrayController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/Global.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/Global.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/Light.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/Light/Light.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/serial/LightHandler.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/Light/LightHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/Debugger.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/Debugger.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/MessageBox.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/MessageBox.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/TrayController.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/TrayController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/ui/Visualizer.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/Light/Visualizer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/rAmbilight.app/Contents/Resources/Java/Application.jar" afterPath="$PROJECT_DIR$/dist/rAmbilight.app/Contents/Resources/Java/Application.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/rAmbilightAPI.jar" afterPath="$PROJECT_DIR$/dist/API/rAmbilightAPI.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Built_In_Effects/Built_In_Effects.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Built_In_Effects/Built_In_Effects.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Hello_World/Hello_World.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Hello_World/Hello_World.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Main.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/plugins/Module.html" afterPath="$PROJECT_DIR$/dist/API/doc/com/rambilight/plugins/Module.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/plugins/Module.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/plugins/Module.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/plugins/Module.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/plugins/Module.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ModuleLoader.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/ModuleLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/legge/preferences/Preferences.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/legge/preferences/Preferences.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/PushBullet/PushBullet.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/PushBullet/PushBullet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/Runner.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/Runner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/allclasses-frame.html" afterPath="$PROJECT_DIR$/dist/API/doc/allclasses-frame.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/allclasses-noframe.html" afterPath="$PROJECT_DIR$/dist/API/doc/allclasses-noframe.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/constant-values.html" afterPath="$PROJECT_DIR$/dist/API/doc/constant-values.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/help-doc.html" afterPath="$PROJECT_DIR$/dist/API/doc/help-doc.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-1.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-1.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-10.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-10.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-11.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-11.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-12.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-12.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-13.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-13.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-14.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-14.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-15.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-15.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-2.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-2.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-3.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-3.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-4.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-4.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-5.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-5.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-6.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-6.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-7.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-7.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-8.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-8.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index-files/index-9.html" afterPath="$PROJECT_DIR$/dist/API/doc/index-files/index-9.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/index.html" afterPath="$PROJECT_DIR$/dist/API/doc/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/overview-frame.html" afterPath="$PROJECT_DIR$/dist/API/doc/overview-frame.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/overview-summary.html" afterPath="$PROJECT_DIR$/dist/API/doc/overview-summary.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/overview-tree.html" afterPath="$PROJECT_DIR$/dist/API/doc/overview-tree.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/plugins/package-frame.html" afterPath="$PROJECT_DIR$/dist/API/doc/com/rambilight/plugins/package-frame.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/package-list" afterPath="$PROJECT_DIR$/dist/API/doc/package-list" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/plugins/package-summary.html" afterPath="$PROJECT_DIR$/dist/API/doc/com/rambilight/plugins/package-summary.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/com/rambilight/plugins/package-tree.html" afterPath="$PROJECT_DIR$/dist/API/doc/com/rambilight/plugins/package-tree.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/doc/serialized-form.html" afterPath="$PROJECT_DIR$/dist/API/doc/serialized-form.html" />
+    <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Global.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Global.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Platform.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Platform.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="rAmbilight.iws" />
@@ -130,7 +40,31 @@
     <favorites_list name="rambilight" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="Global.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Global.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.19845645" vertical-offset="0" max-vertical-offset="1278">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#generateApplicationSupportPath#0;class#Global#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Platform.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Platform.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
+              <caret line="14" column="12" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -143,7 +77,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/rAmbilight/arduino/driver/driver.ino" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/FrameController.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/plugins/Module.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/dev/Visulizer.java" />
@@ -187,13 +120,14 @@
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/PushBullet/PushBullet.java" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/Runner.java" />
-        <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Platform.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/Visualizer.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/Light/LightHandler.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/Global.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/Light/Visualizer.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/Debugger.java" />
         <option value="$PROJECT_DIR$/dist/API/doc/index.html" />
+        <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Platform.java" />
+        <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Global.java" />
       </list>
     </option>
   </component>
@@ -263,56 +197,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="rAmbilight" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilightPlugins" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilightPlugins" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rambilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilightPlugins" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rambilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="plugins" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -552,38 +436,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="arduino" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rAmbilight" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="arduino" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="driver-dev" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1111,7 +963,11 @@
       <created>1415572111620</created>
       <updated>1415572111620</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Restructure for a clearer API structure">
+      <created>1415575797520</created>
+      <updated>1415575797521</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1136,7 +992,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="43" y="23" width="1637" height="1027" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.49974528" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1151,7 +1007,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32834226" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299748" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25329155" sideWeight="0.49946523" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25329155" sideWeight="0.49946523" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3272727" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19059561" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1481,16 +1337,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Global.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29617304" vertical-offset="110" max-vertical-offset="1476">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Light/Light.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1786108" vertical-offset="0" max-vertical-offset="907">
@@ -1644,14 +1490,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Platform.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11214953" vertical-offset="0" max-vertical-offset="642">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/TrayController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.14018692" vertical-offset="0" max-vertical-offset="1152">
@@ -1788,6 +1626,25 @@
             <element signature="method#save#0;class#PreferencesCore#0" expanded="false" />
             <element signature="method#getSortedTable#0;class#PreferencesCore#0" expanded="false" />
             <element signature="method#flushFile#0;class#PreferencesCore#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Platform.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
+          <caret line="14" column="12" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Global.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19845645" vertical-offset="0" max-vertical-offset="1278">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#generateApplicationSupportPath#0;class#Global#0" expanded="false" />
           </folding>
         </state>
       </provider>
