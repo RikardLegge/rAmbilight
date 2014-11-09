@@ -29,7 +29,6 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
                 tmpSerialPort.setParams(dataRate, 8, 1, SerialPort.PARITY_NONE); // Set params
                 int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR; // Prepare mask
                 tmpSerialPort.setEventsMask(mask); // Set mask
-                tmpSerialPort.addEventListener(this); // Add SerialPortEventListener
 
                 close();
                 serialPort = tmpSerialPort;
@@ -59,7 +58,11 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
             try {
                 Thread.sleep(4000); // Milliseconds to block while waiting for port open
             } catch (Exception e) {
-
+            }
+            try {
+                serialPort.addEventListener(this); // Add SerialPortEventListener
+            } catch (Exception e) {
+                System.out.print(" Unable to add event listener. Weird...");
             }
             System.out.println(" COMPLETE!");
         }
