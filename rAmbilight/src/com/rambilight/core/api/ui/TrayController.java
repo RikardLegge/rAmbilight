@@ -217,56 +217,52 @@ public class TrayController {
         return item;
     }
 
-    public static Menu createGroup(String name, CheckboxMenuItem[] items, RadioGroupStateChanged handle) {
-        Menu item = new Menu(name);
+    public static Menu createRadioGroup(String name, CheckboxMenuItem[] items, GroupStateChanged handle) {
+        Menu group = new Menu(name);
 
-        ItemListener listener = (e) -> {
-            CheckboxMenuItem target = (CheckboxMenuItem) e.getSource();
-            int index = -1;
-            int i = 0;
-            for (CheckboxMenuItem itemi : items) {
-                if (itemi.getLabel().equals(target.getLabel())) {
-                    index = i;
-                    break;
-                }
-                i++;
-            }
-            if (handle != null)
-                handle.call(target, index, item);
-        };
-
-        for (CheckboxMenuItem subitem : items) {
-            subitem.addItemListener(listener);
-            item.add(subitem);
-        }
-        return item;
+        for (CheckboxMenuItem item : items)
+            addToRadioGroup(group, item, handle);
+        return group;
     }
 
-    public static Menu createRadioGroup(String name, CheckboxMenuItem[] items, RadioGroupStateChanged handle) {
-        Menu item = new Menu(name);
+    public static Menu createGroup(String name, CheckboxMenuItem[] items, GroupStateChanged handle) {
+        Menu group = new Menu(name);
 
-        ItemListener listener = (e) -> {
+        for (CheckboxMenuItem item : items)
+            addToGroup(group, item, handle);
+        return group;
+    }
+
+
+    public static void addToGroup(Menu group, CheckboxMenuItem item, GroupStateChanged handle) {
+        int index = group.getItemCount();
+        item.addItemListener((e) -> {
             CheckboxMenuItem target = (CheckboxMenuItem) e.getSource();
-            int index = -1;
-            int i = 0;
-            for (CheckboxMenuItem itemi : items) {
-                if (itemi.getLabel().equals(target.getLabel()))
-                    index = i;
-                itemi.setState(false);
-                i++;
-            }
+
+            if (handle != null)
+                handle.call(target, index, group);
+        });
+        group.add(item);
+    }
+
+    public static void addToRadioGroup(Menu group, CheckboxMenuItem item, GroupStateChanged handle) {
+        int index = group.getItemCount();
+        item.addItemListener((e) -> {
+            CheckboxMenuItem target = (CheckboxMenuItem) e.getSource();
+            for (int i = 0; i < group.getItemCount(); i++)
+                ((CheckboxMenuItem) group.getItem(i)).setState(false);
             target.setState(true);
-            if (handle != null)
-                handle.call(target, index, item);
-        };
 
-        for (CheckboxMenuItem subitem : items) {
-            subitem.addItemListener(listener);
-            item.add(subitem);
-        }
-        return item;
+            if (handle != null)
+                handle.call(target, index, group);
+        });
+        group.add(item);
     }
 
+
+    public interface CustomCreator {
+        public MenuItem[] create();
+    }
 
     public interface CheckboxMenuItemStateChanged {
         public void call(CheckboxMenuItem target, boolean selected);
@@ -276,13 +272,32 @@ public class TrayController {
         public void call(MenuItem target);
     }
 
-    public interface RadioGroupStateChanged {
+    public interface GroupStateChanged {
         public void call(CheckboxMenuItem target, int index, MenuItem parent);
     }
 
-    public interface CustomCreator {
+    public interface CheckboxCreator {
+        CheckboxMenuItem create();
+    }
 
-        public MenuItem[] create();
+    public interface CheckboxesCreator {
+        CheckboxMenuItem[] create();
+    }
+
+    public interface MenuItemCreator {
+        MenuItem create();
+    }
+
+    public interface MenuItemsCreator {
+        MenuItem[] create();
+    }
+
+    public interface MenuCreator {
+        Menu create();
+    }
+
+    public interface MenusCreator {
+        Menu[] create();
     }
 
 }

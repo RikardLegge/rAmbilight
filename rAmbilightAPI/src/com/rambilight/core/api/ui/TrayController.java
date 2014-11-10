@@ -2,6 +2,7 @@ package com.rambilight.core.api.ui;
 
 import com.legge.utilities.AssetLoader;
 import com.rambilight.core.api.Global;
+import sun.font.CreatedFontTracker;
 
 import java.awt.*;
 import java.awt.event.ItemListener;
@@ -140,29 +141,12 @@ public class TrayController {
      * @param handle The callback handle when a touch event is initialized
      * @return A new RadioMenu
      */
-    public static Menu createRadioGroup(String name, CheckboxMenuItem[] items, RadioGroupStateChanged handle) {
-        Menu item = new Menu(name);
+    public static Menu createRadioGroup(String name, CheckboxMenuItem[] items, GroupStateChanged handle) {
+        Menu group = new Menu(name);
 
-        ItemListener listener = (e) -> {
-            CheckboxMenuItem target = (CheckboxMenuItem) e.getSource();
-            int index = -1;
-            int i = 0;
-            for (CheckboxMenuItem itemi : items) {
-                if (itemi.getLabel().equals(target.getLabel()))
-                    index = i;
-                itemi.setState(false);
-                i++;
-            }
-            target.setState(true);
-            if (handle != null)
-                handle.call(target, index, item);
-        };
-
-        for (CheckboxMenuItem subitem : items) {
-            subitem.addItemListener(listener);
-            item.add(subitem);
-        }
-        return item;
+        for (CheckboxMenuItem item : items)
+            addToRadioGroup(group, item, handle);
+        return group;
     }
 
     /**
@@ -173,29 +157,51 @@ public class TrayController {
      * @param handle The callback handle when a touch event is initialized
      * @return A new Menu
      */
-    public static Menu createGroup(String name, CheckboxMenuItem[] items, RadioGroupStateChanged handle) {
-        Menu item = new Menu(name);
+    public static Menu createGroup(String name, CheckboxMenuItem[] items, GroupStateChanged handle) {
+        Menu group = new Menu(name);
 
-        ItemListener listener = (e) -> {
+        for (CheckboxMenuItem item : items)
+            addToGroup(group, item, handle);
+        return group;
+    }
+
+    /**
+     * Helper for adding an item to a goup
+     *
+     * @param group  Group which the item should be inserted into
+     * @param item   The item to insert into the group
+     * @param handle The callback handle when a touch event is initialized
+     */
+    public static void addToGroup(Menu group, CheckboxMenuItem item, GroupStateChanged handle) {
+        int index = group.getItemCount();
+        item.addItemListener((e) -> {
             CheckboxMenuItem target = (CheckboxMenuItem) e.getSource();
-            int index = -1;
-            int i = 0;
-            for (CheckboxMenuItem itemi : items) {
-                if (itemi.getLabel().equals(target.getLabel())) {
-                    index = i;
-                    break;
-                }
-                i++;
-            }
-            if (handle != null)
-                handle.call(target, index, item);
-        };
 
-        for (CheckboxMenuItem subitem : items) {
-            subitem.addItemListener(listener);
-            item.add(subitem);
-        }
-        return item;
+            if (handle != null)
+                handle.call(target, index, group);
+        });
+        group.add(item);
+    }
+
+    /**
+     * Helper for adding an item to a radio group
+     *
+     * @param group  Group which the item should be inserted into
+     * @param item   The item to insert into the group
+     * @param handle The callback handle when a touch event is initialized
+     */
+    public static void addToRadioGroup(Menu group, CheckboxMenuItem item, GroupStateChanged handle) {
+        int index = group.getItemCount();
+        item.addItemListener((e) -> {
+            CheckboxMenuItem target = (CheckboxMenuItem) e.getSource();
+            for (int i = 0; i < group.getItemCount(); i++)
+                ((CheckboxMenuItem) group.getItem(i)).setState(false);
+            target.setState(true);
+
+            if (handle != null)
+                handle.call(target, index, group);
+        });
+        group.add(item);
     }
 
     /**
@@ -222,8 +228,32 @@ public class TrayController {
     /**
      * Callback for when a RadioGroups selected item changes
      */
-    public interface RadioGroupStateChanged {
+    public interface GroupStateChanged {
         public void call(CheckboxMenuItem target, int index, MenuItem parent);
+    }
+
+    public interface CheckboxCreator {
+        CheckboxMenuItem create();
+    }
+
+    public interface CheckboxesCreator {
+        CheckboxMenuItem[] create();
+    }
+
+    public interface MenuItemCreator {
+        MenuItem create();
+    }
+
+    public interface MenuItemsCreator {
+        MenuItem[] create();
+    }
+
+    public interface MenuCreator {
+        Menu create();
+    }
+
+    public interface MenusCreator {
+        Menu[] create();
     }
 
 }
