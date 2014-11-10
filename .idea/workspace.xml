@@ -10,14 +10,11 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="Fixed small bug related to opening the serial port.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/TrayItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/rAmbilightAPI.jar" afterPath="$PROJECT_DIR$/dist/API/rAmbilightAPI.jar" />
+    <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/rAmbilight.app/Contents/Resources/Java/Application.jar" afterPath="$PROJECT_DIR$/dist/rAmbilight.app/Contents/Resources/Java/Application.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/Runner.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/Runner.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/ui/TrayController.java" afterPath="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/ui/TrayController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/TrayController.java" afterPath="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/TrayController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/rAmbilightPlugins.iml" afterPath="$PROJECT_DIR$/rAmbilightPlugins/rAmbilightPlugins.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="rAmbilight.iws" />
@@ -49,8 +46,8 @@
       <file leaf-file-name="Ambilight.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.45207956" vertical-offset="1802" max-vertical-offset="9666">
-              <caret line="123" column="31" selection-start-line="123" selection-start-column="31" selection-end-line="123" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.53895277" vertical-offset="1144" max-vertical-offset="10170">
+              <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -116,8 +113,8 @@
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/Global.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java" />
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/TrayItem.java" />
-        <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/TrayController.java" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/Runner.java" />
+        <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/TrayController.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/ui/TrayController.java" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
       </list>
@@ -127,8 +124,8 @@
     <option name="alwaysShowArtifactId" value="true" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1680" />
-    <option name="height" value="1050" />
+    <option name="width" value="2048" />
+    <option name="height" value="1280" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -1095,7 +1092,11 @@
       <created>1415576895309</created>
       <updated>1415576895309</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Added ability to reload the screen resolutions found by the Ambilight Module">
+      <created>1415660141151</created>
+      <updated>1415660141151</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1119,7 +1120,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
+    <frame x="0" y="0" width="2048" height="1280" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.49974528" order="6" side_tool="false" content_ui="tabs" />
@@ -1131,11 +1132,11 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32618025" sideWeight="0.49974528" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40714285" sideWeight="0.49974528" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32975206" sideWeight="0.49974528" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32834226" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299748" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24664225" sideWeight="0.49946523" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20139581" sideWeight="0.49946523" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19059561" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2855615" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1167,7 +1168,6 @@
       <TodoPanelSettings />
     </option>
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
-    <MESSAGE value="Added support for mac.&#10;Changed buffer from LIFO to FIFO&#10;Found problems with the module loader..." />
     <MESSAGE value="Small fixes" />
     <MESSAGE value="Small fixes.&#10;Changed the plugins and config directory to static directories on the system.&#10;Added build rules for application and plugins.&#10;Added ability to build true Mac apps." />
     <MESSAGE value="Added trigeometric power series." />
@@ -1192,7 +1192,8 @@
     <MESSAGE value="Restructure for a clearer API structure" />
     <MESSAGE value="Started on Platform addition &amp; Global.java cleanup" />
     <MESSAGE value="Fixed small bug related to opening the serial port." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed small bug related to opening the serial port." />
+    <MESSAGE value="Added ability to reload the screen resolutions found by the Ambilight Module" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added ability to reload the screen resolutions found by the Ambilight Module" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1205,7 +1206,7 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="119" />
+      <option name="time" value="121" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -1554,10 +1555,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/ui/TrayController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.52618134" vertical-offset="794" max-vertical-offset="1638">
+          <caret line="273" column="0" selection-start-line="273" selection-start-column="0" selection-end-line="273" selection-end-column="0" />
+          <folding>
+            <element signature="method#TrayController#0;class#TrayController#0" expanded="false" />
+            <element signature="method#setState#0;class#TrayController#0" expanded="false" />
+            <element signature="method#disableRun#0;class#TrayController#0" expanded="false" />
+            <element signature="method#enableRun#0;class#TrayController#0" expanded="false" />
+            <element signature="method#setTrayController#0;class#TrayController#0" expanded="false" />
+            <element signature="method#setActiveInputType#0;class#TrayController#0" expanded="false" />
+            <element signature="method#addToTrayController#0;class#TrayController#0" expanded="false" />
+            <element signature="method#createCheckbox#0;class#TrayController#0" expanded="false" />
+            <element signature="method#createItem#0;class#TrayController#0" expanded="false" />
+            <element signature="method#createRadioGroup#0;class#TrayController#0" expanded="false" />
+            <element signature="method#createGroup#0;class#TrayController#0" expanded="false" />
+            <element signature="method#addToGroup#0;class#TrayController#0" expanded="false" />
+            <element signature="method#addToRadioGroup#0;class#TrayController#0" expanded="false" />
+            <element signature="class#CustomCreator#0;class#TrayController#0" expanded="false" />
+            <element signature="class#CheckboxMenuItemStateChanged#0;class#TrayController#0" expanded="false" />
+            <element signature="class#MenuItemStateChanged#0;class#TrayController#0" expanded="false" />
+            <element signature="class#CheckboxCreator#0;class#TrayController#0" expanded="false" />
+            <element signature="class#CheckboxesCreator#0;class#TrayController#0" expanded="false" />
+            <element signature="class#MenuItemCreator#0;class#TrayController#0" expanded="false" />
+            <element signature="class#MenuItemsCreator#0;class#TrayController#0" expanded="false" />
+            <element signature="class#MenuCreator#0;class#TrayController#0" expanded="false" />
+            <element signature="class#MenusCreator#0;class#TrayController#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/TrayController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47107437" vertical-offset="387" max-vertical-offset="1476">
-          <caret line="205" column="0" selection-start-line="205" selection-start-column="0" selection-end-line="205" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.44699872" vertical-offset="622" max-vertical-offset="1476">
+          <caret line="215" column="7" selection-start-line="215" selection-start-column="7" selection-end-line="215" selection-end-column="7" />
           <folding>
             <element signature="method#TrayController#0;class#TrayController#0" expanded="false" />
             <element signature="method#addToTrayController#0;class#TrayController#0" expanded="false" />
@@ -1592,42 +1624,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/api/ui/TrayController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38155514" vertical-offset="797" max-vertical-offset="1602">
-          <caret line="235" column="0" selection-start-line="235" selection-start-column="0" selection-end-line="235" selection-end-column="0" />
-          <folding>
-            <element signature="method#TrayController#0;class#TrayController#0" expanded="false" />
-            <element signature="method#setState#0;class#TrayController#0" expanded="false" />
-            <element signature="method#disableRun#0;class#TrayController#0" expanded="false" />
-            <element signature="method#enableRun#0;class#TrayController#0" expanded="false" />
-            <element signature="method#setTrayController#0;class#TrayController#0" expanded="false" />
-            <element signature="method#setActiveInputType#0;class#TrayController#0" expanded="false" />
-            <element signature="method#addToTrayController#0;class#TrayController#0" expanded="false" />
-            <element signature="method#createCheckbox#0;class#TrayController#0" expanded="false" />
-            <element signature="method#createItem#0;class#TrayController#0" expanded="false" />
-            <element signature="method#createRadioGroup#0;class#TrayController#0" expanded="false" />
-            <element signature="method#createGroup#0;class#TrayController#0" expanded="false" />
-            <element signature="method#addToGroup#0;class#TrayController#0" expanded="false" />
-            <element signature="method#addToRadioGroup#0;class#TrayController#0" expanded="false" />
-            <element signature="class#CustomCreator#0;class#TrayController#0" expanded="false" />
-            <element signature="class#CheckboxMenuItemStateChanged#0;class#TrayController#0" expanded="false" />
-            <element signature="class#MenuItemStateChanged#0;class#TrayController#0" expanded="false" />
-            <element signature="class#GroupStateChanged#0;class#TrayController#0" expanded="false" />
-            <element signature="class#CheckboxCreator#0;class#TrayController#0" expanded="false" />
-            <element signature="class#CheckboxesCreator#0;class#TrayController#0" expanded="false" />
-            <element signature="class#MenuItemCreator#0;class#TrayController#0" expanded="false" />
-            <element signature="class#MenuItemsCreator#0;class#TrayController#0" expanded="false" />
-            <element signature="class#MenuCreator#0;class#TrayController#0" expanded="false" />
-            <element signature="class#MenusCreator#0;class#TrayController#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45207956" vertical-offset="1802" max-vertical-offset="9666">
-          <caret line="123" column="31" selection-start-line="123" selection-start-column="31" selection-end-line="123" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.53895277" vertical-offset="1144" max-vertical-offset="10170">
+          <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
           <folding />
         </state>
       </provider>

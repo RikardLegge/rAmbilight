@@ -273,7 +273,7 @@ public class TrayController {
     }
 
     public interface GroupStateChanged {
-        public void call(CheckboxMenuItem target, int index, MenuItem parent);
+        public void call(CheckboxMenuItem target, int index, Menu parent);
     }
 
     public interface CheckboxCreator {
