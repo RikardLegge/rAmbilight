@@ -1,6 +1,7 @@
 package com.rambilight.plugins.PushBullet;
 
 import java.awt.MenuItem;
+import java.security.InvalidKeyException;
 import java.util.Hashtable;
 
 import com.rambilight.core.api.Global;
@@ -19,9 +20,11 @@ public class PushBullet extends Module {
 
     long lastStep = 0;
 
-    public void loaded() {
+    public void loaded() throws InvalidKeyException{
         if (apiKey == null)
             apiKey = MessageBox.Input("Pushbullet", "Please enter your API key");
+        if(apiKey == null || apiKey.length() == 0)
+            throw new InvalidKeyException("Can't use key of length 0");
 
         PushBulletEndpoint.setAPiKey(apiKey);
         PushBulletEndpoint.setListener(new PushBulletEndpointListener() {

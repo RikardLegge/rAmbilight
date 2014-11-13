@@ -67,7 +67,8 @@ public class TrayController {
                     if (!target.getState())
                         ModuleLoader.deactivateModule(moduleName);
                     else
-                        ModuleLoader.activateModule(moduleName);
+                        if(!ModuleLoader.activateModule(moduleName))
+                            target.setState(false);
                     setActiveInputType();
                 } catch (Exception e1) {
                     e1.printStackTrace();

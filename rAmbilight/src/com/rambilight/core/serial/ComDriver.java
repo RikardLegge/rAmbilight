@@ -17,8 +17,7 @@ public class ComDriver {
     private long lastReceived           = 0;
     private long ticksSinceLastReceived = 0;    // 1 tick ~10ms.
 
-    private boolean writtenPrefs = false;
-
+    private boolean writtenPrefs         = false;
     private boolean displayedBusyMessage = false;
 
     public ComDriver() {
@@ -119,8 +118,8 @@ public class ComDriver {
     public boolean update() {
         long now = System.currentTimeMillis();
         ticksSinceLastReceived++;
-        if (ticksSinceLastReceived > 200 && Global.isSerialConnectionActive) {
-            if (now - lastReceived > 4000) {
+        if (ticksSinceLastReceived > 100 && Global.isSerialConnectionActive) {
+            if (now - lastReceived > 8000) {
                 Global.isSerialConnectionActive = false;
                 System.err.println("The system seems to have halted.");
                 MessageBox.Error("If you recently unplugged the USB device and haven't reinserted it, you can ignore this message!\n\nUnable to connect to the device, please unplug and reinsert the USB device.\nPress OK when this has been done.\n\nWARNING: DON'T QUIT the application while the serial port is in this state, since it will lock it. To fix this, just force close all other instances of the application.\n\nNOTE: There is a known bug which causes this problem, which hopefully will be fixed in on of the upcoming releases.\nUntil then, when this window pops up, please just reinsert the USB device \n\nRegards\nThe rAmbilight development team");

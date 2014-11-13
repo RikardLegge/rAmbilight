@@ -6,6 +6,7 @@ import java.awt.MenuItem;
 
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.ui.TrayController;
+import com.rambilight.core.api.ui.TrayController.GroupStateChanged;
 import com.rambilight.plugins.Module;
 
 public class Built_In_Effects extends Module {

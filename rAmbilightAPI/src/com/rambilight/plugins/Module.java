@@ -19,7 +19,7 @@ public abstract class Module {
     /*
      * Callback on initial load
      */
-    public void loaded() {
+    public void loaded() throws Exception {
     }
 
     /*

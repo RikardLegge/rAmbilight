@@ -83,26 +83,32 @@ public class ModuleLoader {
     }
 
 
-    public static void activateModule(String name) throws Exception {
+    public static boolean activateModule(String name) throws Exception {
         if (name == null)
-            return;
+            return false;
         if (!availableModules.containsKey(name)) {
             System.err.println("The module '" + name + "' isn't available");
-            return;
+            return false;
         }
         if (!loadedModules.containsKey(name)) {
             Module newModule = (Module) (availableModules.get(name)).newInstance();
-            loadedModules.put(name, newModule);
 
             newModule.lightHandler = new LightHandler(name);
             newModule.preferences = new Preferences(name);
             newModule.loadPreferences();
-            newModule.loaded();
+            try {
+                newModule.loaded();
+            } catch (Exception e) {
+                System.out.println("An error occurred when loading " + name + ":" + e.getMessage());
+                return false;
+            }
+            loadedModules.put(name, newModule);
         }
 
         activeModules.add(name);
         for (OnChangeListener listener : onChangeListeners)
             listener.onChange(name);
+        return true;
     }
 
     public static void deactivateModule(String name) throws Exception {

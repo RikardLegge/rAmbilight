@@ -191,7 +191,7 @@ public class TrayController {
      * @param handle The callback handle when a touch event is initialized
      */
     public static void addToRadioGroup(Menu group, CheckboxMenuItem item, GroupStateChanged handle) {
-        int index = group.getItemCount();
+        final int index = group.getItemCount();
         item.addItemListener((e) -> {
             CheckboxMenuItem target = (CheckboxMenuItem) e.getSource();
             for (int i = 0; i < group.getItemCount(); i++)

@@ -9,7 +9,7 @@ public abstract class Module {
     public LightHandler lightHandler;
     public Preferences  preferences;
 
-    public void loaded() {
+    public void loaded() throws Exception{
     }
 
     public void resume() {
