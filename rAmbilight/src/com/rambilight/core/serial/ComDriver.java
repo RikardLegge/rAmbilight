@@ -4,6 +4,8 @@ import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.Light;
 import com.rambilight.core.api.ui.MessageBox;
 
+import java.io.Console;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -19,6 +21,8 @@ public class ComDriver {
 
     private boolean writtenPrefs         = false;
     private boolean displayedBusyMessage = false;
+
+    private int lastNumPorts = 0;
 
     public ComDriver() {
         lightHandler = new LightHandlerCore(Global.numLights);
@@ -42,6 +46,10 @@ public class ComDriver {
     public boolean initialize() throws Exception {
 
         String[] ports = serial.getAvailablePorts();
+        if (ports.length == lastNumPorts)
+            return false;
+        lastNumPorts = ports.length;
+
         boolean foundPort = false;
         if (Global.serialPort.length() > 0)
             for (String port : ports)
@@ -57,7 +65,7 @@ public class ComDriver {
 
                 String result = MessageBox.Input("Port found!", "Are you sure you want to use this port as an rAmbilight device? (Type 'Yes' or 'No')'\n" + ports[0] + "\n ");
                 if (result == null || (!result.toLowerCase().equals("y") && !result.toLowerCase().equals("yes")))
-                    throw new Exception("Some thing other than YES as entered. Shutting down...");
+                    return false;
 
                 System.out.println("Activating...");
                 Global.serialPort = ports[0];
@@ -66,9 +74,9 @@ public class ComDriver {
                 System.out.println("Available ports:");
                 String portList = "";
                 int i = 0;
-                for (String s : ports) {
-                    System.out.println(s);
-                    portList += i++ + ": " + s + "\n";
+                for (String port : ports) {
+                    System.out.println("Listing port" + port);
+                    portList += i++ + ": " + port + "\n";
                 }
                 System.out.println("");
 
@@ -108,6 +116,7 @@ public class ComDriver {
         System.out.println("Serial baud rate: " + serial.getDataRate());
         Global.isSerialConnectionActive = true;
         lightHandler.reset();
+        lastNumPorts = 0;
         return true;
     }
 
@@ -153,6 +162,7 @@ public class ComDriver {
             }
             else if (now - lastReceived > 2000) {
                 System.out.println("Lost connection to the USB device.");
+                serial.close();
                 Global.isSerialConnectionActive = false;
                 return false;
             }
@@ -228,20 +238,20 @@ public class ComDriver {
             if ((light = lightHandler.next()) == null)
                 break;
             writeToBuffer(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
-
         }
         writeToBuffer(ArduinoCommunication.END_SEND);
         flushBuffer();
 
     }
 
+
     private void flushPreferences() {
         writePreference(ArduinoCommunication.CLEAR_BUFFER, ArduinoCommunication.NULL);
         writePreference(ArduinoCommunication.NUMBER_OF_LEDS, Global.numLights);
         writePreference(ArduinoCommunication.SMOOTH_STEP, Global.lightStepSize);
+        writePreference(ArduinoCommunication.COMPRESSION_LEVEL, Global.compressionLevel);
         flushBuffer();
     }
-
 
     private void receivedPacket(int data) {
         lastReceived = System.currentTimeMillis();

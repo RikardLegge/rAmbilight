@@ -9,7 +9,7 @@ public abstract class SerialController {
     };
     protected SerialEventListener serialDisconnectEvent = (data) -> {
     };
-    protected int                 dataRate              = 512000;//256000;//115200;      // Default bits per second for COM port.
+    protected int                 dataRate              = 512000;//512000;//256000;//115200;      // Default bits per second for COM port.
 
     public SerialController() {
     }

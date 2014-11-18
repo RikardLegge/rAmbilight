@@ -6,14 +6,17 @@
 #define NULL 0
 #define NUMBER_OF_LEDS 1
 #define SMOOTH_STEP 2
-#define FRAME_DELAY 3
+#define COMPRESSION_LEVEL 3
 #define CLEAR_BUFFER 4
 
 #define END_SEND 254
 #define BEGIN_SEND 255
 #define BEGIN_SEND_PREFS 253
 
-#define NUM_LEDS 120     // The maximum number of LEDs
+//#define SPCR B01110001;              // Auto SPI: no int, enable, LSB first, master, + edge, leading, f/16
+//#define SPSR B00000000;              // not double data rate
+
+#define NUM_LEDS 88     // The maximum number of LEDs
 
 CRGB leds[NUM_LEDS];      // The current LED value
 CRGB leds_TargetValue[NUM_LEDS];  // The buffered LED value
@@ -38,13 +41,15 @@ void setup() {
 
 // Editable
 float smoothStep = 0;       // Step size for the lights
-int numActiveLeds = 60;    // Number of active LEDs that are handled
+int numActiveLeds = 60;     // Number of active LEDs that are handled
+int compression = 1;        // The amount of compression which is set up
 
 // Static
-int frameSleep = 6;
+int frameSleep = 16;
 int buff[4];               // LED read buffer
 int buffi;                 // Variable that is used for many things. Mostly as itt
 unsigned long lastPing = 0;// When was i last pinged?
+unsigned long lastRealData = 0;
 int sleeping = 0;          // Am i sleeping?
 unsigned long delta;       // TMP value for delta calculations
 
@@ -53,6 +58,7 @@ void loop() {
     buffi = Serial.read();
     lastPing = millis();
     if(buffi == BEGIN_SEND){ // Is normal send START
+      lastRealData = lastPing;
       buffi = 0;
       while(true){
         if(Serial.available() > 0){
@@ -62,9 +68,9 @@ void loop() {
             break;
           }
           if(buffi == 3){
-            leds_TargetValue[buff[0]].r = buff[2];
-            leds_TargetValue[buff[0]].g = buff[1];
-            leds_TargetValue[buff[0]].b = buff[3];
+              leds_TargetValue[buff[0]].r = buff[2];
+              leds_TargetValue[buff[0]].g = buff[1];
+              leds_TargetValue[buff[0]].b = buff[3];
             //leds_TargetValue[buff[0]] = CRGB(buff[2],buff[1],buff[3]); // Swap r & g to compensate for the unusial format of my lights 
             buffi = 0;
           } 
@@ -96,8 +102,13 @@ void loop() {
           else if(smoothStep < 1) 
             smoothStep = 1;
           break;
-        case FRAME_DELAY:
-          Serial.read();
+        case COMPRESSION_LEVEL:
+          compression = Serial.read();
+          if(compression > 20)
+            compression = 20;
+          else if(smoothStep < 1)
+            compression = 1;
+          break;
         case CLEAR_BUFFER:
           Serial.read();
           for(int i = 0; i < NUM_LEDS; i++){
@@ -141,12 +152,17 @@ void loop() {
   if(delta < 3000){
     sleeping = 0;
 
+    if(ColorSmoothing())    // If something has changed
+      FastLED.show();      // Update the LEDs
+
     Serial.write(1);       // I'm ready for more
     Serial.flush();
-    delay(frameSleep);    // Wait for a very short while
 
-    if(ColorSmoothing())    // If something has changed
-        FastLED.show();      // Update the LEDs
+    delta = difference(millis(), lastRealData);
+    if(delta > 5000)
+      delay(frameSleep*10); // Wait for a longer while to spare system resources on the host device
+    else
+      delay(frameSleep);    // Wait for a very short while
   } else if(sleeping == 0) {
     for(int i = 0; i < numActiveLeds; i++){
       leds_TargetValue[i].r = 0;
@@ -155,14 +171,13 @@ void loop() {
     }
     sleeping = 1;
   } else if(sleeping == 1 && ColorSmoothing()){
-    delay(frameSleep);     // Sleep for a while
     FastLED.show();
+    delay(frameSleep);     // Sleep for a while
   } else {
      sleeping = 2;
      delay(1000);
   }
 }
-
 
 // Variables for Color Smoothing
 boolean requiresUpdate;

@@ -20,7 +20,7 @@ public class Global {
     public static int[]    lightLayout        = new int[]{15, 30, 15};       // Right, Top, Left, Bottom
     public static String[] currentControllers = new String[]{"Ambilight"};
     public static String   serialPort         = "";
-    public static int      compressionLevel   = 1;  // Not yet implemented
+    public static int      compressionLevel   = 1;
 
     public static int     lightStepSize            = 0;
     public static boolean isSerialConnectionActive = false;
@@ -45,6 +45,7 @@ public class Global {
         Global.lightStepSize = preferences.load("lightStepSize", Global.lightStepSize);
         Global.serialPort = preferences.load("serialPort", Global.serialPort);
         Global.compressionLevel = preferences.load("compressionLevel", Global.compressionLevel);
+        Global.compressionLevel = Global.compressionLevel > 0 ? Global.compressionLevel : 1;
 
         numLights = 0;
         for (int num : lightLayout)
@@ -61,8 +62,9 @@ public class Global {
         preferences.save("lightLayout", lightLayout);
 
         preferences.save("lightStepSize", lightStepSize);
-        preferences.save("serialPort", Global.serialPort);
         preferences.save("lightStepSize", Global.lightStepSize);
+        preferences.save("serialPort", Global.serialPort);
+        preferences.save("compressionLevel", Global.compressionLevel);
 
         preferences.save("VERSION", Global.VERSION);
     }

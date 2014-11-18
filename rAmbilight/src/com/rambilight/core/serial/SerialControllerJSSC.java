@@ -4,6 +4,7 @@ import jssc.*;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 /* A modified version of a class i found online that handles the serial communication
  * 
@@ -71,7 +72,7 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
     }
 
     public String[] getAvailablePorts() {
-        return SerialPortList.getPortNames();
+        return SerialPortList.getPortNames(Pattern.compile("tty.(serial|usbserial|usbmodem|wchusbserial).*"));
     }
 
     public boolean isOpen() {

@@ -1,15 +1,18 @@
 package com.rambilight.core.serial;
 
 import com.rambilight.core.ModuleLoader;
+import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.Light;
 
+import javax.print.attribute.standard.Compression;
+import javax.swing.tree.VariableHeightLayoutCache;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class LightHandlerCore {
 
-    private static final int threshold = 3;                     // Threshold for when a light actually has changed color
+    private static final int threshold = 18;                     // Threshold for when a light actually has changed color. Value is the total difference of RGB.
     private int numLights;                                      // Total number of lights
 
     private Light[]                    colorBuffer;             // List of the colors of the respective lights
@@ -48,13 +51,22 @@ public class LightHandlerCore {
     }
 
     private boolean addToUpdateBuffer(String name, int id, int r, int g, int b, boolean force) {
+
+        id = id - (id % Global.compressionLevel);    // Set the ID to static values. Ex. x % 2 > 0,2,4,...
+
         Light light = identifiableColorBuffer.get(name)[id];
+
+        if (colorBuffer[id].requiresUpdate) {
+            r = (light.r + r) / 2;
+            g = (light.g + g) / 2;
+            b = (light.b + b) / 2;
+        }
 
         r = Math.max(Math.min(r, 252), 0);
         g = Math.max(Math.min(g, 252), 0);
         b = Math.max(Math.min(b, 252), 0);
 
-        if (diff(light.r, r) > threshold || diff(light.g, g) > threshold || diff(light.b, b) > threshold || force) {
+        if (diff(light.r + light.g + light.b, r + g + b) > threshold || force) {
             light.r = r;
             light.g = g;
             light.b = b;
