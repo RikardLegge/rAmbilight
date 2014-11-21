@@ -15,6 +15,8 @@ public class ComDriver {
     private LightHandlerCore lightHandler;
     private Queue<Byte>      serialBuffer;
 
+    private long lastCorrectionLap      = 0;
+    private int  correctionLightid      = 0;
     private long lastPing               = 0;
     private long lastReceived           = 0;
     private long ticksSinceLastReceived = 0;    // 1 tick ~10ms.
@@ -49,6 +51,7 @@ public class ComDriver {
         if (ports.length == lastNumPorts)
             return false;
         lastNumPorts = ports.length;
+        writtenPrefs = false;
 
         boolean foundPort = false;
         if (Global.serialPort.length() > 0)
@@ -226,21 +229,33 @@ public class ComDriver {
     }
 
     private void flushLights() {
-        if (!lightHandler.requiresUpdate())
-            return;
-        lastPing = System.currentTimeMillis();
+        if (lightHandler.requiresUpdate()) {
+            writeToBuffer(ArduinoCommunication.BEGIN_SEND); // Should be more efficient than an ordinary write
+            lastPing = System.currentTimeMillis();
+            lastCorrectionLap = System.currentTimeMillis();
 
-        Light light;
-        flushBuffer();
-        write(ArduinoCommunication.BEGIN_SEND); // Should be more efficient than an ordinary write
-        for (int i = 0; i < 13; i++) {
-            if ((light = lightHandler.next()) == null)
-                break;
-            write(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
+            Light light;
+            flushBuffer();
+            for (int i = 0; i < 13; i++) {
+                if ((light = lightHandler.next()) == null)
+                    break;
+                writeToBuffer(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
+            }
+            //writeCorrecitonToBuffer(1);
+            writeToBuffer(ArduinoCommunication.END_SEND);
+            flushBuffer();
         }
-        write(ArduinoCommunication.END_SEND);
-        flushBuffer();
+    }
 
+    private void writeCorrecitonToBuffer(int num) {
+        for (int i = 0; i < num; i++) {
+            Light light = lightHandler.getColorBuffer()[correctionLightid];
+            writeToBuffer(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
+            correctionLightid += Global.compressionLevel;
+            if (correctionLightid >= lightHandler.getNumLights()) {
+                correctionLightid = 0;
+            }
+        }
     }
 
 
@@ -261,7 +276,8 @@ public class ComDriver {
                     writtenPrefs = true;
                     serialGateway(Gateway.preferences);
                 }
-                serialGateway(Gateway.data);
+                else
+                    serialGateway(Gateway.data);
                 break;
             case 2: // Sleeping
                 break;

@@ -9,7 +9,7 @@ import java.io.File;
  */
 public class Global {
 
-    public static final int    VERSION         = 26;
+    public static final int    VERSION         = 29;
     public static final String APPLICATIONNAME = "rAmbilight";
 
     public static boolean requestExit            = false;

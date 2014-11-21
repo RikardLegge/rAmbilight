@@ -19,7 +19,11 @@ public class LightHandler {
     }
 
     public boolean addToUpdateBuffer(int id, int r, int g, int b) {
-        return lightHandlerCore.addToUpdateBuffer(name, id, r, g, b);
+        boolean ret = false;
+        for (int i = id * Global.compressionLevel; i < id * Global.compressionLevel + Global.compressionLevel; i++) {
+            ret = lightHandlerCore.addToUpdateBuffer(name, i, r, g, b);
+        }
+        return ret;
     }
 
     public boolean rawAddToUpdateBuffer(int id, int r, int g, int b) {

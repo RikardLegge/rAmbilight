@@ -52,21 +52,22 @@ public class LightHandlerCore {
 
     private boolean addToUpdateBuffer(String name, int id, int r, int g, int b, boolean force) {
 
+        id = id < getNumLights() ? id : getNumLights();
         id = id - (id % Global.compressionLevel);    // Set the ID to static values. Ex. x % 2 > 0,2,4,...
 
         Light light = identifiableColorBuffer.get(name)[id];
 
-        if (colorBuffer[id].requiresUpdate) {
+        /*if (colorBuffer[id].requiresUpdate) {
             r = (light.r + r) / 2;
             g = (light.g + g) / 2;
             b = (light.b + b) / 2;
-        }
+        }*/
 
         r = Math.max(Math.min(r, 252), 0);
         g = Math.max(Math.min(g, 252), 0);
         b = Math.max(Math.min(b, 252), 0);
 
-        if (diff(light.r + light.g + light.b, r + g + b) > threshold || force) {
+        if (diff(light.r + light.g + light.b, r + g + b) > 1 || force) {
             light.r = r;
             light.g = g;
             light.b = b;

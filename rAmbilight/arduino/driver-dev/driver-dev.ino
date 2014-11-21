@@ -1,4 +1,5 @@
-#include <PololuLedStrip.h>
+//#include <PololuLedStrip.h>
+#include <FastLED.h>
 
 #define DATA_PIN 6        // The pin on the Arduino to use for the LED PWM.
 #define DATA_RATE 512000//512000//256000//115200  // The speed of the transmission
@@ -14,11 +15,15 @@
 #define BEGIN_SEND_PREFS 253
 
 #define NUM_LEDS 250     // The maximum number of LEDs
-
+/*
 PololuLedStrip<DATA_PIN> ledStrip;
 
 rgb_color leds[NUM_LEDS];
 rgb_color leds_TargetValue[NUM_LEDS];
+*/
+
+CRGB leds[NUM_LEDS];
+CRGB leds_TargetValue[NUM_LEDS];
 
 /*
  1: ready.
@@ -45,10 +50,22 @@ unsigned long delta;       // TMP value for delta calculations
 void setup() {
   //PololuLedStripBase::interruptFriendly = true;
   delay(500);                       // sanity check delay - allows reprogramming if accidentally blowing power w/leds
-  ledStrip.write(leds, NUM_LEDS);   // Turn the lights of
+  LEDS.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);
+  clearLEDS();
   delay(500);
 
   Serial.begin(DATA_RATE);   // Starts the serial communication port
+}
+
+void clearLEDS(){
+    //ledStrip.write(leds, NUM_LEDS);
+    LEDS.clear();
+    FastLED.show();
+}
+
+void writeLEDS(){
+    //ledStrip.write(leds, numActiveLeds);
+    FastLED.show();
 }
 
 void loop() {
@@ -63,7 +80,7 @@ void stateHandle(){
     sleeping = 0;
 
     if(ColorSmoothing())    // If something has changed
-      ledStrip.write(leds, numActiveLeds);
+      writeLEDS();
 
     Serial.write(1);       // I'm ready for more
     Serial.flush();
@@ -83,7 +100,7 @@ void stateHandle(){
     sleeping = 1;
   } 
   else if(sleeping == 1 && ColorSmoothing()){
-    ledStrip.write(leds, NUM_LEDS);
+    clearLEDS();
     delay(frameSleep);     // Sleep for a while
   } 
   else {
@@ -107,8 +124,8 @@ void serialHandle(){
             break;
           }
           if(buffi == 3){
-            leds_TargetValue[buff[0]].red = buff[1];
-            leds_TargetValue[buff[0]].green = buff[2];
+            leds_TargetValue[buff[0]].red = buff[2];
+            leds_TargetValue[buff[0]].green = buff[1];
             leds_TargetValue[buff[0]].blue = buff[3];
             buffi = 0;
           }

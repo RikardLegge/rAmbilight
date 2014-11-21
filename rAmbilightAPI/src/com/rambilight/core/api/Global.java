@@ -7,10 +7,10 @@ package com.rambilight.core.api;
  * Only use these values if absolutely necessary.
  */
 public class Global {
-    public static final int VERSION = 28;                                   // The current version of the application. Can help with debugging.
+    public static final int VERSION = 29;                                   // The current version of the application. Can help with debugging.
     public static boolean requestExit;                                      // If set to true, the application will try to exit gracefully.
     public static boolean isActive         = true;                          // Is the application active. If set to false, the user might get confused.
-    public static int[]   lightLayout      = new int[]{40, 60, 40, 60};     // Right, Top, Left, Bottom
-    public static int     numLights        = 200;                           // The number of lights which are available. (Calculated from lightLayout)
-    public static int     compressionLevel = 3;                             // The amount of compression which is applied to the data
+    public static int[]   lightLayout      = new int[]{33, 56, 41};     // Right, Top, Left, Bottom
+    public static int     numLights        = 130;                           // The number of lights which are available. (Calculated from lightLayout)
+    public static int     compressionLevel = 2;                             // The amount of compression which is applied to the data
 }
