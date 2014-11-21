@@ -4,7 +4,6 @@ import java.awt.MenuItem;
 import java.security.InvalidKeyException;
 import java.util.Hashtable;
 
-import com.rambilight.core.api.Global;
 import com.rambilight.core.api.ui.MessageBox;
 import com.rambilight.core.api.ui.TrayController;
 import com.rambilight.plugins.Module;
@@ -20,10 +19,10 @@ public class PushBullet extends Module {
 
     long lastStep = 0;
 
-    public void loaded() throws InvalidKeyException{
+    public void loaded() throws InvalidKeyException {
         if (apiKey == null)
             apiKey = MessageBox.Input("Pushbullet", "Please enter your API key");
-        if(apiKey == null || apiKey.length() == 0)
+        if (apiKey == null || apiKey.length() == 0)
             throw new InvalidKeyException("Can't use key of length 0");
 
         PushBulletEndpoint.setAPiKey(apiKey);
@@ -43,7 +42,7 @@ public class PushBullet extends Module {
         currentColor[0] = 255 * animation[animation.length - 1];
         currentColor[1] = 255 * animation[animation.length - 1];
         currentColor[2] = 255 * animation[animation.length - 1];
-        for (int i = 0; i < Global.numLights; i++)
+        for (int i = 0; i < lightHandler.numLights(); i++)
             lightHandler.addToUpdateBuffer(i, currentColor[0], currentColor[1], currentColor[2]);
     }
 
@@ -63,7 +62,7 @@ public class PushBullet extends Module {
 
         if (currentStage > -1) {
             int stre = animation[currentStage];
-            for (int i = 0; i < Global.numLights; i++)
+            for (int i = 0; i < lightHandler.numLights(); i++)
                 lightHandler.addToUpdateBuffer(i, currentColor[0] * stre, currentColor[1] * stre, currentColor[2] * stre);
             currentStage++;
             if (currentStage > animation.length - 1)

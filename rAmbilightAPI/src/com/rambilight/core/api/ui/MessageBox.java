@@ -8,6 +8,7 @@ public class MessageBox {
      * Display an error box that also halts the program
      */
     public static void Error(String message) {
+        System.out.println(message);
         JOptionPane.showMessageDialog(null, message, "An error ocurred!", JOptionPane.ERROR_MESSAGE);
     }
 
@@ -15,6 +16,7 @@ public class MessageBox {
      * Display an input box that also halts the program
      */
     public static String Input(String title, String message) {
+        System.out.println(message);
         return JOptionPane.showInputDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
     }
 }

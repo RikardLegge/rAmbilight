@@ -122,6 +122,10 @@ public class LightHandlerCore {
     }
 
 
+    public int getNumLights() {
+        return numLights;
+    }
+
     public Light[] getColorBuffer() {
         return colorBuffer;
     }

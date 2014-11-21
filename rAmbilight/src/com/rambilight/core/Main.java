@@ -3,9 +3,9 @@ package com.rambilight.core;
 import com.legge.lMath;
 import com.legge.preferences.Preferences;
 import com.rambilight.core.api.Global;
-import com.rambilight.core.serial.ComDriver;
 import com.rambilight.core.api.ui.MessageBox;
 import com.rambilight.core.api.ui.TrayController;
+import com.rambilight.core.serial.ComDriver;
 
 import javax.swing.*;
 
@@ -44,6 +44,7 @@ public class Main {
             serialCom = new ComDriver();
 
             ModuleLoader.loadModules(ModuleLoader.loadExternalModules(Main.class));
+            //ModuleLoader.loadModule(Ambilight.class);
 
             tray = new TrayController();
             tray.disableRun("Loading...");

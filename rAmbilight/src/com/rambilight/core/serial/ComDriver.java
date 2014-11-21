@@ -231,15 +231,14 @@ public class ComDriver {
         lastPing = System.currentTimeMillis();
 
         Light light;
-
         flushBuffer();
-        writeToBuffer(ArduinoCommunication.BEGIN_SEND); // Should be more efficient than an ordinary write
+        write(ArduinoCommunication.BEGIN_SEND); // Should be more efficient than an ordinary write
         for (int i = 0; i < 13; i++) {
             if ((light = lightHandler.next()) == null)
                 break;
-            writeToBuffer(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
+            write(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
         }
-        writeToBuffer(ArduinoCommunication.END_SEND);
+        write(ArduinoCommunication.END_SEND);
         flushBuffer();
 
     }
@@ -256,7 +255,6 @@ public class ComDriver {
     private void receivedPacket(int data) {
         lastReceived = System.currentTimeMillis();
         ticksSinceLastReceived = 0;
-
         switch (data) {
             case 1: // Ready
                 if (!writtenPrefs) {

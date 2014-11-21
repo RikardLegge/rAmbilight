@@ -7,6 +7,6 @@ import com.rambilight.plugins.PushBullet.PushBullet;
 
 public class Runner {
     public static void main(String[] args) throws Exception {
-        new Debugger(new PushBullet());
+        new Debugger(new Ambilight());
     }
 }

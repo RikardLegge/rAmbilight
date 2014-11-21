@@ -25,11 +25,10 @@ public class Visualizer extends JFrame {
     public Visualizer(Class<?> Authentication, SetCallback setCallback) throws AccessDeniedException {
 
         if (!Authentication.getName().equals("com.rambilight.core.api.ui.Debugger"))
-            throw new AccessDeniedException("Unable to initialize, since the expected creator wasn't found.");
+            throw new AccessDeniedException("Unable to initialize, since the expected authentication wasn't correct.");
         setCallback.set(() -> {
             update();
         });
-        //if(Authentication.getName())
         colorBuffer = new Light[Global.numLights];
         for (int i = 0; i < Global.numLights; i++)
             colorBuffer[i] = new Light(i, 0, 0, 0);
@@ -69,40 +68,53 @@ public class Visualizer extends JFrame {
         repaint();
     }
 
+    private int numLightsOnSide(int side) {
+        return Global.lightLayout[side];// / Global.compressionLevel;
+    }
+
     private void drawOutline(Graphics2D g) {
         int a = 10;
-        int h = getHeight();
-        int w = getWidth();
-        int hd = h / 15;
-        int wd = w / 30;
+        int h = getHeight() - 2 * a;
+        int w = getWidth() - 2 * a;
         int light = 0;
+        int numSides = Global.lightLayout.length;
 
-
-        if (Global.lightLayout.length > 0)
-            for (int i = 0; i < Global.lightLayout[0]; i++) {
+        if (numSides > 0) {
+            float fhd = h / numLightsOnSide(0);
+            int hd = Math.round(fhd);
+            for (int i = 0; i < numLightsOnSide(0); i++) {
                 g.setColor(getColor(light));
-                g.fillRect(w - a, h - hd * (i + 1), a, hd);
+                g.fillRect(w + a, h - Math.round(fhd * i) - 2 * a, a, hd);
                 light++;
             }
-        if (Global.lightLayout.length > 1)
-            for (int i = 0; i < Global.lightLayout[1]; i++) {
+        }
+        if (numSides > 1) {
+            int fwd = w / numLightsOnSide(1);
+            int wd = Math.round(fwd);
+            for (int i = 0; i < numLightsOnSide(1); i++) {
                 g.setColor(getColor(light));
-                g.fillRect(w - wd * (i + 1), 0, wd, a);
+                g.fillRect(w - Math.round(fwd * i) - a, 0, wd, a);
                 light++;
             }
-        if (Global.lightLayout.length > 2)
-            for (int i = 0; i < Global.lightLayout[2]; i++) {
+        }
+        if (numSides > 2) {
+            float fhd = h / numLightsOnSide(2);
+            int hd = Math.round(fhd);
+            for (int i = 0; i < numLightsOnSide(2); i++) {
                 g.setColor(getColor(light));
-                g.fillRect(0, hd * i, a, hd);
+                g.fillRect(0, Math.round(fhd * i) + a, a, hd);
                 light++;
             }
-        if (Global.lightLayout.length > 3)
-            for (int i = 0; i < Global.lightLayout[3]; i++) {
+        }
+        if (numSides > 3) {
+            int fwd = w / numLightsOnSide(3);
+            int wd = Math.round(fwd);
+            for (int i = 0; i < numLightsOnSide(3); i++) {
                 g.setColor(getColor(light));
-                g.fillRect(wd * i, h - a, wd, a);
+                g.fillRect(Math.round(fwd * i) + a, h + a, wd, a);
                 light++;
             }
-
+        }
     }
 
     protected void setColor(int l, int r, int g, int b) {

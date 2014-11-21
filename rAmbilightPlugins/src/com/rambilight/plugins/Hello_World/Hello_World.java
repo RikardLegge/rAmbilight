@@ -1,6 +1,5 @@
 package com.rambilight.plugins.Hello_World;
 
-import com.rambilight.core.api.Global;
 import com.rambilight.core.api.ui.TrayController;
 import com.rambilight.plugins.Module;
 
@@ -27,7 +26,7 @@ public class Hello_World extends Module {
 
         // Moves the "currentPosition" forward one step.
         // If it reaches a position which isn't covered by lights, go back to 0 and start over again.
-        currentPosition = (++currentPosition) % Global.numLights;
+        currentPosition = (++currentPosition) % lightHandler.numLights();
 
         // At our new position, set the lights to be active
         lightHandler.addToUpdateBuffer(currentPosition, 255, 255, 255);

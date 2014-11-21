@@ -21,6 +21,7 @@ public class Global {
     public static String[] currentControllers = new String[]{"Ambilight"};
     public static String   serialPort         = "";
     public static int      compressionLevel   = 1;
+    public static boolean  compressionAutoSet = true;
 
     public static int     lightStepSize            = 0;
     public static boolean isSerialConnectionActive = false;
@@ -42,14 +43,18 @@ public class Global {
         Global.currentControllers = preferences.load("currentControllers", Global.currentControllers, -1);
 
         Global.lightLayout = preferences.load("lightLayout", Global.lightLayout, -1);
-        Global.lightStepSize = preferences.load("lightStepSize", Global.lightStepSize);
-        Global.serialPort = preferences.load("serialPort", Global.serialPort);
-        Global.compressionLevel = preferences.load("compressionLevel", Global.compressionLevel);
-        Global.compressionLevel = Global.compressionLevel > 0 ? Global.compressionLevel : 1;
-
         numLights = 0;
         for (int num : lightLayout)
             numLights += num;
+
+        Global.lightStepSize = preferences.load("lightStepSize", Global.lightStepSize);
+        Global.serialPort = preferences.load("serialPort", Global.serialPort);
+        Global.compressionAutoSet = preferences.load("compressionAutoSet", Global.compressionAutoSet);
+        if (compressionAutoSet)
+            Global.compressionLevel = (int) Math.floor(Global.numLights / 50);
+        else
+            Global.compressionLevel = preferences.load("compressionLevel", Global.compressionLevel);
+        Global.compressionLevel = Global.compressionLevel > 0 ? Global.compressionLevel : 1;
     }
 
     /**
@@ -65,6 +70,7 @@ public class Global {
         preferences.save("lightStepSize", Global.lightStepSize);
         preferences.save("serialPort", Global.serialPort);
         preferences.save("compressionLevel", Global.compressionLevel);
+        preferences.save("compressionAutoSet", Global.compressionAutoSet);
 
         preferences.save("VERSION", Global.VERSION);
     }
