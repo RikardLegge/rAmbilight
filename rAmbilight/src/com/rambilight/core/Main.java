@@ -151,8 +151,9 @@ public class Main {
                         MessageBox.Error(e.getMessage()); // Displays an error box in case of something happens
                         e.printStackTrace();
                     }
-                else
+                else {
                     exit(0);
+                }
         }
     }
 
