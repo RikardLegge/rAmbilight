@@ -16,26 +16,35 @@ import javax.websocket.Session;
 
 import org.glassfish.tyrus.client.ClientManager;
 
-@ClientEndpoint public class PushBulletEndpoint {
+@ClientEndpoint
+public class PushBulletEndpoint {
 
-    static PushBulletEndpointListener eventListener;
-    private static String             apiKey;
+    static         PushBulletEndpointListener eventListener;
+    private static String                     apiKey;
+    private static Session                    session;
 
     public static void setListener(PushBulletEndpointListener eventListener) {
         PushBulletEndpoint.eventListener = eventListener;
     }
 
     public static void open() {
+        if (session != null)
+            close();
         ClientManager client = ClientManager.createClient();
         try {
-            client.connectToServer(PushBulletEndpoint.class, new URI("wss://stream.pushbullet.com/websocket/" + apiKey));
+            session = client.connectToServer(PushBulletEndpoint.class, new URI("wss://stream.pushbullet.com/websocket/" + apiKey));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     public static void close() {
-
+        try {
+            session.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        session = null;
     }
 
     public static String getHistory() {
@@ -62,11 +71,14 @@ import org.glassfish.tyrus.client.ClientManager;
         return result;
     }
 
-    @OnOpen public void onOpen(Session session) {
+    @OnOpen
+    public void onOpen(Session session) {
+        eventListener.onConnected();
         System.out.println("Endpoint open");
     }
 
-    @OnMessage public String onMessage(String message, Session session) {
+    @OnMessage
+    public String onMessage(String message, Session session) {
         if (message.contains("tickle"))
             ;
         if (message.contains("push")) {
@@ -80,12 +92,23 @@ import org.glassfish.tyrus.client.ClientManager;
         return message;
     }
 
-    @OnClose public void onClose(Session session, CloseReason closeReason) {
-        if (closeReason.getCloseCode() != CloseReason.CloseCodes.NORMAL_CLOSURE)
+    @OnClose
+    public void onClose(Session session, CloseReason closeReason) {
+        System.out.println("Endpoint closed");
+        if (closeReason.getCloseCode() != CloseReason.CloseCodes.NORMAL_CLOSURE) {
+            eventListener.onDisconnected("Reopening...");
             open();
+        }
+        else
+            eventListener.onDisconnected("");
+
     }
 
     interface PushBulletEndpointListener {
+
+        public void onConnected();
+
+        public void onDisconnected(String s);
 
         public void onMessage(String s);
 

@@ -1,6 +1,6 @@
 package com.rambilight.plugins.PushBullet;
 
-import java.awt.MenuItem;
+import java.awt.*;
 import java.security.InvalidKeyException;
 import java.util.Hashtable;
 
@@ -11,22 +11,43 @@ import com.rambilight.plugins.PushBullet.PushBulletEndpoint.PushBulletEndpointLi
 
 public class PushBullet extends Module {
 
-    String apiKey;
-    Hashtable<String, String> colors       = new Hashtable<>();
-    int[]                     currentColor = new int[]{0, 0, 0};
-    int                       currentStage = -1;
-    int[]                     animation    = new int[]{1, 0, 1, 0, 1};
+    // Preferences
+    private String apiKey;
+    private Hashtable<String, String> colors    = new Hashtable<>();
+    private int[]                     animation = new int[]{1, 0, 1, 0, 1};
 
-    long lastStep = 0;
+    // State variables
+    private long  lastStep     = 0;
+    private int[] currentColor = new int[]{0, 0, 0};
+    private int   currentStage = -1;
+    private CheckboxMenuItem stateMenuItem;
+    private String  stateMessage = "";
+    private boolean connected    = false;
 
     public void loaded() throws InvalidKeyException {
+        setStateMessage("Please enter your API key.");
         if (apiKey == null)
             apiKey = MessageBox.Input("Pushbullet", "Please enter your API key");
         if (apiKey == null || apiKey.length() == 0)
             throw new InvalidKeyException("Can't use key of length 0");
 
+        setStateMessage("Waiting for connection.");
         PushBulletEndpoint.setAPiKey(apiKey);
         PushBulletEndpoint.setListener(new PushBulletEndpointListener() {
+
+            public void onConnected() {
+                setStateMessage("[Disconnect]");
+                setState(true);
+            }
+
+            public void onDisconnected(String s) {
+                if (s.length() > 0)
+                    setStateMessage(s);
+                else
+                    setStateMessage("[Connect]");
+
+                setState(false);
+            }
 
             public void onMessage(String s) {
                 System.out.println(s);
@@ -46,8 +67,20 @@ public class PushBullet extends Module {
             lightHandler.addToUpdateBuffer(i, currentColor[0], currentColor[1], currentColor[2]);
     }
 
+    public void resume() {
+        setStateMessage("Resuming...");
+        if (!connected)
+            PushBulletEndpoint.open();
+    }
+
+    public void suspend() {
+        setStateMessage("Suspending...");
+        if (connected)
+            PushBulletEndpoint.close();
+    }
+
     private void setCurrentColor(String applicationName) {
-        if (!colors.containsKey("applicationName"))
+        if (!colors.containsKey(applicationName))
             colors.put(applicationName, "#FFFFFF");
         String hex = colors.get(applicationName);
         currentColor[0] = Integer.valueOf(hex.substring(1, 3), 16);
@@ -70,9 +103,22 @@ public class PushBullet extends Module {
         }
     }
 
+
     public TrayController.CustomCreator getTrayCreator() {
         return () -> {
-            return new MenuItem[0];
+
+            stateMenuItem = TrayController.createCheckbox(stateMessage, connected, (target, state) -> {
+                if (connected) {
+                    setStateMessage("Disconnecting...");
+                    PushBulletEndpoint.close();
+                }
+                else {
+                    setStateMessage("Connecting...");
+                    PushBulletEndpoint.open();
+                }
+            });
+
+            return new MenuItem[]{stateMenuItem};
         };
     }
 
@@ -98,6 +144,20 @@ public class PushBullet extends Module {
         }
         if (keys.length > 0)
             preferences.save("configuredApplications", keys);
+    }
+
+
+    private void setState(boolean state) {
+        connected = state;
+        if (stateMenuItem != null)
+            stateMenuItem.setState(connected);
+    }
+
+    private void setStateMessage(String message) {
+        stateMessage = "Pushbullet " + message;
+        System.out.println(stateMessage);
+        if (stateMenuItem != null)
+            stateMenuItem.setLabel(stateMessage);
     }
 
 }
