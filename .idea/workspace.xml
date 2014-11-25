@@ -11,10 +11,8 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="Fixed Ambilight side bug.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/rAmbilight.app/Contents/Resources/Java/Application.jar" afterPath="$PROJECT_DIR$/dist/rAmbilight.app/Contents/Resources/Java/Application.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/API/rAmbilightAPI.jar" afterPath="$PROJECT_DIR$/dist/API/rAmbilightAPI.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="7038efd8-2b9b-40ad-a8d3-f295e84de4a6" name="Default" comment="Updated DIST to version 30">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" afterPath="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="rAmbilight.iws" />
@@ -83,7 +81,6 @@
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/LightHandlerCore.java" />
         <option value="$PROJECT_DIR$/../rambilight-framework/Examples/com/rambilight/plugins/Hello_World/Hello_World.java" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/sh/build.sh" />
-        <option value="$PROJECT_DIR$/rAmbilight/arduino/driver-dev/driver-dev.ino" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialController.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/SerialControllerJSSC.java" />
         <option value="$PROJECT_DIR$/rAmbilight/src/com/rambilight/core/serial/ComDriver.java" />
@@ -106,6 +103,7 @@
         <option value="$PROJECT_DIR$/rAmbilightAPI/src/com/rambilight/core/api/ui/Debugger.java" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/PushBullet/PushBullet.java" />
         <option value="$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java" />
+        <option value="$PROJECT_DIR$/rAmbilight/arduino/driver-dev/driver-dev.ino" />
       </list>
     </option>
   </component>
@@ -115,8 +113,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="43" />
     <option name="y" value="23" />
-    <option name="width" value="2005" />
-    <option name="height" value="1257" />
+    <option name="width" value="1637" />
+    <option name="height" value="1027" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -1199,8 +1197,8 @@
     </list>
     <recent_temporary>
       <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Bash.PushBullet.sh" />
-        <item index="1" class="java.lang.String" itemvalue="Bash.Ambilight.sh" />
+        <item index="0" class="java.lang.String" itemvalue="Bash.Ambilight.sh" />
+        <item index="1" class="java.lang.String" itemvalue="Bash.PushBullet.sh" />
         <item index="2" class="java.lang.String" itemvalue="Bash.Hello_World.sh" />
       </list>
     </recent_temporary>
@@ -1392,7 +1390,11 @@
       <created>1416954743275</created>
       <updated>1416954743275</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="Updated DIST to version 30">
+      <created>1416954760547</created>
+      <updated>1416954760547</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1416,23 +1418,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="43" y="23" width="2005" height="1257" extended-state="6" />
+    <frame x="43" y="23" width="1637" height="1027" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912534" sideWeight="0.49974528" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16480687" sideWeight="0.49974528" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2053476" sideWeight="0.49974528" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19742489" sideWeight="0.5002547" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19742489" sideWeight="0.49974528" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19679144" sideWeight="0.49974528" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32834226" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299748" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16709119" sideWeight="0.49946523" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20564264" sideWeight="0.49946523" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3272727" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19059561" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1465,7 +1467,6 @@
       <TodoPanelSettings />
     </option>
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
-    <MESSAGE value="Fixed color smoothening not reaching zero." />
     <MESSAGE value="Second optimization attempt. Failed...." />
     <MESSAGE value="Large update in the color fetcher." />
     <MESSAGE value="Fixed hanging problem in the LightHandler.&#10;Updated algorithm for taking average of pixel before post processing." />
@@ -1490,7 +1491,8 @@
     <MESSAGE value="Fixed Ambilight side bug." />
     <MESSAGE value="Added feedback to the current plugin state" />
     <MESSAGE value="Added more javadoc &amp; went to version 30.&#10;Bug fixes and better support for different light layouts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added more javadoc &amp; went to version 30.&#10;Bug fixes and better support for different light layouts" />
+    <MESSAGE value="Updated DIST to version 30" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated DIST to version 30" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1657,14 +1659,6 @@
             <element signature="e#5021#5022#0" expanded="false" />
             <element signature="e#5059#5060#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rAmbilight/arduino/driver-dev/driver-dev.ino">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23859191" vertical-offset="681" max-vertical-offset="5022">
-          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1973,8 +1967,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/rAmbilightPlugins/src/com/rambilight/plugins/Ambilight/Ambilight.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15238096" vertical-offset="0" max-vertical-offset="1404">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="758" max-vertical-offset="2178">
+          <caret line="268" column="0" selection-start-line="268" selection-start-column="0" selection-end-line="268" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="docComment;class#Ambilight#0" expanded="false" />
@@ -1987,12 +1981,19 @@
             <element signature="method#savePreferences#0;class#Ambilight#0" expanded="false" />
             <element signature="method#capture#0;class#Ambilight#0" expanded="false" />
             <element signature="method#fullCapture#0;class#Ambilight#0" expanded="false" />
-            <element signature="method#processCapture#0;class#Ambilight#0" expanded="false" />
             <element signature="method#step#1;class#Ambilight#0" expanded="false" />
             <element signature="method#getAverage#0;class#Ambilight#0" expanded="false" />
             <element signature="method#setCaptureRectangle#0;class#Ambilight#0" expanded="false" />
             <element signature="method#setCaptureRectangle#2;class#Ambilight#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rAmbilight/arduino/driver-dev/driver-dev.ino">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32780084" vertical-offset="627" max-vertical-offset="5022">
+          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
