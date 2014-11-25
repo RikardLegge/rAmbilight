@@ -5,15 +5,22 @@ import javax.swing.JOptionPane;
 public class MessageBox {
 
     /**
-     * Display an error box that also halts the program
+     * Display an error box that also halts the program.
+     *
+     * @param title,   The title of the message box.
+     * @param message, The message to be displayed.
      */
-    public static void Error(String message) {
+    public static void Error(String title, String message) {
         System.out.println(message);
-        JOptionPane.showMessageDialog(null, message, "An error ocurred!", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
     }
 
     /**
-     * Display an input box that also halts the program
+     * Display an input box that also halts the program, waiting for user input.
+     *
+     * @param title,   The title of the message box.
+     * @param message, The message to be displayed.
+     * @return The inputted valued or null if canceled.
      */
     public static String Input(String title, String message) {
         System.out.println(message);

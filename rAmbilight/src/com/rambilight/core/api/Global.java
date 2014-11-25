@@ -3,25 +3,27 @@ package com.rambilight.core.api;
 import com.legge.preferences.Preferences;
 
 import java.io.File;
+import java.util.ArrayList;
 
-/**
- * Global class for easy handling of global variables.
- */
 public class Global {
 
-    public static final int    VERSION         = 29;
-    public static final String APPLICATIONNAME = "rAmbilight";
+    public static final ArrayList<String> ERRORLOG        = new ArrayList<>();
+    public static final int               VERSION         = 30;
+    public static final String            APPLICATIONNAME = "rAmbilight";
 
     public static boolean requestExit            = false;
+    public static boolean disableErrorPopups     = false;
     public static boolean isActive               = true;
     public static String  applicationSupportPath = "";
 
-    public static int      numLights          = 60;
-    public static int[]    lightLayout        = new int[]{15, 30, 15};       // Right, Top, Left, Bottom
-    public static String[] currentControllers = new String[]{"Ambilight"};
-    public static String   serialPort         = "";
-    public static int      compressionLevel   = 1;
-    public static boolean  compressionAutoSet = true;
+    public static int      numLights                   = 0;
+    public static int[]    lightLayout                 = new int[]{15, 30, 15};
+    public static boolean  lightLayoutClockwise        = true;
+    public static int      lightLayoutStartingPosition = 2;
+    public static String[] currentControllers          = new String[]{"Ambilight"};
+    public static String   serialPort                  = "";
+    public static int      compressionLevel            = 1;
+    public static boolean  compressionAutoSet          = true;
 
     public static int     lightStepSize            = 0;
     public static boolean isSerialConnectionActive = false;
@@ -34,14 +36,14 @@ public class Global {
             new File(applicationSupportPath).mkdir();
     }
 
-    /**
-     * Loads the variables from cache
-     */
     public static void loadPreferences() {
         preferences = new Preferences("Core");
         Global.isActive = preferences.load("isActive", Global.isActive);
+        Global.disableErrorPopups = preferences.load("disableErrorPopups", Global.disableErrorPopups);
         Global.currentControllers = preferences.load("currentControllers", Global.currentControllers, -1);
 
+        Global.lightLayoutClockwise = preferences.load("lightLayoutClockwise", Global.lightLayoutClockwise);
+        Global.lightLayoutStartingPosition = preferences.load("lightLayoutStartingPosition", Global.lightLayoutStartingPosition);
         Global.lightLayout = preferences.load("lightLayout", Global.lightLayout, -1);
         numLights = 0;
         for (int num : lightLayout)
@@ -57,13 +59,13 @@ public class Global {
         Global.compressionLevel = Global.compressionLevel > 0 ? Global.compressionLevel : 1;
     }
 
-    /**
-     * Writes the variables to cache
-     */
     public static void savePreferences() {
         preferences.save("isActive", Global.isActive);
+        preferences.save("disableErrorPopups", Global.disableErrorPopups);
         preferences.save("currentControllers", Global.currentControllers);
 
+        preferences.save("lightLayoutClockwise", Global.lightLayoutClockwise);
+        preferences.save("lightLayoutStartingPosition", Global.lightLayoutStartingPosition);
         preferences.save("lightLayout", lightLayout);
 
         preferences.save("lightStepSize", lightStepSize);

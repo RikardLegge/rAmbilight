@@ -3,6 +3,7 @@ package com.rambilight.core;
 import com.legge.preferences.Preferences;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.LightHandler;
+import com.rambilight.core.api.Platform;
 import com.rambilight.core.api.ui.MessageBox;
 import com.rambilight.plugins.Module;
 
@@ -56,7 +57,7 @@ public class ModuleLoader {
                 // Filter away any unwanted files
                 if (name.endsWith(".jar") || name.endsWith(".class"))
                     //urls.add((new File(pluginPath + "/" + name)).toURL());
-                    urls.add(new URL("file:" + pluginPath + "/" + name));
+                    urls.add(new URL(Platform.getFilePathFormat(pluginPath + "/" + name)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,7 +66,7 @@ public class ModuleLoader {
         ArrayList<Class<? extends Module>> classes = new ArrayList<>();
 
         if (urls.size() == 0)
-            MessageBox.Error("No plugins found in the plugin folder '" + pluginPath + "'");
+            MessageBox.Error("No plugins where found", "No plugins found in the plugin folder '" + pluginPath + "'");
         for (URL url : urls) {
             // Parse the path into a name. Remove everything before the last "/"(Path) and after the last "."(Extension)
             String name = url.toString().substring(url.toString().lastIndexOf("plugins/") + 8, url.toString().lastIndexOf("."));
@@ -104,6 +105,14 @@ public class ModuleLoader {
             }
             loadedModules.put(name, newModule);
         }
+        else {
+            try {
+                loadedModules.get(name).resume();
+            } catch (Exception e) {
+                System.out.println("An error occurred when resuming " + name + ":" + e.getMessage());
+                return false;
+            }
+        }
 
         activeModules.add(name);
         for (OnChangeListener listener : onChangeListeners)
@@ -114,8 +123,14 @@ public class ModuleLoader {
     public static void deactivateModule(String name) throws Exception {
         if (name == null)
             return;
-        if (activeModules.contains(name))
+        if (activeModules.contains(name)) {
+            try {
+                loadedModules.get(name).suspend();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             activeModules.remove(name);
+        }
         for (OnChangeListener listener : onChangeListeners)
             listener.onChange(name);
     }

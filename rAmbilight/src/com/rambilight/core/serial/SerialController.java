@@ -51,6 +51,11 @@ public abstract class SerialController {
      */
     public abstract boolean close();
 
+    /**
+     * Dispose the COM port listener
+     */
+    public abstract boolean removeRootEventListener();
+
 
     /**
      * Write BYTE through the serialPort

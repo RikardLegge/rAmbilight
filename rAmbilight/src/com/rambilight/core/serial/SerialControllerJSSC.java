@@ -114,6 +114,15 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
         return true;
     }
 
+    public boolean removeRootEventListener() {
+        try {
+            serialPort.removeEventListener();
+            return true;
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public void write(byte o) throws Exception {
         if (serialPort != null)

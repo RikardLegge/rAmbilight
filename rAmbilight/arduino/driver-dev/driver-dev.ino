@@ -1,5 +1,5 @@
-//#include <PololuLedStrip.h>
-#include <FastLED.h>
+#include <PololuLedStrip.h>
+//#include <FastLED.h>
 
 #define DATA_PIN 6        // The pin on the Arduino to use for the LED PWM.
 #define DATA_RATE 512000//512000//256000//115200  // The speed of the transmission
@@ -15,16 +15,16 @@
 #define BEGIN_SEND_PREFS 253
 
 #define NUM_LEDS 250     // The maximum number of LEDs
-/*
+
 PololuLedStrip<DATA_PIN> ledStrip;
 
 rgb_color leds[NUM_LEDS];
 rgb_color leds_TargetValue[NUM_LEDS];
-*/
 
+/*
 CRGB leds[NUM_LEDS];
 CRGB leds_TargetValue[NUM_LEDS];
-
+*/
 /*
  1: ready.
  2: sleeping.
@@ -48,9 +48,9 @@ int sleeping = 0;          // Am i sleeping?
 unsigned long delta;       // TMP value for delta calculations
 
 void setup() {
-  //PololuLedStripBase::interruptFriendly = true;
+  PololuLedStripBase::interruptFriendly = true;
   delay(500);                       // sanity check delay - allows reprogramming if accidentally blowing power w/leds
-  LEDS.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);
+  //LEDS.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);
   clearLEDS();
   delay(500);
 
@@ -58,14 +58,14 @@ void setup() {
 }
 
 void clearLEDS(){
-    //ledStrip.write(leds, NUM_LEDS);
-    LEDS.clear();
-    FastLED.show();
+    ledStrip.write(leds, NUM_LEDS);
+    //LEDS.clear();
+    //FastLED.show();
 }
 
 void writeLEDS(){
-    //ledStrip.write(leds, numActiveLeds);
-    FastLED.show();
+    ledStrip.write(leds, numActiveLeds);
+    //FastLED.show();
 }
 
 void loop() {
@@ -109,99 +109,102 @@ void stateHandle(){
   }
 }
 
+int serialHandleBegin = 0;
 void serialHandle(){
-  if(Serial.available() > 0){
-    buffi = Serial.read();
-    lastPing = millis();
-    if(buffi == BEGIN_SEND){ // Is normal send START
-      lastRealData = lastPing;
-      buffi = 0;
-      while(true){
-        if(Serial.available() > 0){
-          lastPing = millis();
-          buff[buffi] = Serial.read();
-          if(buff[buffi] == END_SEND){
-            break;
+  serialHandleBegin = millis();
+      if(Serial.available() > 0){
+        buffi = Serial.read();
+        lastPing = millis();
+        if(buffi == BEGIN_SEND){ // Is normal send START
+          lastRealData = lastPing;
+          buffi = 0;
+          while(true){
+            if(Serial.available() > 0){
+              lastPing = millis();
+              buff[buffi] = Serial.read();
+              if(buff[buffi] == END_SEND){
+                break;
+              }
+              if(buffi == 3){
+                leds_TargetValue[buff[0]].red = buff[1];
+                leds_TargetValue[buff[0]].green = buff[2];
+                leds_TargetValue[buff[0]].blue = buff[3];
+                buffi = 0;
+              }
+              else
+                buffi++;
+              continue;
+            }
+            else if(difference(millis(), lastPing) > 2) // Break if timed out.
+              break;
+            delay(1);
           }
-          if(buffi == 3){
-            leds_TargetValue[buff[0]].red = buff[2];
-            leds_TargetValue[buff[0]].green = buff[1];
-            leds_TargetValue[buff[0]].blue = buff[3];
-            buffi = 0;
-          }
-          else
-            buffi++;
-          continue;
         }
-        else if(difference(millis(), lastPing) > 2) // Break if timed out.
-          break;
-        delay(1);
-      }
-    }
-    else if(buffi == END_SEND){ // Is PING or END
-      //Ping...
-    }
-    else if(buffi == BEGIN_SEND_PREFS){ // Is preferences. Read the coming 2 bytes. Key, Value
-      if(Serial.available() >= 2){
-        switch(Serial.read()){
-        case NUMBER_OF_LEDS:
-          numActiveLeds = Serial.read();
-          if(numActiveLeds > NUM_LEDS)
-            numActiveLeds = NUM_LEDS;
-          else if(numActiveLeds < 0)
-            numActiveLeds = 0;
-          break;
-        case SMOOTH_STEP:
-          smoothStep = Serial.read();
-          if(smoothStep > 255)
-            smoothStep = 255;
-          else if(smoothStep < 1)
-            smoothStep = 1;
-          break;
-        case COMPRESSION_LEVEL:
-          compression = Serial.read();
-          if(compression > NUM_LEDS)
-            compression = NUM_LEDS;
-          else if(compression < 1)
-            compression = 1;
-          break;
-        case CLEAR_BUFFER:
-          Serial.read();
-          for(int i = 0; i < NUM_LEDS; i++){
-            leds_TargetValue[i].red = 0;
-            leds_TargetValue[i].green = 0;
-            leds_TargetValue[i].blue = 0;
-          }
-          for(int i = 0; i < NUM_LEDS; i++){
-            leds[i].red = 0;
-            leds[i].green = 0;
-            leds[i].blue = 0;
-          }
-          break;
-        default:
-          Serial.read();
-          break;
+        else if(buffi == END_SEND){ // Is PING or END
+          //Ping...
         }
-      }
-    }
-    else { // Other. Print out what might have gone wrong
-      while(Serial.available() > 0 && buffi > 0){
-        switch(buffi){
-        case BEGIN_SEND:
-          buffi = -1;
-          break;
-        case END_SEND:
-          Serial.read();
-          buffi = -1;
-          break;
-        default:
-          Serial.read();
-          break;
+        else if(buffi == BEGIN_SEND_PREFS){ // Is preferences. Read the coming 2 bytes. Key, Value
+          if(Serial.available() >= 2){
+            switch(Serial.read()){
+            case NUMBER_OF_LEDS:
+              numActiveLeds = Serial.read();
+              if(numActiveLeds > NUM_LEDS)
+                numActiveLeds = NUM_LEDS;
+              else if(numActiveLeds < 0)
+                numActiveLeds = 0;
+              break;
+            case SMOOTH_STEP:
+              smoothStep = Serial.read();
+              if(smoothStep > 255)
+                smoothStep = 255;
+              else if(smoothStep < 1)
+                smoothStep = 1;
+              break;
+            case COMPRESSION_LEVEL:
+              compression = Serial.read();
+              if(compression > NUM_LEDS)
+                compression = NUM_LEDS;
+              else if(compression < 1)
+                compression = 1;
+              break;
+            case CLEAR_BUFFER:
+              Serial.read();
+              for(int i = 0; i < NUM_LEDS; i++){
+                leds_TargetValue[i].red = 0;
+                leds_TargetValue[i].green = 0;
+                leds_TargetValue[i].blue = 0;
+              }
+              for(int i = 0; i < NUM_LEDS; i++){
+                leds[i].red = 0;
+                leds[i].green = 0;
+                leds[i].blue = 0;
+              }
+              break;
+            default:
+              Serial.read();
+              break;
+            }
+          }
         }
-        buffi = Serial.peek();
+        else { // Other. Print out what might have gone wrong
+          while(Serial.available() > 0 && buffi > 0){
+            switch(buffi){
+            case BEGIN_SEND:
+              buffi = -1;
+              break;
+            case END_SEND:
+              Serial.read();
+              buffi = -1;
+              break;
+            default:
+              Serial.read();
+              break;
+            }
+            buffi = Serial.peek();
+          }
+        }
+        return;
       }
-    }
-  }
 }
 
 // Variables for Color Smoothing

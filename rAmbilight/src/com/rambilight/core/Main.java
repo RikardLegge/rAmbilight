@@ -14,6 +14,14 @@ public class Main {
     private static TrayController tray;
     private static ComDriver      serialCom;
 
+    public static void disableTrayController(String message) {
+        tray.disableRun(message);
+    }
+
+    public static void enableTrayController() {
+        tray.enableRun();
+    }
+
     /**
      * Start the application
      *
@@ -63,7 +71,7 @@ public class Main {
             if (cause != null)
                 error += "\nCaused by: " + cause.getMessage();
 
-            MessageBox.Error(error + "\nShutting down..."); // Displays an error box in case of something happens
+            MessageBox.Error(message != null ? message : "Initialization error!", error + "\nShutting down..."); // Displays an error box in case of something happens
             exit(-1);
             return;
         }
@@ -148,7 +156,7 @@ public class Main {
                             }
                         }
                     } catch (Exception e) {
-                        MessageBox.Error(e.getMessage()); // Displays an error box in case of something happens
+                        MessageBox.Error(e.getCause() != null ? e.getCause().toString() : "Runtime Error!", e.getMessage()); // Displays an error box in case of something happens
                         e.printStackTrace();
                     }
                 else {
@@ -164,7 +172,7 @@ public class Main {
      */
     private static void exit(int code) {
         if (!serialCom.close()) {
-            MessageBox.Error("WARNING: Did not exit since the application was unable to close the serial port.\nPlease disconnect the USB device and try again.\n\nThis is a safety measure, since closing the program in the current state might make the USB device unusable until force quiting the rAmbilight process");
+            MessageBox.Error("Serial port locked!", "WARNING: Did not exit since the application was unable to close the serial port.\nPlease disconnect the USB device and try again.\n\nThis is a safety measure, since closing the program in the current state might make the USB device unusable until force quiting the rAmbilight process");
             return;
         }
         try {

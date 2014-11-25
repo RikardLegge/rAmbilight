@@ -3,7 +3,7 @@ package com.rambilight.core.api.Light;
 import com.rambilight.core.api.Global;
 
 /**
- * Class for handling the Lights and what to output
+ * A class for handling the Lights and what to output to the ambilight device.
  */
 public class LightHandler {
 
@@ -17,18 +17,25 @@ public class LightHandler {
     /**
      * WARNING: Not allowed to be called from inside of a class.
      * Calling this will cause a runtime error when it's loaded outside the development environment.
+     *
+     * @param visualizer The visulization target.
      */
     public LightHandler(Visualizer visualizer) {
         this.visualizer = visualizer;
     }
 
     /**
-     * Add light to the update buffer
+     * Add light to the update buffer.
+     * The color properties are BYTE values in INT form for easy manipulation.
+     * They should therefor be a value between 0 and 252
+     * (The last three available bytes are reserved for the communication protocol).
+     * A higher or lower value than this be cut to 0 / 252.
      *
-     * @param l Light position
-     * @param r The amount of read
+     * @param l The position of the light.
+     * @param r The amount of red
      * @param g The amount of green
      * @param b The amount of blue
+     * @return true if the value was set as a new one.
      */
     public boolean addToUpdateBuffer(int l, int r, int g, int b) {
         boolean ret = false;
@@ -44,12 +51,14 @@ public class LightHandler {
     }
 
     /**
-     * Add light to the update buffer directly. This bypasses the compression compensation
+     * Add light to the update buffer directly.
+     * This bypasses the compression compensation.
      *
      * @param l Light position
-     * @param r The amount of read
+     * @param r The amount of red
      * @param g The amount of green
      * @param b The amount of blue
+     * @return true if the value was set as a new one.
      */
     public boolean rawAddToUpdateBuffer(int l, int r, int g, int b) {
         Light light = visualizer.getLight(l);
@@ -105,6 +114,25 @@ public class LightHandler {
      */
     public int numSides() {
         return Global.lightLayout.length;
+    }
+
+    /**
+     * Get the side which is compensated by the direction and starting position.
+     * This should be used if the plugin requires to know which side each side index corresponds to.
+     * Without this, It's a lot harder to know which side is which in all different setups.
+     *
+     * @param pos A value between zero and the number of sides which are available.
+     * @return The real side a static indexed side actually relates to.
+     */
+    public int getSideByIndex(int pos) {
+        int modded;
+        int mod = numSides();
+        if (!Global.lightLayoutClockwise)
+            modded = (((pos - Global.lightLayoutStartingPosition) % mod) + mod) % mod;
+        else {
+            modded = (((-pos - Global.lightLayoutStartingPosition) % mod) + mod) % mod;
+        }
+        return modded;
     }
 
     /**

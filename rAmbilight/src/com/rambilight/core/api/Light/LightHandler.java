@@ -51,6 +51,17 @@ public class LightHandler {
         return Global.lightLayout.length;
     }
 
+    public int getSideByIndex(int pos) {
+        int modded;
+        int mod = numSides();
+        if (!Global.lightLayoutClockwise)
+            modded = (((pos - Global.lightLayoutStartingPosition) % mod) + mod) % mod;
+        else {
+            modded = (((-pos - Global.lightLayoutStartingPosition) % mod) + mod) % mod;
+        }
+        return modded;
+    }
+
     public Light[] getColorBuffer() {
         return lightHandlerCore.getColorBuffer();
     }

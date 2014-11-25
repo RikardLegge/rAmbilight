@@ -16,4 +16,15 @@ public class Platform {
             partialPath = "/.";
         return System.getProperty("user.home") + partialPath + name;
     }
+
+    public static String getFilePathFormat(String uri) {
+        String prefix;
+        if (isWindows)
+            prefix = "";
+        else if (isOSX)
+            prefix = "file:";
+        else
+            prefix = "";
+        return prefix + uri;
+    }
 }

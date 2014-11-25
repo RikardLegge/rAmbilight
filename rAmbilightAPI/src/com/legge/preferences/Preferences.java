@@ -1,11 +1,20 @@
 package com.legge.preferences;
 
+
+/**
+ * Yoy can use this class to access an abstraction of the Preference interface for easy loading and saving
+ * of preferences.
+ * <p>
+ * When a module is loaded, they automatically get a preference instance in their name and connected to
+ * their module.
+ * NOTE: It's not recommended to create a new instance of this in a module if you don't know what your are doing.
+ */
 public class Preferences {
 
     /**
-     * Create a new instance of the class that is associated with a specific part of the application
+     * Create a new instance of the class that is associated with a specific part of the application.
      *
-     * @param moduleName The name of the module. Must be unique.
+     * @param moduleName, Name of the module / preference which should be saved.
      */
     public Preferences(String moduleName) {
     }

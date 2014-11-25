@@ -24,18 +24,23 @@ public class Debugger {
             System.err.println("Unable to set a custom look and feel.");
         }
 
-
+        Global.SETUP();
         Visualizer.SetCallback getCallback = (callback) -> visualizerUpdate = callback;
         Visualizer visulizer = new Visualizer(this.getClass(), getCallback);
         TrayController trayController = new TrayController(module.getClass().getSimpleName());
 
         module.lightHandler = new LightHandler(visulizer);
         module.preferences = new Preferences(module.getClass().getSimpleName());
-        module.loaded();
-        trayController.addToTrayController(module.getTrayCreator());
+        try {
+            module.loaded();
+            trayController.addToTrayController(module.getTrayCreator());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
 
         while (!Global.requestExit)
-            if (Global.isActive)
+            if (Global.isActive) {
                 try {
                     module.step();
                     visualizerUpdate.call();
@@ -43,12 +48,26 @@ public class Debugger {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            else
+                if (!Global.isActive)
+                    try {
+                        module.suspend();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+            }
+            else {
                 try {
                     Thread.sleep(500);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+                if (Global.isActive)
+                    try {
+                        module.resume();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+            }
+        System.exit(0);
     }
 }

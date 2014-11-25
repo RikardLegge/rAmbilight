@@ -6,7 +6,6 @@ import com.rambilight.core.ModuleLoader;
 import com.rambilight.core.api.Global;
 
 import java.awt.*;
-import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -20,6 +19,7 @@ public class TrayController {
     // Menu items in the tray
     private CheckboxMenuItem              runToggle;
     private Menu                          inputs;
+    private Menu                          errors;
     private MenuItem                      exit;
     private MenuItem                      openConfig;
     private Hashtable<String, MenuItem[]> itemGroups;
@@ -66,22 +66,41 @@ public class TrayController {
                     String moduleName = target.getLabel();
                     if (!target.getState())
                         ModuleLoader.deactivateModule(moduleName);
-                    else
-                        if(!ModuleLoader.activateModule(moduleName))
-                            target.setState(false);
+                    else if (!ModuleLoader.activateModule(moduleName))
+                        target.setState(false);
                     setActiveInputType();
                 } catch (Exception e1) {
                     e1.printStackTrace();
                     System.err.println("Unable to create the selected module: " + e1.getMessage());
                 }
             });
+
+            // Error List
+            MenuItemsCreator errorListContentCreator = () -> {
+                MenuItem[] errorList = new MenuItem[Global.ERRORLOG.size()];
+                int pos = 0;
+                for (String errorString : Global.ERRORLOG)
+                    errorList[pos++] = createItem(errorString, null);
+                return errorList;
+            };
+
+            errors = createItemGroup("Error Log [Refresh]", errorListContentCreator.create(), (target) -> {
+            });
+            errors.addActionListener((e) -> {
+                inputs.removeAll();
+                MenuItem[] errorList = errorListContentCreator.create();
+                for (MenuItem item : errorList)
+                    inputs.add(item);
+            });
+
+
             exit = createItem("Quit rAmbilight", (target) -> Main.requestExit());
             openConfig = createItem("Reveal configuration", (target) -> {
                 if (Desktop.isDesktopSupported())
                     try {
                         Desktop.getDesktop().open(new File(Global.applicationSupportPath));
                     } catch (Exception ex) {
-                        MessageBox.Error("Unable to reveal configuration located at: \n" + Global.applicationSupportPath);
+                        MessageBox.Error("Unable to reveal configuration", "Unable to reveal configuration located at: \n" + Global.applicationSupportPath);
                     }
             });
 
@@ -146,6 +165,8 @@ public class TrayController {
 
         popup.addSeparator();
         popup.add(openConfig);
+        if (Global.disableErrorPopups)
+            popup.add(errors);
         popup.add(exit);
 
         setState(Global.isActive);
@@ -234,6 +255,23 @@ public class TrayController {
         return group;
     }
 
+    public static Menu createItemGroup(String name, MenuItem[] items, MenuItemStateChanged handle) {
+        Menu group = new Menu(name);
+
+        for (MenuItem item : items)
+            addToItemGroup(group, item, handle);
+        return group;
+    }
+
+    public static void addToItemGroup(Menu group, MenuItem item, MenuItemStateChanged handle) {
+        item.addActionListener((e) -> {
+            MenuItem target = (MenuItem) e.getSource();
+
+            if (handle != null)
+                handle.call(target);
+        });
+        group.add(item);
+    }
 
     public static void addToGroup(Menu group, CheckboxMenuItem item, GroupStateChanged handle) {
         int index = group.getItemCount();
