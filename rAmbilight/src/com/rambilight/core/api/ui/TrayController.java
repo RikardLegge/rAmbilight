@@ -94,7 +94,11 @@ public class TrayController {
             });
 
 
-            exit = createItem("Quit rAmbilight", (target) -> Main.requestExit());
+            exit = createItem("Quit rAmbilight", (target) -> {
+                if (Main.sleepLatch != null)
+                    Main.sleepLatch.countDown();
+                Main.requestExit();
+            });
             openConfig = createItem("Reveal configuration", (target) -> {
                 if (Desktop.isDesktopSupported())
                     try {
@@ -122,12 +126,29 @@ public class TrayController {
 
 
     public void setState(boolean active) {
-        if (!runToggle.isEnabled())
-            return;
+        setState(active, "");
+    }
+
+    public String getLabel() {
+        return runToggle.getLabel();
+    }
+
+    public void setLabel(String message, boolean state) {
+        runToggle.setLabel((Global.isActive ? "Active" : "Inactive") + (message.length() == 0 ? "" : " (" + message + ")"));
+        trayIcon.setToolTip(message);
+        trayIcon.setImage(state ? Image_Active : Image_Idle);
+    }
+
+    public void setState(boolean active, String message) {
         Global.isActive = active;
+
+        if (Global.isActive)
+            if (Main.sleepLatch != null)
+                Main.sleepLatch.countDown();
+
         runToggle.setState(Global.isActive);
-        runToggle.setLabel(Global.isActive ? "Active" : "Activate");
-        trayIcon.setToolTip(Global.isActive ? "rAmbilight" : null);
+        runToggle.setLabel((Global.isActive ? "Active" : "Inactive") + (message.length() == 0 ? "" : " (" + message + ")"));
+        trayIcon.setToolTip(Global.isActive ? Global.APPLICATIONNAME : null);
         trayIcon.setImage(Global.isActive ? Image_Active : Image_Idle);
     }
 

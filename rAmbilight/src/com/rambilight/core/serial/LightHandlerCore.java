@@ -4,15 +4,13 @@ import com.rambilight.core.ModuleLoader;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.Light;
 
-import javax.print.attribute.standard.Compression;
-import javax.swing.tree.VariableHeightLayoutCache;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class LightHandlerCore {
 
-    private static final int threshold = 18;                     // Threshold for when a light actually has changed color. Value is the total difference of RGB.
+    //private static final int threshold = 18;                     // Threshold for when a light actually has changed color. Value is the total difference of RGB.
     private int numLights;                                      // Total number of lights
 
     private Light[]                    colorBuffer;             // List of the colors of the respective lights
@@ -147,6 +145,18 @@ public class LightHandlerCore {
 
     private int diff(int a, int b) {
         return Math.abs(a - b);
+    }
+
+    public void clearBuffer() {
+        lightsToUpdate.clear();
+        for (Light light : colorBuffer)
+            light.requiresUpdate = false;
+        for (String key : identifiableColorBuffer.keySet())
+            for (Light light : identifiableColorBuffer.get(key)) {
+                light.r = 0;
+                light.g = 0;
+                light.b = 0;
+            }
     }
 
     public void sanityCheck() {

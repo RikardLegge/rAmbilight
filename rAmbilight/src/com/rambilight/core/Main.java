@@ -8,18 +8,17 @@ import com.rambilight.core.api.ui.TrayController;
 import com.rambilight.core.serial.ComDriver;
 
 import javax.swing.*;
+import java.util.concurrent.CountDownLatch;
 
 public class Main {
 
     private static TrayController tray;
     private static ComDriver      serialCom;
 
-    public static void disableTrayController(String message) {
-        tray.disableRun(message);
-    }
+    public static CountDownLatch sleepLatch;
 
-    public static void enableTrayController() {
-        tray.enableRun();
+    public static void trayControllerSetMessage(String message, boolean icon) {
+        tray.setLabel(message, icon);
     }
 
     /**
@@ -34,7 +33,6 @@ public class Main {
 
         System.setProperty("apple.laf.useScreenMenuBar", "false");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "rAmbilight");
-        //System.setProperty(SerialNativeInterface.PROPERTY_JSSC_NO_TIOCEXCL, SerialNativeInterface.PROPERTY_JSSC_NO_TIOCEXCL);
         // Set the UI to a theme that resembles the platform specific one.
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -55,11 +53,10 @@ public class Main {
             //ModuleLoader.loadModule(Ambilight.class);
 
             tray = new TrayController();
-            tray.disableRun("Loading...");
 
             for (String moduleName : Global.currentControllers)
                 ModuleLoader.activateModule(moduleName);
-            tray.disableRun("No device connected");
+            tray.enableRun();
         } catch (Exception e) {
             e.printStackTrace();
             String message = e.getMessage();
@@ -113,46 +110,58 @@ public class Main {
             while (true)
                 if (!Global.requestExit)
                     try {
-                        if (Global.isSerialConnectionActive)
-                            if (Global.isActive) {
-                                if (suspended)
-                                    suspended = false;
-                                ModuleLoader.step();
-                                if (!serialCom.update())
-                                    continue;
-
+                        if (Global.isSerialConnectionActive && Global.isActive) {
+                            if (suspended)
+                                suspended = false;
+                            ModuleLoader.step();
+                            if (serialCom.update())
                                 serialCom.getLightHandler().sanityCheck();
-                                try {
-                                    Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
-                                } catch (InterruptedException e) {
-                                    System.err.println("An error occurred in the main thread.");
-                                    e.printStackTrace();
-                                }
+                            try {
+                                Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
+                            } catch (InterruptedException e) {
+                                System.err.println("An error occurred in the main thread.");
+                                e.printStackTrace();
                             }
-                            else {
-                                if (!suspended) {
-                                    suspended = true;
-                                    ModuleLoader.suspend();
+                        }
+                        else {
+                            if (!suspended) {
+                                System.out.println("Suspending");
+                                suspended = true;
+                                Global.isSerialConnectionActive = false;
+                                ModuleLoader.suspend();
+                                serialCom.getLightHandler().clearBuffer();
+                                if (!serialCom.halted)
+                                    serialCom.close();
+                            }
+                            if (Global.isActive) {
+
+                                if (serialCom.serialPortsAvailable()) {
+                                    tray.setLabel("Connecting...", true);
+                                    if (serialCom.initialize())
+                                        tray.setLabel("", Global.isActive);
+                                    else
+                                        tray.setLabel("Failed to connect...", true);
                                 }
+                                else if (!tray.getLabel().contains("No device"))
+                                    tray.setLabel("No device connected", false);
                                 try {
-                                    Thread.sleep(500);
+                                    Thread.sleep(1000);
                                 } catch (InterruptedException e) {
                                     System.out.println("Thread sleep was interrupted.");
                                     e.printStackTrace();
                                 }
                             }
-                        else {
-                            if (tray.isRunEnabled())
-                                tray.disableRun("No device connected");
-                            if (serialCom.serialPortsAvailable()) {
-                                if (serialCom.initialize())
-                                    tray.enableRun();
-                            }
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                System.out.println("Thread sleep was interrupted.");
-                                e.printStackTrace();
+                            else {
+                                tray.setState(Global.isActive, "");
+                                try {
+                                    sleepLatch = new CountDownLatch(1);
+                                    System.out.print("Awaiting latch... ");
+                                    sleepLatch.await();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println("Awoke!");
+                                sleepLatch = null;
                             }
                         }
                     } catch (Exception e) {

@@ -91,6 +91,7 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
                 }
                 try {
                     serialPort.closePort();
+                    serialPort = null;
                     System.out.println("Closed!");
                 } catch (SerialPortException e) {
                     e.printStackTrace();

@@ -5,8 +5,6 @@ import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.Light;
 import com.rambilight.core.api.ui.MessageBox;
 
-import java.io.Console;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -16,8 +14,8 @@ public class ComDriver {
     private LightHandlerCore lightHandler;
     private Queue<Byte>      serialBuffer;
 
-    private long lastCorrectionLap      = 0;
-    private int  correctionLightid      = 0;
+    //    private long lastCorrectionLap      = 0;
+    //    private int  correctionLightid      = 0;
     private long lastPing               = 0;
     private long lastReceived           = 0;
     private long ticksSinceLastReceived = 0;    // 1 tick ~10ms.
@@ -26,6 +24,8 @@ public class ComDriver {
     private boolean displayedBusyMessage = false;
 
     private int lastNumPorts = 0;
+
+    public boolean halted = false;
 
     public ComDriver() {
         lightHandler = new LightHandlerCore(Global.numLights);
@@ -99,7 +99,7 @@ public class ComDriver {
             }
         }
 
-        Main.disableTrayController("Connecting to device");
+        Main.trayControllerSetMessage("Connecting to device", true);
         int errorCode = serial.initialize(Global.serialPort);
 
         lastReceived = System.currentTimeMillis();
@@ -112,7 +112,8 @@ public class ComDriver {
             }
             else {
                 displayedBusyMessage = true;
-                throw new Exception("The port seems to be used by another application, please close any other application which might communicate with the device.\nIf you don't know of any application which might be running and be connected to the USB device, try removing and reinserting the USB cable it into the computer.");
+                System.out.println("The port seems to be used by another application, please close any other application which might communicate with the device.\nIf you don't know of any application which might be running and be connected to the USB device, try removing and reinserting the USB cable it into the computer.");
+                return false;
             }
         else if (errorCode == 2)
             return false;
@@ -122,6 +123,7 @@ public class ComDriver {
         Global.isSerialConnectionActive = true;
         lightHandler.reset();
         lastNumPorts = 0;
+        halted = false;
         return true;
     }
 
@@ -136,41 +138,16 @@ public class ComDriver {
             if (now - lastReceived > 8000) {
                 Global.isSerialConnectionActive = false;
                 System.err.println("The system seems to have halted.");
-                Main.disableTrayController("Please reinsert the USB cable");
+                halted = true;
                 serial.removeRootEventListener();
+                Main.trayControllerSetMessage("Please reinsert the USB cable", false);
                 MessageBox.Error("Serial port locked", "If you recently unplugged the USB device and haven't reinserted it, you can ignore this message!\n\nUnable to connect to the device, please unplug and reinsert the USB device.\nPress OK when this has been done.\n\nWARNING: DON'T QUIT the application while the serial port is in this state, since it will lock it. To fix this, just force close all other instances of the application.\n\nNOTE: There is a known bug which causes this problem, which hopefully will be fixed in on of the upcoming releases.\nUntil then, when this window pops up, please just reinsert the USB device \n\nRegards\nThe rAmbilight development team");
                 return false;
-
-            /*if (serial.getAvailablePorts().length == 0) {
-                Global.requestExit = true;
-                throw new Exception("The serial device can no longer be found.\n Please reinsert it and restart the application. \n\n Exiting...");
-            }
-
-            boolean cache = Global.isActive;
-            try {
-                Global.isActive = false;
-                System.err.println("The system seems to have halted.");
-                if (serial.isOpen())
-                    serial.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                System.out.print("Reopening port...");
-                if (!serial.initialize(Global.serialPort))
-                    throw new Exception("Unable to open port");
-                System.out.println(" Opened!");
-                lastReceived = now;
-                writtenPrefs = false;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Global.isActive = cache;*/
             }
             else if (now - lastReceived > 2000) {
+                Global.isSerialConnectionActive = false;
                 System.out.println("Lost connection to the USB device.");
                 serial.close();
-                Global.isSerialConnectionActive = false;
                 return false;
             }
             else if (now - lastPing > 750)
@@ -236,7 +213,7 @@ public class ComDriver {
         if (lightHandler.requiresUpdate()) {
             writeToBuffer(ArduinoCommunication.BEGIN_SEND); // Should be more efficient than an ordinary write
             lastPing = System.currentTimeMillis();
-            lastCorrectionLap = System.currentTimeMillis();
+            //lastCorrectionLap = System.currentTimeMillis();
 
             Light light;
             flushBuffer();
@@ -250,7 +227,7 @@ public class ComDriver {
             flushBuffer();
         }
     }
-
+/*
     private void writeCorrecitonToBuffer(int num) {
         for (int i = 0; i < num; i++) {
             Light light = lightHandler.getColorBuffer()[correctionLightid];
@@ -261,7 +238,7 @@ public class ComDriver {
             }
         }
     }
-
+*/
 
     private void flushPreferences() {
         writePreference(ArduinoCommunication.CLEAR_BUFFER, ArduinoCommunication.NULL);
