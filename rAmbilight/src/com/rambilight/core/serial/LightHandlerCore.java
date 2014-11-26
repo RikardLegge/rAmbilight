@@ -10,7 +10,7 @@ import java.util.Queue;
 
 public class LightHandlerCore {
 
-    //private static final int threshold = 18;                     // Threshold for when a light actually has changed color. Value is the total difference of RGB.
+    private static final int threshold = 3;                     // Threshold for when a light actually has changed color. Value is the total difference of RGB.
     private int numLights;                                      // Total number of lights
 
     private Light[]                    colorBuffer;             // List of the colors of the respective lights
@@ -65,7 +65,7 @@ public class LightHandlerCore {
         g = Math.max(Math.min(g, 252), 0);
         b = Math.max(Math.min(b, 252), 0);
 
-        if (diff(light.r + light.g + light.b, r + g + b) > 1 || force) {
+        if (diff(light.r, r) > threshold || diff(light.g, g) > threshold || diff(light.b, b) > threshold || light.r + light.g + light.b == 0 || force) {
             light.r = r;
             light.g = g;
             light.b = b;
