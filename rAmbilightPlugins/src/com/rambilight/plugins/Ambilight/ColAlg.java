@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 /**
  * Class that holds all parts of my color Algorithms
  */
-class ColAlg {
+public class ColAlg {
 
     public static int pixelIteration   = 10;
     public static int pixelMinFadeStep = 1;

@@ -26,6 +26,8 @@ public class ModuleLoader {
     private static       List<String>                activeModules     = new ArrayList<>();
     private static       List<OnChangeListener>      onChangeListeners = new ArrayList<>();
 
+    private static Hashtable<String, Class<?>> availableClasses = new Hashtable<>();
+
 
     public static void loadModules(Class<?> modules[]) {
         for (Class<?> module : modules)
@@ -70,14 +72,22 @@ public class ModuleLoader {
         for (URL url : urls) {
             // Parse the path into a name. Remove everything before the last "/"(Path) and after the last "."(Extension)
             String name = url.toString().substring(url.toString().lastIndexOf("plugins/") + 8, url.toString().lastIndexOf("."));
+            Class<?> unknownClass;
+            // Try to load packages as a module
             try {
-                Class<?> unknownClass = loader.loadClass(packageName + "." + name + "." + name);
+                unknownClass = loader.loadClass(packageName + "." + name + "." + name);
 
                 // Make sure it's a subclass of "Module" and if all goes well, add it to the list.
                 classes.add(unknownClass.asSubclass(Module.class));
                 System.out.println("Successfully loaded module '" + name + "'");
             } catch (Exception e) {
-                System.err.println("Failed to load '" + name + "' as a Module");
+                try {
+                    unknownClass = loader.loadClass(packageName + ".extension." + name);
+                    availableClasses.put(name, unknownClass);
+                    System.out.println("Successfully loaded extension " + name);
+                } catch (Exception e2) {
+                    System.err.println("Failed to load '" + name + "' as an associated file");
+                }
             }
         }
         return classes.toArray(new Class<?>[classes.size()]);
