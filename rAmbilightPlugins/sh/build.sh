@@ -9,7 +9,8 @@ fi
 
 for part in $(echo $1 | tr "." "\n"); do
     NAME="$part";
-    jar cvf "${PLUGINS}/${NAME}.jar" -C "${CLASSROOT}" "${CLASS}/${NAME}";
+    EXTENSION="$CLASS/extensions/$NAME";
+    jar cvf "${PLUGINS}/${NAME}.jar" -C "${CLASSROOT}" "${CLASS}/${NAME}" -C "${CLASSROOT}" "${EXTENSION}";
     break;
 done;
 echo " ";

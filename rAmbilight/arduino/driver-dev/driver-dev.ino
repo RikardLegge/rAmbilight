@@ -110,7 +110,7 @@ void stateHandle(){
 }
 
 int serialHandleBegin = 0;
-void serialHandle(){
+void serialHandle()f{
   serialHandleBegin = millis();
       if(Serial.available() > 0){
         buffi = Serial.read();

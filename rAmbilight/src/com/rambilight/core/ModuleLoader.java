@@ -6,6 +6,7 @@ import com.rambilight.core.api.Light.LightHandler;
 import com.rambilight.core.api.Platform;
 import com.rambilight.core.api.ui.MessageBox;
 import com.rambilight.plugins.Module;
+import com.rambilight.plugins.extensions.Extension;
 
 import java.io.File;
 import java.net.URL;
@@ -58,7 +59,6 @@ public class ModuleLoader {
             for (String name : new File(pluginPath).list())
                 // Filter away any unwanted files
                 if (name.endsWith(".jar") || name.endsWith(".class"))
-                    //urls.add((new File(pluginPath + "/" + name)).toURL());
                     urls.add(new URL(Platform.getFilePathFormat(pluginPath + "/" + name)));
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,7 +82,8 @@ public class ModuleLoader {
                 System.out.println("Successfully loaded module '" + name + "'");
             } catch (Exception e) {
                 try {
-                    unknownClass = loader.loadClass(packageName + ".extension." + name);
+                    String[] namePieces = name.split(".");
+                    unknownClass = loader.loadClass(packageName + "." + namePieces[0] + ".extensions." + namePieces[1]);
                     availableClasses.put(name, unknownClass);
                     System.out.println("Successfully loaded extension " + name);
                 } catch (Exception e2) {
@@ -93,36 +94,48 @@ public class ModuleLoader {
         return classes.toArray(new Class<?>[classes.size()]);
     }
 
+    @SuppressWarnings("unchecked")
+    public static boolean initializeModule(String name) throws IllegalAccessException, InstantiationException {
+        Module newModule = (Module) (availableModules.get(name)).newInstance();
 
-    public static boolean activateModule(String name) throws Exception {
+        newModule.lightHandler = new LightHandler(name);
+        newModule.preferences = new Preferences(name);
+        for (String key : availableClasses.keySet()) {
+            String prefix;
+            if (key.startsWith(prefix = name + "."))
+                try {
+                    newModule.loadExtension((Class<Extension>) availableClasses.get(key));
+                } catch (Exception e) {
+                    System.err.println("Unable to load extension: " + key.replace(prefix, ""));
+                }
+        }
+        newModule.loadPreferences();
+        try {
+            newModule.loaded();
+        } catch (Exception e) {
+            System.out.println("An error occurred when loading " + name + ":" + e.getMessage());
+            return false;
+        }
+        loadedModules.put(name, newModule);
+        return true;
+    }
+
+    public static boolean activateModule(String name) throws InstantiationException, IllegalAccessException {
         if (name == null)
             return false;
         if (!availableModules.containsKey(name)) {
             System.err.println("The module '" + name + "' isn't available");
             return false;
         }
-        if (!loadedModules.containsKey(name)) {
-            Module newModule = (Module) (availableModules.get(name)).newInstance();
-
-            newModule.lightHandler = new LightHandler(name);
-            newModule.preferences = new Preferences(name);
-            newModule.loadPreferences();
-            try {
-                newModule.loaded();
-            } catch (Exception e) {
-                System.out.println("An error occurred when loading " + name + ":" + e.getMessage());
-                return false;
-            }
-            loadedModules.put(name, newModule);
-        }
-        else {
+        if (!loadedModules.containsKey(name))
+            initializeModule(name);
+        else
             try {
                 loadedModules.get(name).resume();
             } catch (Exception e) {
                 System.out.println("An error occurred when resuming " + name + ":" + e.getMessage());
                 return false;
             }
-        }
 
         activeModules.add(name);
         for (OnChangeListener listener : onChangeListeners)
@@ -130,7 +143,7 @@ public class ModuleLoader {
         return true;
     }
 
-    public static void deactivateModule(String name) throws Exception {
+    public static void deactivateModule(String name) {
         if (name == null)
             return;
         if (activeModules.contains(name)) {

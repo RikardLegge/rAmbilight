@@ -2,6 +2,7 @@ package com.rambilight.plugins.Hello_World;
 
 import com.rambilight.core.api.ui.TrayController;
 import com.rambilight.plugins.Module;
+import com.rambilight.plugins.extensions.Extension;
 
 import java.awt.*;
 
@@ -58,6 +59,19 @@ public class Hello_World extends Module {
     public void savePreferences() {
         // Save the current position so we can come back to where we left of last time.
         preferences.save("currentPosition", currentPosition);
+    }
+
+    // A simple way of loading extensions for this module.
+    // Just drag and drop the extension into the plugins folder and make sure it follows the naming scheme:
+    // MODULENAME.EXTENSIONNAME{.class|.jar}
+    public void loadExtension(Class<Extension> extension) {
+        System.out.println("Loading extension: " + extension.getSimpleName() + " ... ");
+        try {
+            extension.newInstance();
+            System.out.println("SUCCESSFUL!");
+        } catch (Exception e) {
+            System.err.println("FAILED!");
+        }
     }
 
 }

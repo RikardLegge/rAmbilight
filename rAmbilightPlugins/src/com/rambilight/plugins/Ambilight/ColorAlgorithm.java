@@ -1,12 +1,25 @@
 package com.rambilight.plugins.Ambilight;
 
+import com.legge.preferences.Preferences;
+import com.rambilight.plugins.extensions.Extension;
+
 import java.awt.image.BufferedImage;
 
-/**
- * Class that holds all parts of my color Algorithms
- */
-public class ColAlg {
+public abstract class ColorAlgorithm extends Extension {
 
+    // Required extension functions
+    public abstract String getName();
+
+    public abstract void calculate(int px, int py, int pw, int ph, int xDir, int yDir, int side, BufferedImage image, int[] avg, int[] rgb);
+
+    // Optional extension functions
+    public void savePreferences(Preferences preferences) {
+    }
+
+    public void loadPreferences(Preferences preferences) {
+    }
+
+    // Built in pixel modification library.
     public static int pixelIteration   = 10;
     public static int pixelMinFadeStep = 1;
 
@@ -92,16 +105,16 @@ public class ColAlg {
         for (int i = 0; i < numLights; i++) {
             switch (side) {
                 case 0: // Right
-                    itt += forEachPixel(cr, h - i * stepY - stepY / 2, cr * 2, stepY, -1, 0, image, (pixel) -> ColAlg.add(pixel, avg));
+                    itt += forEachPixel(cr, h - i * stepY - stepY / 2, cr * 2, stepY, -1, 0, image, (pixel) -> add(pixel, avg));
                     break;
                 case 1: // Top
-                    itt += forEachPixel(w - i * stepX - stepX / 2, cr, stepX, cr * 2, 0, 1, image, (pixel) -> ColAlg.add(pixel, avg));
+                    itt += forEachPixel(w - i * stepX - stepX / 2, cr, stepX, cr * 2, 0, 1, image, (pixel) -> add(pixel, avg));
                     break;
                 case 2: // Left
-                    itt += forEachPixel(cr, i * stepY + stepY / 2, cr * 2, stepY, 1, 0, image, (pixel) -> ColAlg.add(pixel, avg));
+                    itt += forEachPixel(cr, i * stepY + stepY / 2, cr * 2, stepY, 1, 0, image, (pixel) -> add(pixel, avg));
                     break;
                 case 3: // Bottom
-                    itt += forEachPixel(i * stepX + stepX / 2, cr, stepX, cr * 2, 0, -1, image, (pixel) -> ColAlg.add(pixel, avg));
+                    itt += forEachPixel(i * stepX + stepX / 2, cr, stepX, cr * 2, 0, -1, image, (pixel) -> add(pixel, avg));
                     break;
             }
         }
