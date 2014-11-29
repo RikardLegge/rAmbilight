@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class Hello_World extends Module {
 
-    // A recommended but not require variable. This helps to keep the frame rate at a user defined level.
+    // A recommended but not require variable. This helps to keep the frame rate at a stable level, since the step function can a lot longer than 10ms, depending on  the time other modules use.
     long lastStep = 0;
 
     // The current position of out white box.
