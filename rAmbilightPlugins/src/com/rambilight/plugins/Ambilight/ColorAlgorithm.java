@@ -78,19 +78,23 @@ public abstract class ColorAlgorithm extends Extension {
 
         int ix = -pw / 2 + 1;
         int itterx = 0;
-        while (ix < pw / 2) {
-            int iy = -ph / 2 + 1;
-            int ittery = 0;
-            while (iy < ph / 2) {
-                func.Each(image.getRGB(px + (ix) * xdirComp, py + (iy) * ydirComp));
-                itt++;
+        try {
+            while (ix < pw / 2) {
+                int iy = -ph / 2 + 1;
+                int ittery = 0;
+                while (iy < ph / 2) {
+                    func.Each(image.getRGB(px + (ix) * xdirComp, py + (iy) * ydirComp));
+                    itt++;
 
-                ittery++;
-                iy += ydir == 0 ? yStep : ittery / 6 + pixelMinFadeStep;
+                    ittery++;
+                    iy += ydir == 0 ? yStep : ittery / 6 + pixelMinFadeStep;
+                }
+                itterx++;
+                ix += xdir == 0 ? xStep : itterx / 6 + pixelMinFadeStep;
+
             }
-            itterx++;
-            ix += xdir == 0 ? xStep : itterx / 6 + pixelMinFadeStep;
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return itt;
     }

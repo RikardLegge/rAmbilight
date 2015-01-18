@@ -6,7 +6,7 @@ import com.rambilight.core.api.Global;
 import com.rambilight.core.api.ui.MessageBox;
 import com.rambilight.core.api.ui.TrayController;
 import com.rambilight.core.serial.ComDriver;
-import com.rambilight.plugins.Ambilight.Ambilight;
+import com.rambilight.core.serial.SerialControllerLocal;
 
 import javax.swing.*;
 import java.util.concurrent.CountDownLatch;
@@ -48,7 +48,7 @@ public class Main {
             Preferences.read();
 
             Global.loadPreferences();
-            serialCom = new ComDriver();
+            serialCom = new ComDriver(new SerialControllerLocal());
 
             ModuleLoader.loadModules(ModuleLoader.loadExternalModules(Main.class));
             //ModuleLoader.loadModule(Ambilight.class);

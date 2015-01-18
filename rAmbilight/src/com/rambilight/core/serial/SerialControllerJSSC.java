@@ -42,7 +42,7 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
             }
             latch.countDown();
         });
-        thread.run();
+        thread.start();
 
         try {
             long timeBefore = System.currentTimeMillis();
@@ -99,7 +99,7 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
             }
             latch.countDown();
         });
-        thread.run();
+        thread.start();
 
         try {
             long timeBefore = System.currentTimeMillis();

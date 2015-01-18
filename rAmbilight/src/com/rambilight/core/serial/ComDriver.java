@@ -27,9 +27,9 @@ public class ComDriver {
 
     public boolean halted = false;
 
-    public ComDriver() {
+    public ComDriver(SerialController serialController) {
         lightHandler = new LightHandlerCore(Global.numLights);
-        serial = new SerialControllerJSSC();
+        serial = serialController;
         serialBuffer = new LinkedList<>();
 
         serial.setEventListener((data) -> receivedPacket(data));
