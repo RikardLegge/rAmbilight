@@ -1,4 +1,4 @@
-package com.rambilight.core.serial;
+package com.rambilight.core.clientInterface;
 
 import com.rambilight.core.Main;
 import com.rambilight.core.api.Global;

@@ -1,4 +1,4 @@
-package com.rambilight.core.serial;
+package com.rambilight.core.clientInterface.debug;
 
 import java.util.LinkedList;
 import java.util.Queue;

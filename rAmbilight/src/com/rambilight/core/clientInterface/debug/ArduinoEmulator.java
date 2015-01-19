@@ -1,57 +1,63 @@
-package com.rambilight.core.serial;
+/* JAVA */
 
-public class ArduinoSerialHandler {
-    /* SHARED VARIABLES */
+package com.rambilight.core.clientInterface.debug;
 
-    private static final int DATA_PIN  = 6;        // The pin on the Arduino to use for the LED PWM.
-    private static final int DATA_RATE = 512000;//512000//256000//115200  // The speed of the transmission
+public class ArduinoEmulator {
+/* /Java */
+    /* ARDUINO
+    #include <PololuLedStrip.h>      // The LED library
+    /* /Arduino */
+    /* STATIC VARIABLES */
 
-    private static final int NUMBER_OF_LEDS    = 1;
-    private static final int SMOOTH_STEP       = 2;
-    private static final int COMPRESSION_LEVEL = 3;
-    private static final int CLEAR_BUFFER      = 4;
+    final int DATA_PIN  = 6;        // The pin on the Arduino to use for the LED PWM.
+    final int DATA_RATE = 512000;   //512000//256000//115200  // The speed of the transmission
 
-    private static final int END_SEND         = 254;
-    private static final int BEGIN_SEND       = 255;
-    private static final int BEGIN_SEND_PREFS = 253;
+    final int NUMBER_OF_LEDS    = 1;
+    final int SMOOTH_STEP       = 2;
+    final int COMPRESSION_LEVEL = 3;
+    final int CLEAR_BUFFER      = 4;
 
-    private static final int NUM_LEDS = 250;     // The maximum number of LEDs
+    final int END_SEND         = 254;
+    final int BEGIN_SEND       = 255;
+    final int BEGIN_SEND_PREFS = 253;
+    final int NUM_LEDS         = 250;     // The maximum number of LEDs
+    final int FRAMESLEEP       = 7;
 
-    int FRAMESLEEP = 7;
+    /* JAVA */
+    LEDStrip  ledStrip           = new LEDStrip();
+    rgb_color leds[]             = new rgb_color[NUM_LEDS];
+    rgb_color leds_TargetValue[] = new rgb_color[NUM_LEDS];
+    int       RGBBuffer[]        = new int[4];
+    /* /JAVA */
 
-//
-//    PololuLedStrip<DATA_PIN> ledStrip;
-//    rgb_color leds[NUM_LEDS];
-//    rgb_color leds_TargetValue[NUM_LEDS];
-//    int RGBBuffer[4];
-//
+    /* ARDUINO
+    PololuLedStrip<DATA_PIN> ledStrip;
+    rgb_color leds[NUM_LEDS];
+    rgb_color leds_TargetValue[NUM_LEDS];
+    byte RGBBuffer[4];
+    /* /Arduino */
 
     // Variable to be set by host
-    float smoothStep    = 0;       // Step size for the lights                     - Default: 0
+    float smoothStep    = 0;             // Step size for the lights                     - Default: 0
     int   numActiveLeds = NUM_LEDS;      // Number of active LEDs that are handled       - Default: ~60
-    int   compression   = 1;        // The amount of compression which is set up    - Default: 1
+    int   compression   = 1;             // The amount of compression which is set up    - Default: 1
 
     // Private variables
     double smoothStepConstant = 0;
     long   lastPing           = 0;          // When was i last pinged?
-    long   lastRealData       = 0;
+    long   lastRealData       = 0;          // When did i last get data?
     int    state              = 0;          // Am i sleeping?
 
     void setup() {
-//        PololuLedStripBase::interruptFriendly = true;
+        /* ARDUINO
+        PololuLedStripBase::interruptFriendly = true;
+        /* /Arduino */
+
         delay(500);                       // sanity check delay - allows reprogramming if accidentally blowing power w/leds
         clearLEDS();
         delay(500);
 
         Serial.begin(DATA_RATE);   // Starts the serial communication port
-    }
-
-    void clearLEDS() {
-        ledStrip.write(leds, NUM_LEDS);
-    }
-
-    void writeLEDS() {
-        ledStrip.write(leds, numActiveLeds);
     }
 
     void loop() {
@@ -216,8 +222,8 @@ public class ArduinoSerialHandler {
     }
 
     int colorStep(int l, int lt) {
-        double stepSize = 50.0 - smoothStep + (difference(l, lt) - 255.0) / smoothStepConstant;
-//      float
+        //int stepSize = /* JAVA */ (int) /* /JAVA */ (30.0 - smoothStep + (difference(l, lt) - 255.0) / smoothStepConstant);
+        int stepSize = 10;
         if (difference(l, lt) <= stepSize)
             l = lt;
         else if (l < lt)
@@ -232,7 +238,20 @@ public class ArduinoSerialHandler {
         return result >= 0 ? result : result * -1;
     }
 
+    void clearLEDS() {
+        ledStrip.write(leds, NUM_LEDS);
+    }
+
+    void writeLEDS() {
+        ledStrip.write(leds, numActiveLeds);
+    }
+
+    /* ARDUINO
     void setLightColor(int l, byte r, byte g, byte b) {
+    /* /ARDUINO */
+    /* JAVA */
+    void setLightColor(int l, int r, int g, int b) {
+    /* /JAVA */
         leds_TargetValue[l].red = r;
         leds_TargetValue[l].green = g;
         leds_TargetValue[l].blue = b;
@@ -253,25 +272,11 @@ public class ArduinoSerialHandler {
 
     /* JAVA COMPATIBLE VARIABLES */
 
-    void setLightColor(int l, int r, int g, int b) {
-        leds_TargetValue[l].red = r;
-        leds_TargetValue[l].green = g;
-        leds_TargetValue[l].blue = b;
-    }
-
-    LEDStrip  ledStrip           = new LEDStrip();
-    rgb_color leds[]             = new rgb_color[NUM_LEDS];
-    rgb_color leds_TargetValue[] = new rgb_color[NUM_LEDS];
-    int       RGBBuffer[]        = new int[4];
-//  byte
-
-    /* WRAPPER FUNCTIONS */
-
     ArduinoSerial     Serial;
     SynchronizedArray inBuffer, outBuffer;
     Visualizer visualizer;
 
-    public ArduinoSerialHandler(SynchronizedArray inBuffer, SynchronizedArray outBuffer) {
+    public ArduinoEmulator(SynchronizedArray inBuffer, SynchronizedArray outBuffer) {
         this.inBuffer = inBuffer;
         this.outBuffer = outBuffer;
         Serial = new ArduinoSerial();
@@ -343,3 +348,5 @@ public class ArduinoSerialHandler {
         }
     }
 }
+
+/* /JAVA */

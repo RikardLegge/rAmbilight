@@ -1,5 +1,6 @@
-package com.rambilight.core.serial;
+package com.rambilight.core.clientInterface.serial;
 
+import com.rambilight.core.clientInterface.SerialController;
 import jssc.*;
 
 import java.util.concurrent.CountDownLatch;

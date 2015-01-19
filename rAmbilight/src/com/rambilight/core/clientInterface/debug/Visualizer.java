@@ -1,12 +1,9 @@
-package com.rambilight.core.serial;
+package com.rambilight.core.clientInterface.debug;
 
 import com.rambilight.core.api.Global;
-import com.rambilight.core.api.Light.Light;
 
-import javax.jnlp.ExtendedService;
 import javax.swing.*;
 import java.awt.*;
-import java.nio.file.AccessDeniedException;
 
 /*
  * Original source
@@ -22,9 +19,9 @@ import java.nio.file.AccessDeniedException;
 public class Visualizer extends JFrame {
 
     private Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-    ArduinoSerialHandler.rgb_color[] colorBuffer;
+    ArduinoEmulator.rgb_color[] colorBuffer;
 
-    public Visualizer(ArduinoSerialHandler.rgb_color[] colorBuffer) {
+    public Visualizer(ArduinoEmulator.rgb_color[] colorBuffer) {
         this.colorBuffer = colorBuffer;
         createUI();
     }
