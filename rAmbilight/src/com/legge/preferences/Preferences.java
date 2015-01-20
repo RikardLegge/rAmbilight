@@ -11,32 +11,73 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map.Entry;
 
+/**
+ * Yoy can use this class to access an abstraction of the Preference interface for easy loading and saving
+ * of preferences.
+ * <p>
+ * When a module is loaded, they automatically get a preference instance in their name and connected to
+ * their module.
+ * NOTE: It's not recommended to create a new instance of this in a module if you don't know what your are doing.
+ */
 public class Preferences {
 
     // The module which this preference handler communicates with
     String module;
 
+    /**
+     * Create a new instance of the class that is associated with a specific part of the application.
+     *
+     * @param moduleName, Name of the module / preference which should be saved.
+     */
     public Preferences(String moduleName) {
         module = moduleName;
         if (!PreferencesCore.rawPrefs.containsKey(module))
             PreferencesCore.rawPrefs.put(module, new Hashtable<>());
     }
 
-
+    /**
+     * Loads a string from cache
+     *
+     * @param name     Name of the variable to load
+     * @param fallback If the variable isn't found, use the fallback
+     * @return The value in cache
+     */
     public String load(String name, String fallback) {
         return PreferencesCore.load(module, name, fallback);
     }
 
+    /**
+     * Loads an int from cache
+     *
+     * @param name     Name of the variable to load
+     * @param fallback If the variable isn't found, use the fallback
+     * @return The value in cache
+     */
     public int load(String name, int fallback) {
         String loaded = PreferencesCore.load(module, name, "null");
         return !loaded.equals("null") ? Integer.valueOf(loaded) : fallback;
     }
 
+    /**
+     * Loads a boolean from cache
+     *
+     * @param name     Name of the variable to load
+     * @param fallback If the variable isn't found, use the fallback
+     * @return The value in cache
+     */
     public boolean load(String name, boolean fallback) {
         String loaded = PreferencesCore.load(module, name, "null");
         return !loaded.equals("null") ? Boolean.valueOf(loaded) : fallback;
     }
 
+    /**
+     * Loads an int[] from cache
+     *
+     * @param name     Name of the variable to load
+     * @param fallback If the variable isn't found, use the fallback
+     * @param length   Length of the returned array. Use -1 to use the contents length instead of one specified
+     * @return The value in cache
+     */
     public int[] load(String name, int[] fallback, int length) {
         String[] loaded = PreferencesCore.load(module, name, "null").split(",");
 
@@ -60,6 +101,14 @@ public class Preferences {
         return arr;
     }
 
+    /**
+     * Loads a String[] from cache
+     *
+     * @param name     Name of the variable to load
+     * @param fallback If the variable isn't found, use the fallback
+     * @param length   Length of the returned array. Use -1 to use the contents length instead of one specified
+     * @return The value in cache
+     */
     public String[] load(String name, String[] fallback, int length) {
         String[] loaded = PreferencesCore.load(module, name, "null").split(",");
 
@@ -76,19 +125,42 @@ public class Preferences {
         return arr;
     }
 
-
+    /**
+     * Writes a string to cache
+     *
+     * @param name  Key
+     * @param value Value
+     */
     public void save(String name, String value) {
         PreferencesCore.save(module, name, value);
     }
 
+    /**
+     * Writes an int to cache
+     *
+     * @param name  Key
+     * @param value Value
+     */
     public void save(String name, int value) {
         PreferencesCore.save(module, name, String.valueOf(value));
     }
 
+    /**
+     * Writes a boolean to cache
+     *
+     * @param name  Key
+     * @param value Value
+     */
     public void save(String name, boolean value) {
         PreferencesCore.save(module, name, String.valueOf(value));
     }
 
+    /**
+     * Writes an int[] to cache
+     *
+     * @param name   Key
+     * @param values Values
+     */
     public void save(String name, int[] values) {
         String serialized = "";
         if (values.length > 0)
@@ -100,6 +172,12 @@ public class Preferences {
         PreferencesCore.save(module, name, serialized.substring(0, serialized.length() - 1));
     }
 
+    /**
+     * Writes a String[] to cache
+     *
+     * @param name   Key
+     * @param values Values
+     */
     public void save(String name, String[] values) {
         String serialized = "";
         if (values.length > 0)

@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/dist/dist.iml" filepath="$PROJECT_DIR$/dist/dist.iml" />
       <module fileurl="file://$PROJECT_DIR$/rAmbilight/rAmbilight.iml" filepath="$PROJECT_DIR$/rAmbilight/rAmbilight.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rAmbilightAPI/rAmbilightAPI.iml" filepath="$PROJECT_DIR$/rAmbilightAPI/rAmbilightAPI.iml" />
       <module fileurl="file://$PROJECT_DIR$/rAmbilightPlugins/rAmbilightPlugins.iml" filepath="$PROJECT_DIR$/rAmbilightPlugins/rAmbilightPlugins.iml" />
     </modules>
   </component>

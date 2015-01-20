@@ -9,11 +9,14 @@ public class MessageBox {
     private static final JFrame component = new JFrame();
 
     /**
-     * Display an error box that also halts the program
+     * Display an error box that also halts the program.
+     *
+     * @param title,   The title of the message box.
+     * @param message, The message to be displayed.
      */
     @Deprecated
-    public static void Error(String message, int i) {
-        JOptionPane.showMessageDialog(component, message, "An error ocurred!", JOptionPane.ERROR_MESSAGE);
+    public static void Error(String title, String message, int i) {
+        JOptionPane.showMessageDialog(component, message, title, JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -26,7 +29,11 @@ public class MessageBox {
     }
 
     /**
-     * Display an input box that also halts the program
+     * Display an input box that also halts the program, waiting for user input.
+     *
+     * @param title,   The title of the message box.
+     * @param message, The message to be displayed.
+     * @return The inputted valued or null if canceled.
      */
     public static String Input(String title, String message) {
         return JOptionPane.showInputDialog(component, message, title, JOptionPane.PLAIN_MESSAGE);
