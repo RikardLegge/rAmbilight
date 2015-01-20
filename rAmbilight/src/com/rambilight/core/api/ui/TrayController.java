@@ -239,7 +239,14 @@ public class TrayController {
         popup.removeAll();
     }
 
-
+    /**
+     * Helper for creating a checkboxMenuItem
+     *
+     * @param name   Lable of the item
+     * @param state  The items original state
+     * @param handle The callback handle when a touch event is initialized
+     * @return A new menuitem
+     */
     public static CheckboxMenuItem createCheckbox(String name, boolean state, CheckboxMenuItemStateChanged handle) {
         CheckboxMenuItem item = new CheckboxMenuItem(name);
         item.setState(state);
@@ -251,6 +258,13 @@ public class TrayController {
         return item;
     }
 
+    /**
+     * Helper for creating a menuItem
+     *
+     * @param name   Lable of the item
+     * @param handle The callback handle when a touch event is initialized
+     * @return A new menuitem
+     */
     public static MenuItem createItem(String name, MenuItemStateChanged handle) {
         MenuItem item = new MenuItem(name);
         if (handle != null)
@@ -260,6 +274,14 @@ public class TrayController {
         return item;
     }
 
+    /**
+     * Helper for creating a radioGroupMenuItem
+     *
+     * @param name   Lable of the item
+     * @param items  The items to insert into the submenu
+     * @param handle The callback handle when a touch event is initialized
+     * @return A new RadioMenu
+     */
     public static Menu createRadioGroup(String name, CheckboxMenuItem[] items, GroupStateChanged handle) {
         Menu group = new Menu(name);
 
@@ -268,6 +290,14 @@ public class TrayController {
         return group;
     }
 
+    /**
+     * Helper for creating a goup of menu items
+     *
+     * @param name   Lable of the item
+     * @param items  The items to insert into the submenu
+     * @param handle The callback handle when a touch event is initialized
+     * @return A new Menu
+     */
     public static Menu createGroup(String name, CheckboxMenuItem[] items, GroupStateChanged handle) {
         Menu group = new Menu(name);
 
@@ -294,6 +324,13 @@ public class TrayController {
         group.add(item);
     }
 
+    /**
+     * Helper for adding an item to a goup
+     *
+     * @param group  Group which the item should be inserted into
+     * @param item   The item to insert into the group
+     * @param handle The callback handle when a touch event is initialized
+     */
     public static void addToGroup(Menu group, CheckboxMenuItem item, GroupStateChanged handle) {
         int index = group.getItemCount();
         item.addItemListener((e) -> {
@@ -305,6 +342,13 @@ public class TrayController {
         group.add(item);
     }
 
+    /**
+     * Helper for adding an item to a radio group
+     *
+     * @param group  Group which the item should be inserted into
+     * @param item   The item to insert into the group
+     * @param handle The callback handle when a touch event is initialized
+     */
     public static void addToRadioGroup(Menu group, CheckboxMenuItem item, GroupStateChanged handle) {
         int index = group.getItemCount();
         item.addItemListener((e) -> {
@@ -319,19 +363,30 @@ public class TrayController {
         group.add(item);
     }
 
-
+    /**
+     * Callback for adding custom elements to the tray controller
+     */
     public interface CustomCreator {
         public MenuItem[] create();
     }
 
+    /**
+     * Callback for when a checkbox's state is changed
+     */
     public interface CheckboxMenuItemStateChanged {
         public void call(CheckboxMenuItem target, boolean selected);
     }
 
+    /**
+     * Callback for when a menu item is tapped
+     */
     public interface MenuItemStateChanged {
         public void call(MenuItem target);
     }
 
+    /**
+     * Callback for when a RadioGroups selected item changes
+     */
     public interface GroupStateChanged {
         public void call(CheckboxMenuItem target, int index, Menu parent);
     }
