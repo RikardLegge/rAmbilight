@@ -38,9 +38,6 @@ public class Visualizer extends JFrame {
         } catch (Exception e) {
         }
 
-        setDefaultLookAndFeelDecorated(true);
-        //setAlwaysOnTop(true);
-        setUndecorated(true);
         Component c = new JPanel() {
 
             @Override
@@ -58,6 +55,9 @@ public class Visualizer extends JFrame {
         c.setPreferredSize(screen.getSize());
         getContentPane().add(c);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setDefaultLookAndFeelDecorated(false);
+        //setAlwaysOnTop(true);
         pack();
         setVisible(true);
         com.sun.awt.AWTUtilities.setWindowOpaque(this, false);
@@ -112,7 +112,7 @@ public class Visualizer extends JFrame {
         if (colorBuffer[l] == null)
             return Color.black;
         else
-            return new Color(colorBuffer[l].red & 0xFF, colorBuffer[l].green & 0xFF, colorBuffer[l].blue & 0xFF);
+            return new Color(colorBuffer[l].red, colorBuffer[l].green, colorBuffer[l].blue);
     }
 
 }

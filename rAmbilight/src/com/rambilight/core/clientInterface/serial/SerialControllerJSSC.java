@@ -19,7 +19,7 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
 
     int initializeReturn = 0;
 
-    public synchronized int initialize(String serialName) {
+    public int initialize(String serialName) {
 
         initializeReturn = 2;
         CountDownLatch latch = new CountDownLatch(1);
@@ -80,7 +80,7 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
         return serialPort != null && serialPort.isOpened();
     }
 
-    public synchronized boolean close() {
+    public boolean close() {
         CountDownLatch latch = new CountDownLatch(1);
         Thread thread = new Thread(() -> {
             if (serialPort != null) {

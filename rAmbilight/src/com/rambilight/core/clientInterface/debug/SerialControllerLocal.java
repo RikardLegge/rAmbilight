@@ -12,12 +12,16 @@ public class SerialControllerLocal extends SerialController {
 
     private SerialRuntime serialRuntime;
 
-    public synchronized int initialize(String serialName) {
+    public SerialControllerLocal() {
         outBuffer = new SynchronizedArray(BUFFERSIZE);
         inBuffer = new SynchronizedArray(BUFFERSIZE);
         arduinoSerialHandler = new ArduinoEmulator(outBuffer, inBuffer);
         serialRuntime = new SerialRuntime();
         serialRuntime.start();
+    }
+
+    public synchronized int initialize(String serialName) {
+        serialRuntime.isOpen = true;
         return 0;
     }
 
@@ -26,30 +30,28 @@ public class SerialControllerLocal extends SerialController {
     }
 
     public boolean isOpen() {
-        return serialRuntime != null;
+        return serialRuntime.isOpen;
     }
 
     public synchronized boolean close() {
-        serialRuntime.exit();
-        serialRuntime = null;
+        serialRuntime.isOpen = false;
         return true;
     }
 
     public boolean removeRootEventListener() {
-        serialRuntime.exit();
-        serialRuntime = null;
+        serialRuntime.isOpen = false;
         return true;
     }
 
     public void write(byte o) throws Exception {
-        if (serialRuntime != null)
+        if (serialRuntime.isOpen)
             outBuffer.write(o);
         else
             System.err.println("WARNING: Output device not initiated. Not sending byte " + o);
     }
 
     public void write(byte[] o) throws Exception {
-        if (serialRuntime != null)
+        if (serialRuntime.isOpen)
             outBuffer.write(o);
         else
             System.err.println("WARNING: Output device not initiated. Not sending byte[] with length " + o.length);
@@ -61,27 +63,37 @@ public class SerialControllerLocal extends SerialController {
 
 
     class SerialRuntime extends Thread {
-        private boolean isActive = false;
+        private boolean isClosing = false;
+        public  boolean isOpen    = false;
 
         public void run() {
             setName("Serial Runtime");
-            isActive = true;
+            isOpen = true;
 
-            while (isActive) {
+            while (!isClosing) {
                 arduinoSerialHandler.update();
-                try {
-                    int read;
-                    while ((read = (int) inBuffer.read()) > -1)
-                        serialEvent.Recived(read);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (isOpen)
+                    try {
+                        int read;
+                        while ((read = (int) (inBuffer.read())) > -1)
+                            serialEvent.Recived(read);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                else {
+                    try {
+                        Thread.sleep(16);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+            isOpen = false;
         }
 
         public void exit() {
             arduinoSerialHandler.dispose();
-            isActive = false;
+            isClosing = true;
         }
     }
 }

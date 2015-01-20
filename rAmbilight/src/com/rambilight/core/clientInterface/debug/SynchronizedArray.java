@@ -25,11 +25,11 @@ public class SynchronizedArray {
         gateway(GatewayRoute.WRITE, elements);
     }
 
-    public byte peek() {
+    public int peek() {
         return gateway(GatewayRoute.PEEK, null);
     }
 
-    public byte read() {
+    public int read() {
         return gateway(GatewayRoute.READ, null);
     }
 
@@ -37,22 +37,22 @@ public class SynchronizedArray {
         return array.size();
     }
 
-    private synchronized byte gateway(GatewayRoute route, byte[] elements) {
+    private synchronized int gateway(GatewayRoute route, byte[] elements) {
         switch (route) {
             case WRITE:
                 for (byte element : elements) {
                     if (array.size() >= size)
-                        return 0;
+                        break;
                     array.add(element);
                 }
                 break;
             case PEEK:
                 if (!array.isEmpty())
-                    return array.peek();
+                    return array.peek() & 0xFF;
                 break;
             case READ:
                 if (!array.isEmpty())
-                    return array.remove();
+                    return array.remove() & 0xFF;
                 break;
             default:
                 break;

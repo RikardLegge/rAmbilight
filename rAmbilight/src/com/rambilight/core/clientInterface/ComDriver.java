@@ -23,9 +23,8 @@ public class ComDriver {
     private boolean writtenPrefs         = false;
     private boolean displayedBusyMessage = false;
 
-    private int lastNumPorts = 0;
-
-    public boolean halted = false;
+    private int     lastNumPorts = 0;
+    public  boolean halted       = false;
 
     public ComDriver(SerialController serialController) {
         lightHandler = new LightHandlerCore(Global.numLights);
@@ -198,6 +197,9 @@ public class ComDriver {
 
 
     private void flushBuffer() {
+        if (serialBuffer.size() > 64) {
+            System.out.println("arduino serial buffer overflow: " + serialBuffer.size());
+        }
         if (serialBuffer.size() > 0) {
             byte[] toWrite = new byte[serialBuffer.size()];
 
@@ -227,18 +229,6 @@ public class ComDriver {
             flushBuffer();
         }
     }
-/*
-    private void writeCorrecitonToBuffer(int num) {
-        for (int i = 0; i < num; i++) {
-            Light light = lightHandler.getColorBuffer()[correctionLightid];
-            writeToBuffer(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
-            correctionLightid += Global.compressionLevel;
-            if (correctionLightid >= lightHandler.getNumLights()) {
-                correctionLightid = 0;
-            }
-        }
-    }
-*/
 
     private void flushPreferences() {
         writePreference(ArduinoCommunication.CLEAR_BUFFER, ArduinoCommunication.NULL);
@@ -252,7 +242,7 @@ public class ComDriver {
         lastReceived = System.currentTimeMillis();
         ticksSinceLastReceived = 0;
         switch (data) {
-            case 1: // Ready
+            case 255: // Ready
                 if (!writtenPrefs) {
                     writtenPrefs = true;
                     serialGateway(Gateway.preferences);
@@ -260,10 +250,11 @@ public class ComDriver {
                 else
                     serialGateway(Gateway.data);
                 break;
-            case 2: // Sleeping
+            case 253: // Needs setup
+                writtenPrefs = true;
+                serialGateway(Gateway.preferences);
                 break;
             default:
-                System.out.println("Received:" + data);
                 break;
         }
     }
@@ -305,9 +296,8 @@ public class ComDriver {
         public static final byte COMPRESSION_LEVEL = 3;
         public static final byte CLEAR_BUFFER      = 4;
 
+        public static final byte BEGIN_SEND_PREFS = (byte) 253;
         public static final byte END_SEND         = (byte) 254;
         public static final byte BEGIN_SEND       = (byte) 255;
-        public static final byte BEGIN_SEND_PREFS = (byte) 253;
     }
-
 }

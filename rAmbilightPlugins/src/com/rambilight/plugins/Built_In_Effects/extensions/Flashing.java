@@ -5,19 +5,17 @@ import com.rambilight.plugins.Built_In_Effects.Effect;
 
 public class Flashing extends Effect {
 
-    int index = 0;
+    int state = 0;
 
     public String getName() {
-        return "Circling Lights";
+        return "Flashing";
     }
 
     public void step(LightHandler lightHandler) {
-        if (index - 4 < 0)
-            lightHandler.addToUpdateBuffer(lightHandler.numLights() - 4 + index, 0, 0, 0);
-        else
-            lightHandler.addToUpdateBuffer(index - 4, 0, 0, 0);
-        lightHandler.addToUpdateBuffer(index, 200, 200, 200);
-
-        index = (index + 1) % lightHandler.numLights();
+        int r = 5 * (state++ % 5);
+        int g = 4 * (state++ % 6);
+        int b = 30 * (state++ % 7);
+        for (int i = 0; i < lightHandler.numLights(); i++)
+            lightHandler.addToUpdateBuffer(i, r, g, b);
     }
 }
