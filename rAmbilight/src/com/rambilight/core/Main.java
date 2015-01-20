@@ -1,12 +1,14 @@
 package com.rambilight.core;
 
-import com.legge.lMath;
 import com.legge.preferences.Preferences;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.ui.MessageBox;
 import com.rambilight.core.api.ui.TrayController;
-import com.rambilight.core.serial.ComDriver;
-import com.rambilight.plugins.Ambilight.Ambilight;
+import com.rambilight.core.clientInterface.ComDriver;
+import com.rambilight.core.clientInterface.SerialController;
+import com.rambilight.core.clientInterface.debug.SerialControllerLocal;
+import com.rambilight.core.clientInterface.serial.SerialControllerJSSC;
+import com.rambilight.plugins.Module;
 
 import javax.swing.*;
 import java.util.concurrent.CountDownLatch;
@@ -28,9 +30,18 @@ public class Main {
      * @param args The input from the command line
      */
     public static void main(String[] args) throws Exception {
+        new Main().load();
+    }
 
-        // Arguments: String, invert?, switch every other?
-        System.out.println(invert("This is the recursive function that was needed in the program. The sinus of 45 is " + lMath.rsin(lMath.toRad(45)) + " and the tangent of -60 is " + lMath.tan(lMath.toRad(-60)) + ". These values are calculated using power series.", true, true));
+    public void loadDebugger(Class<? extends Module> debugModule) {
+        load(new SerialControllerLocal(), debugModule);
+    }
+
+    public void load() {
+        load(new SerialControllerJSSC(), null);
+    }
+
+    private void load(SerialController serialController, Class<? extends Module> debugModule) {
 
         System.setProperty("apple.laf.useScreenMenuBar", "false");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "rAmbilight");
@@ -48,10 +59,12 @@ public class Main {
             Preferences.read();
 
             Global.loadPreferences();
-            serialCom = new ComDriver();
+            serialCom = new ComDriver(serialController);
+
+            if (debugModule != null)
+                ModuleLoader.loadModule(debugModule);
 
             ModuleLoader.loadModules(ModuleLoader.loadExternalModules(Main.class));
-            //ModuleLoader.loadModule(Ambilight.class);
 
             tray = new TrayController();
 
@@ -76,28 +89,6 @@ public class Main {
         Thread thread = new Thread(new Runtime());
         thread.setName("rAmbilight Runtime");
         thread.run();
-    }
-
-    /**
-     * A recursive function...
-     *
-     * @param str     Original string
-     * @param first   Use the original first vale as the output first value
-     * @param weirdly Do the invert in a weird way
-     * @return A kind of inverted string
-     */
-    private static String invert(String str, boolean first, boolean weirdly) {
-        String[] strs = str.split(" ", 2);
-        if (strs.length > 1) {
-            if (weirdly)
-                first = !first;
-            String theRest = invert(strs[1], first, weirdly);
-            if (first)
-                strs[0] = theRest + " " + strs[0];
-            else
-                strs[0] += " " + theRest;
-        }
-        return strs[0];
     }
 
     /**

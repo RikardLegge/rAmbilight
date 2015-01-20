@@ -1,5 +1,6 @@
-package com.rambilight.core.serial;
+package com.rambilight.core.clientInterface.serial;
 
+import com.rambilight.core.clientInterface.SerialController;
 import jssc.*;
 
 import java.util.concurrent.CountDownLatch;
@@ -18,7 +19,7 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
 
     int initializeReturn = 0;
 
-    public synchronized int initialize(String serialName) {
+    public int initialize(String serialName) {
 
         initializeReturn = 2;
         CountDownLatch latch = new CountDownLatch(1);
@@ -42,7 +43,7 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
             }
             latch.countDown();
         });
-        thread.run();
+        thread.start();
 
         try {
             long timeBefore = System.currentTimeMillis();
@@ -79,7 +80,7 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
         return serialPort != null && serialPort.isOpened();
     }
 
-    public synchronized boolean close() {
+    public boolean close() {
         CountDownLatch latch = new CountDownLatch(1);
         Thread thread = new Thread(() -> {
             if (serialPort != null) {
@@ -99,7 +100,7 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
             }
             latch.countDown();
         });
-        thread.run();
+        thread.start();
 
         try {
             long timeBefore = System.currentTimeMillis();

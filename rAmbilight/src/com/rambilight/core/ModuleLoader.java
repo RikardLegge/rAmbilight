@@ -38,7 +38,10 @@ public class ModuleLoader {
     public static void loadModule(Class<?> module) {
         String name = module.getSimpleName().replace("_", " ");
         if (Module.class.isAssignableFrom(module))
-            availableModules.put(name, module);
+            if (!availableModules.containsKey(name))
+                availableModules.put(name, module);
+            else
+                System.err.println("Unable to load module '" + name + "' since it's already loaded.");
         else
             System.err.println("Unable to load module '" + name + "' since it isn't a subclass of " + Module.class.getSimpleName());
     }

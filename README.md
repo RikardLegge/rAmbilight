@@ -27,6 +27,7 @@ A directory currently containing the following plugins:
 + Push bullet
 
 There are currently no pre-built versions of the plugins, but to build a plugin all that has to be done is change the PATH variable in `sh/build.sh` file to reflect the platform to run on. Currently the `build.sh` file path points to the plugin directory on OSX. For more information about plugins se [this github page](https://github.com/RikardLegge/rAmbilght-Framework).
+
 ## Contributors
 
 Rikard Legge  - rikard.legge@gmail.com

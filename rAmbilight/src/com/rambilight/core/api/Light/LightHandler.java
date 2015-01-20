@@ -2,7 +2,7 @@ package com.rambilight.core.api.Light;
 
 import com.rambilight.core.Main;
 import com.rambilight.core.api.Global;
-import com.rambilight.core.serial.LightHandlerCore;
+import com.rambilight.core.clientInterface.LightHandlerCore;
 
 /**
  * Class for handling the Lights and what to output

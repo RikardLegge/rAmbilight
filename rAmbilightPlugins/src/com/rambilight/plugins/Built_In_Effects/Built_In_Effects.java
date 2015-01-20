@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.rambilight.core.api.ui.TrayController;
 import com.rambilight.plugins.Built_In_Effects.extensions.CirclingLights;
+import com.rambilight.plugins.Built_In_Effects.extensions.Flashing;
 import com.rambilight.plugins.Built_In_Effects.extensions.KnightRider;
 import com.rambilight.plugins.Module;
 import com.rambilight.plugins.extensions.Extension;
@@ -22,6 +23,7 @@ public class Built_In_Effects extends Module {
     public Built_In_Effects() {
         addEffect(new CirclingLights());
         addEffect(new KnightRider());
+        addEffect(new Flashing());
     }
 
     public void step() {
