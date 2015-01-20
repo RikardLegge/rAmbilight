@@ -14,8 +14,9 @@ The directory which contains prebuild files. Currently only for OSX, but the con
 
 The source code for the core part of the project, which includes a module handler, serial connection handler, screen capturer, and API interface to access the loaded modules. This also includes the source code for the arduino microcontroller.
 
-#### API (rAmbilightAPI)
+#### API (rAmbilightAPI) : DISCONTINUED
 
+Important: The API is about to become merged into the rAmbilight core. Only the docs are left to be ported.
 The interface which any plugin / module are required to use to be supported by the module handler. This also includes a onscreen debugger for testing an application before connecting it to the microcontroller. This should help debugging since the microcontroller doesn't support debugging.
 
 #### Plugins (rAmbilightPlugins)
