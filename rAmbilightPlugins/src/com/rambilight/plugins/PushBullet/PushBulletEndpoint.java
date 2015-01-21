@@ -63,8 +63,6 @@ public class PushBulletEndpoint {
                 result += line;
             }
             rd.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
