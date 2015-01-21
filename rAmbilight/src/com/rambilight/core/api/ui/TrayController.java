@@ -36,7 +36,7 @@ public class TrayController {
         // Safe way of creating the tray. If something fails, throw an error
         try {
             if (!SystemTray.isSupported())
-                throw new Exception();
+                throw new Exception("The system doesn't support tray controllers.");
 
             // Load static assets
             Image_Active = AssetLoader.getImage("Tray_Active.png", "Active");

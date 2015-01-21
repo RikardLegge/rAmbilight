@@ -12,6 +12,11 @@ public class LightHandler {
     LightHandlerCore lightHandlerCore;
     String           name;
 
+    /**
+     * Shouldn't ever be needed to call from within modules, but if the time comes creates a new interface for handling light output.
+     *
+     * @param name Name of the client. (The caller class name might be used in the future. )
+     */
     public LightHandler(String name) {
         this.name = name;
         this.lightHandlerCore = Main.getSerialCom().getLightHandler();
@@ -130,6 +135,11 @@ public class LightHandler {
         return lightHandlerCore.getColorBuffer();
     }
 
+    /**
+     * Get the number of lights which will be updated on the next communication cycle.
+     *
+     * @return number of lights
+     */
     public int getNumLightsToUpdate() {
         return lightHandlerCore.getNumLightsToUpdate();
     }

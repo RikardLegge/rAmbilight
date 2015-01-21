@@ -11,6 +11,14 @@ public class Light {
     public int     b;
     public boolean requiresUpdate;
 
+    /**
+     * Create a new light with specific presets.
+     *
+     * @param id Light identifier.
+     * @param r  RED (0 - 252)
+     * @param g  GREEN (0 - 252)
+     * @param b  BLUE (0 - 252)
+     */
     public Light(int id, int r, int g, int b) {
         this.id = id;
         this.r = r;
