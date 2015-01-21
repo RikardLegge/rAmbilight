@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="Build rAmbilight API">
-    <output-path>$PROJECT_DIR$/../rAmbilght-Framework</output-path>
-    <root id="archive" name="rAmbilightAPI.jar">
-      <element id="module-output" name="rAmbilightAPI" />
-    </root>
-  </artifact>
-</component>
