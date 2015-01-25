@@ -7,7 +7,7 @@ public class KnightRider extends Effect {
 
     int     index     = 0;
     boolean direction = true;
-    int     width     = 10;
+    int     width     = 5;
 
     public String getName() {
         return "Knight Rider";

@@ -14,8 +14,6 @@ public class ComDriver {
     private LightHandlerCore lightHandler;
     private Queue<Byte>      serialBuffer;
 
-    //    private long lastCorrectionLap      = 0;
-    //    private int  correctionLightid      = 0;
     private long lastPing               = 0;
     private long lastReceived           = 0;
     private long ticksSinceLastReceived = 0;    // 1 tick ~10ms.
@@ -195,10 +193,9 @@ public class ComDriver {
         writeToBuffer((byte) value);
     }
 
-
     private void flushBuffer() {
         if (serialBuffer.size() > 64) {
-            System.out.println("arduino serial buffer overflow: " + serialBuffer.size());
+            System.out.println("Arduino serial buffer overflow: " + serialBuffer.size());
         }
         if (serialBuffer.size() > 0) {
             byte[] toWrite = new byte[serialBuffer.size()];
@@ -224,13 +221,15 @@ public class ComDriver {
                     break;
                 writeToBuffer(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
             }
-            //writeCorrecitonToBuffer(1);
             writeToBuffer(ArduinoCommunication.END_SEND);
             flushBuffer();
         }
+        else
+            ping();
     }
 
     private void flushPreferences() {
+        writtenPrefs = true;
         writePreference(ArduinoCommunication.CLEAR_BUFFER, ArduinoCommunication.NULL);
         writePreference(ArduinoCommunication.NUMBER_OF_LEDS, Global.numLights);
         writePreference(ArduinoCommunication.SMOOTH_STEP, Global.lightStepSize);
@@ -242,19 +241,14 @@ public class ComDriver {
         lastReceived = System.currentTimeMillis();
         ticksSinceLastReceived = 0;
         switch (data) {
-            case 255: // Ready
-                if (!writtenPrefs) {
-                    writtenPrefs = true;
-                    serialGateway(Gateway.preferences);
-                }
-                else
-                    serialGateway(Gateway.data);
-                break;
             case 253: // Needs setup
-                writtenPrefs = true;
                 serialGateway(Gateway.preferences);
                 break;
             default:
+                if (!writtenPrefs)
+                    serialGateway(Gateway.preferences);
+                else
+                    serialGateway(Gateway.data);
                 break;
         }
     }
@@ -279,7 +273,7 @@ public class ComDriver {
     }
 
     private void pingLights() {
-        write(ArduinoCommunication.END_SEND);
+        write(ArduinoCommunication.PING);
     }
 
 
@@ -296,6 +290,7 @@ public class ComDriver {
         public static final byte COMPRESSION_LEVEL = 3;
         public static final byte CLEAR_BUFFER      = 4;
 
+        public static final byte PING             = (byte) 252;
         public static final byte BEGIN_SEND_PREFS = (byte) 253;
         public static final byte END_SEND         = (byte) 254;
         public static final byte BEGIN_SEND       = (byte) 255;

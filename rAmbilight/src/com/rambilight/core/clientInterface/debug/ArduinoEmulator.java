@@ -2,8 +2,6 @@
 
 package com.rambilight.core.clientInterface.debug;
 
-import javafx.stage.Stage;
-
 public class ArduinoEmulator {
 /* /Java */
     /* ARDUINO /#include <PololuLedStrip.h>/* /Arduino */      // The LED library
@@ -21,6 +19,7 @@ public class ArduinoEmulator {
     final int CLEAR_BUFFER      = 4;
 
     //  Control signals
+    final int PING             = 252;
     final int BEGIN_SEND_PREFS = 253;
     final int END_SEND         = 254;
     final int BEGIN_SEND       = 255;
@@ -47,15 +46,21 @@ public class ArduinoEmulator {
     /* /Arduino */
 
     // Variable to be set by host
-    float smoothStep    = 0;             // Step size for the lights                     - Default: 2
+    float stepLength    = 8;             // Step size for the lights                     - Default: 2
     int   numActiveLeds = NUM_LEDS;      // Number of active LEDs that are handled       - Default: ~60
     int   compression   = 1;             // The amount of compression which is set up    - Default: 1
 
     // Private variables
-    double smoothStepConstant = 0;
-    long   lastPing           = 0;          // When was i last pinged?
-    long   lastRealData       = 0;          // When did i last get data?
-    int    state              = DISCONNECTED;         // Am i sleeping?
+
+    long lastPing     = 0;          // When was i last pinged?
+    long lastRealData = 0;          // When did i last get data?
+
+    int  state                      = DISCONNECTED; // Current connection state
+    int  stateHandlerDelay          = 0;            // Delay between state related actions
+    long lastStateHandlerInvocation = 0;            // Last time the stateHandle was invoked
+
+    int oldTransmitToken = 0;   // The token related to the last transmission
+    int transmitToken    = 0;   // The token related to the current transmission
 
     void setup() {
         /* ARDUINO /PololuLedStripBase::interruptFriendly = true;/* /Arduino */
@@ -70,58 +75,61 @@ public class ArduinoEmulator {
 
     void loop() {
         serialHandle();
+        //if (difference(lastStateHandlerInvocation, millis()) > stateHandlerDelay)
         stateHandle();
+        delay(stateHandlerDelay);
     }
 
     void stateHandle() {
+        lastStateHandlerInvocation = millis();
 
-        if (difference(millis(), lastRealData) > 5000) {
-            state = PASSIVE;
-        }
-        else if (difference(millis(), lastPing) < 3000) {
-            state = ACTIVE;
-        }
-        else {
-            state = LOST;
-        }
+        if (difference(millis(), lastRealData) < 2000)  // Has any real data come by?
+            setState(ACTIVE);                           // High frame rate
+        if (difference(millis(), lastPing) < 3000)      // Has something come by?
+            setState(PASSIVE);                          // Low frame rate
+        else
+            setState(LOST);                             // Disconnect and shut down
 
         switch (state) {
             case CONNECTING:
                 writeSingle(BEGIN_SEND_PREFS);
                 break;
             case PASSIVE:
-                delay(FRAMESLEEP * 10);          // Wait for a very short while
             case ACTIVE:
+                stateHandlerDelay = FRAMESLEEP;
+
                 if (ColorSmoothing())    // If something has changed
                     writeLEDS();
-
-                writeSingle(BEGIN_SEND);       // I'm ready for more
-
-                delay(FRAMESLEEP);          // Wait for a very short while
+                if (oldTransmitToken != transmitToken) {
+                    writeSingle(transmitToken);       // I'm ready for more
+                    oldTransmitToken = transmitToken;
+                }
                 break;
             case LOST:
                 clearLightColors();
-                state = HALTING;
-                break;
+                setState(HALTING);
             case HALTING:
                 if (ColorSmoothing())
                     writeLEDS();
                 else
-                    state = DISCONNECTED;
+                    setState(DISCONNECTED);
 
-                delay(FRAMESLEEP);
+                stateHandlerDelay = FRAMESLEEP;
                 break;
             case DISCONNECTED:
-                delay(1000);
+                stateHandlerDelay = 1000;
                 break;
         }
     }
 
     void serialHandle() {
         if (Serial.available() > 0) {
-            int buffered = Serial.read();
+            incrementTransmitToken();
             lastPing = millis();
+            int buffered = Serial.read();
             switch (buffered) {
+                case PING:
+                    break;
                 case BEGIN_SEND:
                     serialHandleData();
                     break;
@@ -132,6 +140,10 @@ public class ArduinoEmulator {
                     serialHandleOther(buffered);
             }
         }
+    }
+
+    void setState(int newState) {
+        state = newState;
     }
 
     void writeSingle(int data) {
@@ -174,7 +186,7 @@ public class ArduinoEmulator {
                 return;
             delay(1);
         }
-        state = ACTIVE;
+        lastRealData = lastPing;
         switch (Serial.read()) {
             case NUMBER_OF_LEDS:
                 numActiveLeds = Serial.read();
@@ -184,12 +196,11 @@ public class ArduinoEmulator {
                     numActiveLeds = 0;
                 break;
             case SMOOTH_STEP:
-                smoothStep = Serial.read();
-                if (smoothStep > 255)
-                    smoothStep = 255;
-                else if (smoothStep < 1)
-                    smoothStep = 1;
-                smoothStepConstant = (54.0 + smoothStep) / 10.0;
+                stepLength = Serial.read();
+                if (stepLength > 255)
+                    stepLength = 255;
+                else if (stepLength < 1)
+                    stepLength = 1;
                 break;
             case COMPRESSION_LEVEL:
                 compression = Serial.read();
@@ -210,17 +221,23 @@ public class ArduinoEmulator {
     }
 
     void serialHandleOther(int buffered) {
-        while (Serial.available() > 0 && buffered >= 0) {
+        while (Serial.available() > 0 || buffered >= 0) {
             switch (buffered) {
                 case BEGIN_SEND:
                     return;
                 case END_SEND:
                 default:
-                    Serial.read();
+                    if (Serial.peek() == buffered)
+                        Serial.read();
                     break;
             }
             buffered = Serial.peek();
         }
+    }
+
+
+    void incrementTransmitToken() {
+        transmitToken = (++transmitToken) % 250;
     }
 
     // Color smothering of the lights. Returns true if something has changed.
@@ -260,7 +277,7 @@ public class ArduinoEmulator {
     }
 
     int colorStep(int l, int lt) {
-        int stepSize = /* JAVA */ (int) /* /JAVA */ (3.0 + difference(l, lt) / 8.0);
+        int stepSize = /* JAVA */(int)/* /JAVA */ (3 + difference(l, lt) / stepLength);
         //int stepSize = 10;
         if (difference(l, lt) <= stepSize)
             l = lt;
@@ -270,6 +287,7 @@ public class ArduinoEmulator {
             l -= stepSize;
         return l;
     }
+
 
     int difference(int num1, int num2) {
         return Math.abs(num1 - num2);
@@ -296,6 +314,7 @@ public class ArduinoEmulator {
             leds_TargetValue[i].blue = 0;
         }
     }
+
 
     /* JAVA COMPATIBLE VARIABLES */
 
@@ -331,7 +350,7 @@ public class ArduinoEmulator {
 
     class ArduinoSerial {
         void begin(int baudRate) {
-
+            System.out.println("Serial emulation with a baud rate of " + baudRate);
         }
 
         void flush() {
@@ -362,7 +381,7 @@ public class ArduinoEmulator {
     }
 
     class LEDStrip {
-        public void write(rgb_color leds[], int count) {
+        public void write(rgb_color[] leds, int count) {
             visualizer.update();
         }
 

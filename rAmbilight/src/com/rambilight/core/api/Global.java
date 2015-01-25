@@ -75,7 +75,7 @@ public class Global {
     public static int      compressionLevel            = 1;
     public static boolean  compressionAutoSet          = true;
 
-    public static int     lightStepSize            = 0;
+    public static int     lightStepSize            = 8;
     public static boolean isSerialConnectionActive = false;
 
     private static Preferences preferences;
@@ -116,9 +116,8 @@ public class Global {
 
         preferences.save("lightLayoutClockwise", Global.lightLayoutClockwise);
         preferences.save("lightLayoutStartingPosition", Global.lightLayoutStartingPosition);
-        preferences.save("lightLayout", lightLayout);
+        preferences.save("lightLayout", Global.lightLayout);
 
-        preferences.save("lightStepSize", lightStepSize);
         preferences.save("lightStepSize", Global.lightStepSize);
         preferences.save("serialPort", Global.serialPort);
         preferences.save("compressionLevel", Global.compressionLevel);

@@ -31,6 +31,8 @@ public class Default extends ColorAlgorithm {
         for (int i = 0; i < 3; i++) {
             int tmpDiff = diff(rgb[i], rgb[(i + 1) % 3]);
             diff = diff > tmpDiff ? diff : tmpDiff;
+            if (rgb[i] < 3)
+                rgb[i] = 0;
         }
 
         // Dim the white channel.
