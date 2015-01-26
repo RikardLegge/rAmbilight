@@ -43,9 +43,9 @@ public class ComDriver {
     public boolean initialize() throws Exception {
 
         String[] ports = serial.getAvailablePorts();
-        if (ports.length == lastNumPorts)
-            return false;
-        lastNumPorts = ports.length;
+        //if (ports.length == lastNumPorts)
+        //    return false;
+        //lastNumPorts = ports.length;
         writtenPrefs = false;
 
         boolean foundPort = false;
@@ -57,43 +57,40 @@ public class ComDriver {
                 }
 
         if (!foundPort && ports.length > 0) {
-            System.out.println(i18n.get("noSerialPortSpecified"));
+            System.out.println(i18n.noSerialPortSpecified);
             if (ports.length == 1) {
-                System.out.println(String.format(i18n.get("onePortFound"), ports[0]));
+                System.out.println(String.format(i18n.onePortFound, ports[0]));
 
-                String result = MessageBox.Input(i18n.get("portFound"), String.format(i18n.get("usePort?"), ports[0]));
+                String result = MessageBox.Input(i18n.portFound, String.format(i18n.usePortQuestion, ports[0]));
                 if (result == null || (!result.toLowerCase().equals("y") && !result.toLowerCase().equals("yes")))
                     return false;
 
-                System.out.println("Activating...");
+                System.out.println(i18n.activating);
                 Global.serialPort = ports[0];
             }
             else {
-                System.out.println("Available ports:");
                 String portList = "";
                 int i = 0;
                 for (String port : ports) {
-                    System.out.println("Listing port" + port);
                     portList += i++ + ": " + port + "\n";
                 }
-                System.out.println("");
 
                 String extraMessage = "";
                 while (true) {
-                    String result = MessageBox.Input("Port select", extraMessage + "Which port should be activated? (Type the line number in the box below. 'E' to exit.)\n" + portList);
+                    String result = MessageBox.Input(i18n.portSelect, String.format(i18n.selectPortActivation, extraMessage, portList));
                     if (result != null && result.toLowerCase().equals("e"))
-                        throw new Exception("No port was chosen. Shutting down...");
+                        throw new Exception(i18n.noPortSelectShutDown);
                     try {
                         Global.serialPort = ports[Integer.parseInt(result)];
                         break;
                     } catch (Exception e) {
-                        extraMessage = result + " isn't a valid input!\n";
+                        extraMessage = String.format(i18n.notValidInput, result);
                     }
                 }
             }
         }
 
-        Main.trayControllerSetMessage("Connecting to device", true);
+        Main.trayControllerSetMessage(i18n.connectingToDevice, true);
         int errorCode = serial.initialize(Global.serialPort);
 
         lastReceived = System.currentTimeMillis();
@@ -101,19 +98,19 @@ public class ComDriver {
 
         if (errorCode == 1)
             if (displayedBusyMessage) {
-                System.out.println("The port seems to be used by another application");
+                System.out.println(i18n.portBusy);
                 return false;
             }
             else {
                 displayedBusyMessage = true;
-                System.out.println("The port seems to be used by another application, please close any other application which might communicate with the device.\nIf you don't know of any application which might be running and be connected to the USB device, try removing and reinserting the USB cable it into the computer.");
+                System.out.println(i18n.portBusyLong);
                 return false;
             }
         else if (errorCode == 2)
             return false;
 
         displayedBusyMessage = false;
-        System.out.println("Serial baud rate: " + serial.getDataRate());
+        System.out.println(String.format(i18n.baudRate, serial.getDataRate()));
         lightHandler.reset();
         lastNumPorts = 0;
         onConnect();
@@ -130,9 +127,9 @@ public class ComDriver {
         ticksSinceLastReceived++;
         if (ticksSinceLastReceived > 100 && Global.isSerialConnectionActive) {
             if (now - lastReceived > 8000) {
-                Main.trayControllerSetMessage("Please reinsert the USB cable", false);
+                Main.trayControllerSetMessage(i18n.reinsertCable, false);
                 close();
-                System.out.println("The system seems to have halted.");
+                System.out.println(i18n.hasHalted);
                 return false;
             }
             else if (now - lastReceived > 2000) {
@@ -153,7 +150,7 @@ public class ComDriver {
 
 
     private void onDisconnect() {
-        onDisconnect("Lost connection to the USB device.");
+        onDisconnect(i18n.connectionLost);
     }
 
     private void onDisconnect(String message) {
