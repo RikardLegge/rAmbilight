@@ -1,4 +1,4 @@
-package com.legge.preferences;
+package com.rambilight.core.preferences;
 
 import com.rambilight.core.api.Global;
 
