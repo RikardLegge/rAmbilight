@@ -1,6 +1,6 @@
 package com.rambilight.plugins.Ambilight;
 
-import com.legge.preferences.Preferences;
+import com.rambilight.core.preferences.Preferences;
 import com.rambilight.plugins.extensions.Extension;
 
 import java.awt.image.BufferedImage;
