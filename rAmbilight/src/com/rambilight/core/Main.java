@@ -132,8 +132,10 @@ public class Main {
                                     tray.setLabel("Connecting...", true);
                                     if (serialCom.initialize())
                                         tray.setLabel("", Global.isActive);
-                                    else
-                                        tray.setLabel("Failed to connect...", true);
+                                    else {
+                                        Global.isActive = false;
+                                        tray.setState(Global.isActive, "Failed to connect...");
+                                    }
                                 }
                                 else if (!tray.getLabel().contains("No device"))
                                     tray.setLabel("No device connected", false);
