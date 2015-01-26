@@ -9,6 +9,9 @@ import com.rambilight.core.preferences.i18n;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * The communication handled which gives an abstraction between the core and the serial controller.
+ */
 public class ComDriver {
 
     private SerialController serial;

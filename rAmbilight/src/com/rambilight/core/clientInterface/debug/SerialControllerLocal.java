@@ -3,6 +3,10 @@ package com.rambilight.core.clientInterface.debug;
 import com.rambilight.core.clientInterface.SerialController;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+/**
+ * Debug serial controller which starts a visualizer and an approximation/emulation of how the code will
+ * run on the arduino.
+ */
 public class SerialControllerLocal extends SerialController {
 
     private final static int BUFFERSIZE = 64;   // Arduino serial buffer length

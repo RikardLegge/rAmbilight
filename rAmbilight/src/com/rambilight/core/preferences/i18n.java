@@ -2,6 +2,10 @@ package com.rambilight.core.preferences;
 
 import java.util.Hashtable;
 
+/**
+ * Beelining of an implementation of a version of i18n, Localization.
+ * Currently only for cleaning the code from strings.
+ */
 public class i18n {
 
     private static Hashtable<String, String> translations = new Hashtable<>();

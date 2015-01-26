@@ -4,6 +4,11 @@ import com.rambilight.core.api.Global;
 
 import javax.swing.*;
 
+/**
+ * A common way of displaying message boxes.
+ * Currently all methods are synchronous which means that the thread they are called on will hang.
+ * More methods might be added in the future to allow asynchronous message dialogs.
+ */
 public class MessageBox {
 
     private static final JFrame component = new JFrame();

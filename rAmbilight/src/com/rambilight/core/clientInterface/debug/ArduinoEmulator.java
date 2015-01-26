@@ -2,6 +2,17 @@
 
 package com.rambilight.core.clientInterface.debug;
 
+/**
+ * A class which is compiled to a subset of C which is able to run on the arduino.
+ * This allows the debug environment to behave close to the same as when run on the device.
+ */
+
+//  /* JAVA */ THIS WILL ONLY RUN IN THE TEST ENVIRONMENT /* /JAVA */
+//  /* ARDUINO /THIS WILL ONLY RUN ON THE ARDUINO/*  /ARDUINO */
+//  int/**/ WILL BECOME A BYTE WHEN COMPILED, SINCE BYTES ARE ANNOYING TO WORK WITH IN JAVA.
+//  final int BECOMES #define
+//  long BECOMES unsigned long
+
 public class ArduinoEmulator {
 /* /Java */
     /* ARDUINO /#include <PololuLedStrip.h>/* /Arduino */      // The LED library

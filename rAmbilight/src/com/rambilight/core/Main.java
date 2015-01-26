@@ -13,6 +13,9 @@ import com.rambilight.plugins.Module;
 import javax.swing.*;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * The main/core class which initiates the rest of the application.
+ */
 public class Main {
 
     private static TrayController tray;

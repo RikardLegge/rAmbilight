@@ -13,6 +13,9 @@ import java.util.regex.Pattern;
  * 
  */
 
+/**
+ * The communication with the arduino is done through this class.
+ */
 public class SerialControllerJSSC extends SerialController implements SerialPortEventListener {
 
     SerialPort serialPort;

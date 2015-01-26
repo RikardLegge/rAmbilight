@@ -1,5 +1,10 @@
 package com.rambilight.core.api;
 
+/**
+ * A method of handling the platform differences between Windows, Mac and Linux.
+ * Still under development.
+ * Tested on Mac, OSX.
+ */
 public class Platform {
     public static String  osName    = System.getProperty("os.name").toLowerCase();
     public static boolean isWindows = osName.contains("win");

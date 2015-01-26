@@ -13,8 +13,8 @@ import java.awt.*;
  */
 
 /**
- * WARNING: The visualizer is not available outside of the API environment.
- * Therefor, don't call it from within a module, since this would cause it to be invalidated!
+ * A way of visualizing the light buffer in the same way as the arduino and led strip would.
+ * Creates a frame and interface for displaying the light buffer.
  */
 public class Visualizer extends JFrame {
 

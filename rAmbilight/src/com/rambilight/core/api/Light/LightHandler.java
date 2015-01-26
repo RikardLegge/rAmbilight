@@ -6,11 +6,13 @@ import com.rambilight.core.clientInterface.LightHandlerCore;
 
 /**
  * A class for handling the Lights and what to output to the ambilight device.
+ * This class is a wrapper around the lightHandlerCore and creates a manageable interface
+ * for modules to communicate by.
  */
 public class LightHandler {
 
-    LightHandlerCore lightHandlerCore;
-    String           name;
+    private LightHandlerCore lightHandlerCore;
+    private String           name;
 
     /**
      * Shouldn't ever be needed to call from within modules, but if the time comes creates a new interface for handling light output.

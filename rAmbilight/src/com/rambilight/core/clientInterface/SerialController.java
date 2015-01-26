@@ -1,5 +1,9 @@
 package com.rambilight.core.clientInterface;
 
+/**
+ * The SerialController interface which gives a common interface for both the host->client as well as
+ * the debug communication.
+ */
 public abstract class SerialController {
 
     // Declares a couple of variables for the serial communication

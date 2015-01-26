@@ -10,6 +10,11 @@ import java.io.File;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+/**
+ * A controller for the tray.
+ * Also provides methods for creating compatible menu items.
+ * This should NOT be re-instantiated by a module since it might cause problems.
+ */
 public class TrayController {
 
     // The tray
@@ -19,7 +24,6 @@ public class TrayController {
     // Menu items in the tray
     private CheckboxMenuItem              runToggle;
     private Menu                          inputs;
-    //    private Menu                          errors;
     private MenuItem                      exit;
     private MenuItem                      openConfig;
     private Hashtable<String, MenuItem[]> itemGroups;
@@ -83,16 +87,6 @@ public class TrayController {
                     errorList[pos++] = createItem(errorString, null);
                 return errorList;
             };
-/*
-            errors = createItemGroup("Error Log [Refresh]", errorListContentCreator.create(), (target) -> {
-            });
-            errors.addActionListener((e) -> {
-                inputs.removeAll();
-                MenuItem[] errorList = errorListContentCreator.create();
-                for (MenuItem item : errorList)
-                    inputs.add(item);
-            });
-*/
 
             exit = createItem("Quit rAmbilight", (target) -> {
                 if (Main.sleepLatch != null)
@@ -186,8 +180,6 @@ public class TrayController {
 
         popup.addSeparator();
         popup.add(openConfig);
-        //if (Global.disableErrorPopups)
-        //    popup.add(errors);
         popup.add(exit);
 
         setState(Global.isActive);
