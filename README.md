@@ -47,7 +47,7 @@ public class HelloWorld extends Module {
 ## Javadoc
 The javadoc for the project can be found at the following url. This url will how ever change in the future when the whole project is merged into one repository. 
 
-http://rikardlegge.github.io/rAmbilght/ 
+[See the javadoc](http://rikardlegge.github.io/rAmbilight/)
 
 ## Installation
 
