@@ -22,7 +22,7 @@ A directory currently containing the following plugins:
 + Ambilight
 + Push bullet
 
-There are currently no pre-built versions of the plugins, but to build a plugin all that has to be done is change the PATH variable in `sh/build.sh` file to reflect the platform to run on. Currently the `build.sh` file path points to the plugin directory on OSX. For more information about plugins se [this github page](https://github.com/RikardLegge/rAmbilght-Framework).
+There are currently no pre-built versions of the plugins, but to build a plugin all that has to be done is change the PATH variable in `sh/build.sh` file to reflect the platform to run on. Currently the `build.sh` file path points to the plugin directory on OSX.
 
 ## The API
 
@@ -47,7 +47,7 @@ public class HelloWorld extends Module {
 ## Javadoc
 The javadoc for the project can be found at the following url. This url will how ever change in the future when the whole project is merged into one repository. 
 
-http://rikardlegge.github.io/rAmbilght-Framework/ 
+http://rikardlegge.github.io/rAmbilght/ 
 
 ## Installation
 
