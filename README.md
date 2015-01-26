@@ -1,18 +1,18 @@
 ## rAmbilight
 
-rAmbilight is a home brew project to allow anyone to get a hold of  an easy to use, efficient, affordable Ambient lighting system. It started out as a project for school, but has since then developed into a framework which allows easy manipulation of addressable light strips, using an Arduino micro controller.
+rAmbilight is a home brew project to allow anyone to get a hold of  an easy to use, efficient, affordable Ambient lighting system. It started out as a project for school, but has since then developed into a framework which allows easy manipulation of addressable light strips, using an Arduino micro controller and a host computer.
 
 ## Repository layout
 
-The repositry is divided into 3 parts which have their own important role.
+The repository is divided into 3 parts which have their own important role.
 
 #### Distribution (dist)
 
-The directory which contains pre-build files. Currently only for OSX, but the configuration necessary for a windows build is available. 
+The directory which contains pre-build files. Currently only for Mac OSX, but the configuration necessary for a windows build is available. 
 
 #### Core (rAmbilight)
 
-The source code for the core part of the project, which includes a module handler, serial connection handler, and API interface to access the loaded modules. This also includes the source code for the arduino microcomputer.
+The source code for the core part of the project, which includes a module handler, serial connection handler, and API interface to access the loaded modules. This also includes the source code for the Arduino microcomputer.
 
 #### Plugins (rAmbilightPlugins)
 
@@ -26,11 +26,12 @@ There are currently no pre-built versions of the plugins, but to build a plugin 
 
 ## The API
 
-In the core library there is a built in API interface for development of plugins.
+In the core library there is a built in API interface for development of plugins. 
+It lies under the path `com.rambilight.core.api`.
 
 ## Hello World
 
-Below is a simple class which which shows just how easy the API is to use. For example, the snippet bellow changes light with position 1 to red when the class is loaded.
+Below is a simple class which which shows basic plugin / module. For example, the snippet bellow changes light with position 1 to red when the class is loaded.
 
 ```java
 
@@ -44,7 +45,7 @@ public class HelloWorld extends Module {
 ```
 
 ## Javadoc
-The javadoc for the project can be found at the following url. This url will how ever hange in the future when the whole project is merged into one repository. 
+The javadoc for the project can be found at the following url. This url will how ever change in the future when the whole project is merged into one repository. 
 
 http://rikardlegge.github.io/rAmbilght-Framework/ 
 
@@ -64,11 +65,11 @@ public class Main {
 ```
 
 
-It's recommended that the Example project Hello_World is used as a starting point, since it includes all the most important functions of the framework. 
+It's recommended that the Example project Hello_World is used as a starting point, since it includes all the most important functions of the framework, and also being documented.
 
 ## Export
 
-To use the module which you've created, just export it as a simple jar file. When rAmbilight later is started, it searches through the directory located at
+To use the module which you've created, just export it as a jar or class file. When rAmbilight starts, it searches through the directory located at
 > OS X: /User/%USERNAME%/Library/Application Support/rAmbilight/plugins
 
 > Windows: C:/Users/%USERNAME%/AppData/Local/rAmbilight/plugins
@@ -81,4 +82,4 @@ Rikard Legge  - rikard.legge@gmail.com
 ## License
 Copyright Rikard Legge, All rights reserved.
 
-This  will change in the future. 
+This  will change in the future.
