@@ -2,6 +2,12 @@
 
 rAmbilight is a home brew project to allow anyone to get a hold of  an easy to use, efficient, affordable Ambient lighting system. It started out as a project for school, but has since then developed into a framework which allows easy manipulation of addressable light strips, using an Arduino micro controller and a host computer.
 
+## Showcase
+
+Since I've been the only contributor to the project, I havn't focused on creating a website to showcase the ambilight.
+
+Photos can on the other hand be found [here on Google+](https://plus.google.com/photos/104773716095315761126/albums/6078003639491029425?authkey=CK3J6PTm6f3rCw).
+
 ## Repository layout
 
 The repository is divided into 3 parts which have their own important role.
