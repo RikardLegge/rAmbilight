@@ -4,6 +4,7 @@ import com.rambilight.core.Main;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.Light;
 import com.rambilight.core.api.ui.MessageBox;
+import com.rambilight.core.preferences.i18n;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -32,7 +33,6 @@ public class ComDriver {
         serial.setDisconnectedListener((data) -> close());
     }
 
-
     public LightHandlerCore getLightHandler() {
         return lightHandler;
     }
@@ -54,11 +54,11 @@ public class ComDriver {
                 }
 
         if (!foundPort && ports.length > 0) {
-            System.out.println("No serial port specified. Finding most appropriate port...");
+            System.out.println(i18n.get("noSerialPortSpecified"));
             if (ports.length == 1) {
-                System.out.println("One port found: " + ports[0]);
+                System.out.println(String.format(i18n.get("onePortFound"), ports[0]));
 
-                String result = MessageBox.Input("Port found!", "Are you sure you want to use this port as an rAmbilight device? (Type 'Yes' or 'No')'\n" + ports[0] + "\n ");
+                String result = MessageBox.Input(i18n.get("portFound"), String.format(i18n.get("usePort?"), ports[0]));
                 if (result == null || (!result.toLowerCase().equals("y") && !result.toLowerCase().equals("yes")))
                     return false;
 
