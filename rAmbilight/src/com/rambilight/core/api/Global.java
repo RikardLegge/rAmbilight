@@ -22,7 +22,7 @@ public class Global {
     /**
      * The version number of the API and application.
      */
-    public static final int               VERSION         = 30;
+    public static final int               VERSION         = 31;
 
     /**
      * If set to true, the application will try to exit gracefully.
@@ -75,6 +75,7 @@ public class Global {
     public static int      compressionLevel            = 1;
     public static boolean  compressionAutoSet          = true;
 
+    public static int     lightUpdateThreshold     = 3;
     public static int     lightStepSize            = 8;
     public static boolean isSerialConnectionActive = false;
 
@@ -99,6 +100,7 @@ public class Global {
         for (int num : lightLayout)
             numLights += num;
 
+        Global.lightUpdateThreshold = preferences.load("lightUpdateThreshold", Global.lightUpdateThreshold);
         Global.lightStepSize = preferences.load("lightStepSize", Global.lightStepSize);
         Global.serialPort = preferences.load("serialPort", Global.serialPort);
         Global.compressionAutoSet = preferences.load("compressionAutoSet", Global.compressionAutoSet);
@@ -118,6 +120,7 @@ public class Global {
         preferences.save("lightLayoutStartingPosition", Global.lightLayoutStartingPosition);
         preferences.save("lightLayout", Global.lightLayout);
 
+        preferences.save("lightUpdateThreshold", Global.lightUpdateThreshold);
         preferences.save("lightStepSize", Global.lightStepSize);
         preferences.save("serialPort", Global.serialPort);
         preferences.save("compressionLevel", Global.compressionLevel);
