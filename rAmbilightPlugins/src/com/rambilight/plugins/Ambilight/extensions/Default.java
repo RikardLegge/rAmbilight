@@ -42,10 +42,10 @@ public class Default extends ColorAlgorithm {
     }
 
     public void savePreferences(Preferences preferences) {
-        preferences.save("ColorAlgorithm.default.colorSuppress", colorSuppress);
+        preferences.save("colorAlgorithm.Default.colorSuppress", colorSuppress);
     }
 
     public void loadPreferences(Preferences preferences) {
-        colorSuppress = preferences.load("ColorAlgorithm.default.colorSuppress", colorSuppress);
+        colorSuppress = preferences.load("colorAlgorithm.Default.colorSuppress", colorSuppress);
     }
 }
