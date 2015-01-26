@@ -19,6 +19,7 @@ public class ArduinoEmulator {
     final int CLEAR_BUFFER      = 4;
 
     //  Control signals
+    final int DISCONNECT       = 251;
     final int PING             = 252;
     final int BEGIN_SEND_PREFS = 253;
     final int END_SEND         = 254;
@@ -101,7 +102,7 @@ public class ArduinoEmulator {
                 if (ColorSmoothing())    // If something has changed
                     writeLEDS();
                 if (oldTransmitToken != transmitToken) {
-                    writeSingle(transmitToken);       // I'm ready for more
+                    writeSingle(PING);       // I'm ready for more
                     oldTransmitToken = transmitToken;
                 }
                 break;
@@ -135,6 +136,9 @@ public class ArduinoEmulator {
                     break;
                 case BEGIN_SEND_PREFS:
                     serialHandlePreferences();
+                    break;
+                case DISCONNECT:
+                    setState(LOST);
                     break;
                 default:
                     serialHandleOther(buffered);

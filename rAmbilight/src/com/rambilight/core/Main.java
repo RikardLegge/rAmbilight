@@ -1,6 +1,6 @@
 package com.rambilight.core;
 
-import com.legge.preferences.Preferences;
+import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.ui.MessageBox;
 import com.rambilight.core.api.ui.TrayController;
@@ -119,11 +119,9 @@ public class Main {
                             if (!suspended) {
                                 System.out.println("Suspending");
                                 suspended = true;
-                                Global.isSerialConnectionActive = false;
                                 ModuleLoader.suspend();
                                 serialCom.getLightHandler().clearBuffer();
-                                if (!serialCom.halted)
-                                    serialCom.close();
+                                serialCom.close();
                             }
                             if (Global.isActive) {
 

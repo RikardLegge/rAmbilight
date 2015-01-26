@@ -1,6 +1,6 @@
 package com.rambilight.core;
 
-import com.legge.preferences.Preferences;
+import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.LightHandler;
 import com.rambilight.core.api.Platform;

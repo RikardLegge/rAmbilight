@@ -100,7 +100,8 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
             }
             latch.countDown();
         });
-        thread.start();
+        if (serialPort != null)
+            thread.start();
 
         try {
             long timeBefore = System.currentTimeMillis();

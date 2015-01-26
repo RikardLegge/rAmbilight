@@ -80,13 +80,12 @@ public class SerialControllerLocal extends SerialController {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                else {
+                else
                     try {
                         Thread.sleep(16);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                }
             }
             isOpen = false;
         }

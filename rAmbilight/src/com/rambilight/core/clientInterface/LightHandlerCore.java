@@ -60,9 +60,9 @@ public class LightHandlerCore {
             b = (light.b + b) / 2;
         }*/
 
-        r = Math.max(Math.min(r, 252), 0);
-        g = Math.max(Math.min(g, 252), 0);
-        b = Math.max(Math.min(b, 252), 0);
+        r = Math.max(Math.min(r, 250), 0);
+        g = Math.max(Math.min(g, 250), 0);
+        b = Math.max(Math.min(b, 250), 0);
 
         int lightRGB = light.r + light.g + light.b;
 

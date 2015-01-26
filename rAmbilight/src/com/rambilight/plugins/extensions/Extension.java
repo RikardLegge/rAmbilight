@@ -1,6 +1,6 @@
 package com.rambilight.plugins.extensions;
 
-import com.legge.preferences.Preferences;
+import com.rambilight.core.preferences.Preferences;
 
 /**
  * The Extension class is the base for crating any new extensions for rAmbilight Modules.

@@ -1,6 +1,6 @@
 package com.rambilight.core.api;
 
-import com.legge.preferences.Preferences;
+import com.rambilight.core.preferences.Preferences;
 
 import java.io.File;
 import java.util.ArrayList;

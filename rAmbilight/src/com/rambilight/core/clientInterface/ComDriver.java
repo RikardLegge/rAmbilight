@@ -21,8 +21,7 @@ public class ComDriver {
     private boolean writtenPrefs         = false;
     private boolean displayedBusyMessage = false;
 
-    private int     lastNumPorts = 0;
-    public  boolean halted       = false;
+    private int lastNumPorts = 0;
 
     public ComDriver(SerialController serialController) {
         lightHandler = new LightHandlerCore(Global.numLights);
@@ -30,12 +29,7 @@ public class ComDriver {
         serialBuffer = new LinkedList<>();
 
         serial.setEventListener((data) -> receivedPacket(data));
-        serial.setDisconnectedListener((data) -> {
-            if (Global.isSerialConnectionActive) {
-                System.out.println("Lost connection to the USB device.");
-                Global.isSerialConnectionActive = false;
-            }
-        });
+        serial.setDisconnectedListener((data) -> close());
     }
 
 
@@ -117,14 +111,14 @@ public class ComDriver {
 
         displayedBusyMessage = false;
         System.out.println("Serial baud rate: " + serial.getDataRate());
-        Global.isSerialConnectionActive = true;
         lightHandler.reset();
         lastNumPorts = 0;
-        halted = false;
+        onConnect();
         return true;
     }
 
     public boolean close() {
+        onDisconnect();
         return !serial.isOpen() || serial.close();
     }
 
@@ -133,18 +127,13 @@ public class ComDriver {
         ticksSinceLastReceived++;
         if (ticksSinceLastReceived > 100 && Global.isSerialConnectionActive) {
             if (now - lastReceived > 8000) {
-                Global.isSerialConnectionActive = false;
-                System.err.println("The system seems to have halted.");
-                halted = true;
-                serial.removeRootEventListener();
                 Main.trayControllerSetMessage("Please reinsert the USB cable", false);
-                MessageBox.Error("Serial port locked", "If you recently unplugged the USB device and haven't reinserted it, you can ignore this message!\n\nUnable to connect to the device, please unplug and reinsert the USB device.\nPress OK when this has been done.\n\nWARNING: DON'T QUIT the application while the serial port is in this state, since it will lock it. To fix this, just force close all other instances of the application.\n\nNOTE: There is a known bug which causes this problem, which hopefully will be fixed in on of the upcoming releases.\nUntil then, when this window pops up, please just reinsert the USB device \n\nRegards\nThe rAmbilight development team");
+                close();
+                System.out.println("The system seems to have halted.");
                 return false;
             }
             else if (now - lastReceived > 2000) {
-                Global.isSerialConnectionActive = false;
-                System.out.println("Lost connection to the USB device.");
-                serial.close();
+                close();
                 return false;
             }
             else if (now - lastPing > 750)
@@ -157,6 +146,23 @@ public class ComDriver {
 
     public boolean serialPortsAvailable() {
         return serial.getAvailablePorts().length > 0;
+    }
+
+
+    private void onDisconnect() {
+        onDisconnect("Lost connection to the USB device.");
+    }
+
+    private void onDisconnect(String message) {
+        if (Global.isSerialConnectionActive) {
+            write(ArduinoCommunication.DISCONNECT);
+            System.out.println(message);
+            Global.isSerialConnectionActive = false;
+        }
+    }
+
+    private void onConnect() {
+        Global.isSerialConnectionActive = true;
     }
 
 
@@ -192,6 +198,7 @@ public class ComDriver {
         writeToBuffer(preference);
         writeToBuffer((byte) value);
     }
+
 
     private void flushBuffer() {
         if (serialBuffer.size() > 64) {
@@ -237,6 +244,17 @@ public class ComDriver {
         flushBuffer();
     }
 
+
+    public void ping() {
+        lastPing = System.currentTimeMillis();
+        serialGateway(Gateway.ping);
+    }
+
+    private void pingLights() {
+        write(ArduinoCommunication.PING);
+    }
+
+
     private void receivedPacket(int data) {
         lastReceived = System.currentTimeMillis();
         ticksSinceLastReceived = 0;
@@ -244,11 +262,14 @@ public class ComDriver {
             case 253: // Needs setup
                 serialGateway(Gateway.preferences);
                 break;
-            default:
+            case 252: // PING
                 if (!writtenPrefs)
                     serialGateway(Gateway.preferences);
                 else
                     serialGateway(Gateway.data);
+                break;
+            default:
+                System.out.println("Relieved unknown data with value: " + data);
                 break;
         }
     }
@@ -267,15 +288,6 @@ public class ComDriver {
         }
     }
 
-    public void ping() {
-        lastPing = System.currentTimeMillis();
-        serialGateway(Gateway.ping);
-    }
-
-    private void pingLights() {
-        write(ArduinoCommunication.PING);
-    }
-
 
     private enum Gateway {
         ping, data, preferences
@@ -290,6 +302,7 @@ public class ComDriver {
         public static final byte COMPRESSION_LEVEL = 3;
         public static final byte CLEAR_BUFFER      = 4;
 
+        public static final byte DISCONNECT       = (byte) 251;
         public static final byte PING             = (byte) 252;
         public static final byte BEGIN_SEND_PREFS = (byte) 253;
         public static final byte END_SEND         = (byte) 254;
