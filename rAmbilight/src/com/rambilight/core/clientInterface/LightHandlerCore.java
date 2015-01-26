@@ -64,9 +64,7 @@ public class LightHandlerCore {
         g = Math.max(Math.min(g, 250), 0);
         b = Math.max(Math.min(b, 250), 0);
 
-        int lightRGB = light.r + light.g + light.b;
-
-        if (diff(lightRGB, r + g + b) >= 5 || lightRGB == 0 || force) {
+        if (enoughDiff(light.r, r) || enoughDiff(light.g, g) || enoughDiff(light.b, b) || force) {
             light.r = r;
             light.g = g;
             light.b = b;
@@ -135,7 +133,7 @@ public class LightHandlerCore {
         if (ModuleLoader.getActiveModules().size() == 0)
             colorBuffer[i].set(0, 0, 0);
         else
-            ModuleLoader.getActiveModules().parallelStream().filter(name -> identifiableColorBuffer.containsKey(name)).forEach(name -> {
+            ModuleLoader.getActiveModules().parallelStream().filter(identifiableColorBuffer::containsKey).forEach(name -> {
                 Light lightI = identifiableColorBuffer.get(name)[i];
                 colorBuffer[i].r = Math.round((float) colorBuffer[i].r * ((float) lightI.r / 252f));
                 colorBuffer[i].g = Math.round((float) colorBuffer[i].g * ((float) lightI.g / 252f));
@@ -146,6 +144,10 @@ public class LightHandlerCore {
 
     private int diff(int a, int b) {
         return Math.abs(a - b);
+    }
+
+    private boolean enoughDiff(int light, int val) {
+        return !(diff(light, val) < Global.lightUpdateThreshold && light > Global.lightUpdateThreshold);
     }
 
     public void clearBuffer() {
