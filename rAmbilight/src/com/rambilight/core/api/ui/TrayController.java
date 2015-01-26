@@ -19,7 +19,7 @@ public class TrayController {
     // Menu items in the tray
     private CheckboxMenuItem              runToggle;
     private Menu                          inputs;
-    private Menu                          errors;
+    //    private Menu                          errors;
     private MenuItem                      exit;
     private MenuItem                      openConfig;
     private Hashtable<String, MenuItem[]> itemGroups;
@@ -83,7 +83,7 @@ public class TrayController {
                     errorList[pos++] = createItem(errorString, null);
                 return errorList;
             };
-
+/*
             errors = createItemGroup("Error Log [Refresh]", errorListContentCreator.create(), (target) -> {
             });
             errors.addActionListener((e) -> {
@@ -92,7 +92,7 @@ public class TrayController {
                 for (MenuItem item : errorList)
                     inputs.add(item);
             });
-
+*/
 
             exit = createItem("Quit rAmbilight", (target) -> {
                 if (Main.sleepLatch != null)
@@ -186,8 +186,8 @@ public class TrayController {
 
         popup.addSeparator();
         popup.add(openConfig);
-        if (Global.disableErrorPopups)
-            popup.add(errors);
+        //if (Global.disableErrorPopups)
+        //    popup.add(errors);
         popup.add(exit);
 
         setState(Global.isActive);
