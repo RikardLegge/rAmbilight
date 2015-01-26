@@ -14,6 +14,7 @@
 #define CLEAR_BUFFER 4
 
 //  Control signals
+#define DISCONNECT 251
 #define PING 252
 #define BEGIN_SEND_PREFS 253
 #define END_SEND 254
@@ -91,7 +92,7 @@ void stateHandle() {
             if (ColorSmoothing())    // If something has changed
                 writeLEDS();
             if (oldTransmitToken != transmitToken) {
-                writeSingle(transmitToken);       // I'm ready for more
+                writeSingle(PING);       // I'm ready for more
                 oldTransmitToken = transmitToken;
             }
             break;
@@ -125,6 +126,9 @@ void serialHandle() {
                 break;
             case BEGIN_SEND_PREFS:
                 serialHandlePreferences();
+                break;
+            case DISCONNECT:
+                setState(LOST);
                 break;
             default:
                 serialHandleOther(buffered);
