@@ -57,8 +57,8 @@ public class Main {
             Global.generateApplicationSupportPath();
             Preferences.setPathToDefault();
             Preferences.read();
-
             Global.loadPreferences();
+
             serialCom = new ComDriver(serialController);
 
             if (debugModule != null)
@@ -88,7 +88,7 @@ public class Main {
         }
         Thread thread = new Thread(new Runtime());
         thread.setName("rAmbilight Runtime");
-        thread.run();
+        thread.start();
     }
 
     /**
