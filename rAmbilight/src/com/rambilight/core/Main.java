@@ -33,7 +33,16 @@ public class Main {
      * @param args The input from the command line
      */
     public static void main(String[] args) throws Exception {
-        new Main().load();
+        boolean debug = false;
+        for (int k = 0; k < args.length; k++) {
+            String v = args[k];
+            if (v.equals("--debug"))
+                debug = true;
+        }
+        if (debug)
+            new Main().loadDebugger(null);
+        else
+            new Main().load();
     }
 
     public void loadDebugger(Class<? extends Module> debugModule) {
@@ -102,71 +111,69 @@ public class Main {
         boolean suspended;
 
         public void run() {
-            while (true)
-                if (!Global.requestExit)
-                    try {
-                        if (Global.isSerialConnectionActive && Global.isActive) {
-                            if (suspended)
-                                suspended = false;
-                            ModuleLoader.step();
-                            if (serialCom.update())
-                                serialCom.getLightHandler().sanityCheck();
+            while (!Global.requestExit)
+                try {
+                    if (Global.isSerialConnectionActive && Global.isActive) {
+                        if (suspended)
+                            suspended = false;
+                        ModuleLoader.step();
+                        if (serialCom.update())
+                            serialCom.getLightHandler().sanityCheck();
+                        try {
+                            Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
+                        } catch (InterruptedException e) {
+                            System.err.println("An error occurred on the main thread.");
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        if (!suspended) {
+                            System.out.println("Suspending");
+                            suspended = true;
+                            ModuleLoader.suspend();
+                            serialCom.getLightHandler().clearBuffer();
+                            serialCom.close();
+                        }
+                        if (Global.isActive) {
+
+                            if (serialCom.serialPortsAvailable()) {
+                                tray.setLabel("Connecting...", true);
+                                if (serialCom.initialize())
+                                    tray.setLabel("", Global.isActive);
+                                else {
+                                    Global.isActive = false;
+                                    tray.setState(Global.isActive, "Failed to connect...");
+                                }
+                            }
+                            else if (!tray.getLabel().contains("No device"))
+                                tray.setLabel("No device connected", false);
                             try {
-                                Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
+                                Thread.sleep(1000);
                             } catch (InterruptedException e) {
-                                System.err.println("An error occurred in the main thread.");
+                                System.out.println("Thread sleep was interrupted.");
                                 e.printStackTrace();
                             }
                         }
                         else {
-                            if (!suspended) {
-                                System.out.println("Suspending");
-                                suspended = true;
-                                ModuleLoader.suspend();
-                                serialCom.getLightHandler().clearBuffer();
-                                serialCom.close();
+                            tray.setState(Global.isActive, "");
+                            try {
+                                sleepLatch = new CountDownLatch(1);
+                                System.out.print("Awaiting latch... ");
+                                sleepLatch.await();
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            if (Global.isActive) {
-
-                                if (serialCom.serialPortsAvailable()) {
-                                    tray.setLabel("Connecting...", true);
-                                    if (serialCom.initialize())
-                                        tray.setLabel("", Global.isActive);
-                                    else {
-                                        Global.isActive = false;
-                                        tray.setState(Global.isActive, "Failed to connect...");
-                                    }
-                                }
-                                else if (!tray.getLabel().contains("No device"))
-                                    tray.setLabel("No device connected", false);
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    System.out.println("Thread sleep was interrupted.");
-                                    e.printStackTrace();
-                                }
-                            }
-                            else {
-                                tray.setState(Global.isActive, "");
-                                try {
-                                    sleepLatch = new CountDownLatch(1);
-                                    System.out.print("Awaiting latch... ");
-                                    sleepLatch.await();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                System.out.println("Awoke!");
-                                sleepLatch = null;
-                            }
+                            System.out.println("Awoke!");
+                            sleepLatch = null;
                         }
-                    } catch (Exception e) {
-                        MessageBox.Error(e.getCause() != null ? e.getCause().toString() : "Runtime Error!", e.getMessage()); // Displays an error box in case of something happens
-                        e.printStackTrace();
                     }
-                else {
-                    exit(0);
+                } catch (Exception e) {
+                    MessageBox.Error(e.getCause() != null ? e.getCause().toString() : "Runtime Error!", e.getMessage()); // Displays an error box in case of something happens
+                    e.printStackTrace();
                 }
+            exit(0);
         }
+
     }
 
     /**
