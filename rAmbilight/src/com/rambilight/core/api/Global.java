@@ -76,7 +76,7 @@ public class Global {
     public static boolean  compressionAutoSet          = true;
 
     public static int     lightUpdateThreshold     = 3;
-    public static int     lightStepSize            = 8;
+    public static int     lightStepSize            = 16;
     public static boolean isSerialConnectionActive = false;
 
     private static Preferences preferences;
