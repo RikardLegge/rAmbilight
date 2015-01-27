@@ -6,7 +6,7 @@ import com.rambilight.plugins.Ambilight.ColorAlgorithm;
 import java.awt.image.BufferedImage;
 
 public class Default extends ColorAlgorithm {
-    private static int colorSuppress = 2;
+    private static int colorSuppress = 3;
 
     public String getName() {
         return "Default";
