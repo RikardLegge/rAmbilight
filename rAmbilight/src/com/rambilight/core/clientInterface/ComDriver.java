@@ -25,8 +25,6 @@ public class ComDriver {
     private boolean writtenPrefs         = false;
     private boolean displayedBusyMessage = false;
 
-    private int lastNumPorts = 0;
-
     public ComDriver(SerialController serialController) {
         lightHandler = new LightHandlerCore(Global.numLights);
         serial = serialController;
@@ -112,7 +110,6 @@ public class ComDriver {
         displayedBusyMessage = false;
         System.out.println(String.format(i18n.baudRate, serial.getDataRate()));
         lightHandler.reset();
-        lastNumPorts = 0;
         onConnect();
         return true;
     }
@@ -123,6 +120,7 @@ public class ComDriver {
     }
 
     public boolean update() {
+        //PackageCounter.update();
         long now = System.currentTimeMillis();
         ticksSinceLastReceived++;
         if (ticksSinceLastReceived > 100 && Global.isSerialConnectionActive) {
@@ -201,6 +199,7 @@ public class ComDriver {
 
 
     private void flushBuffer() {
+        //PackageCounter.add(serialBuffer.size());
         if (serialBuffer.size() > 64) {
             System.out.println("Arduino serial buffer overflow: " + serialBuffer.size());
         }
@@ -217,9 +216,9 @@ public class ComDriver {
 
     private void flushLights() {
         if (lightHandler.requiresUpdate()) {
-            writeToBuffer(ArduinoCommunication.BEGIN_SEND); // Should be more efficient than an ordinary write
             lastPing = System.currentTimeMillis();
-            //lastCorrectionLap = System.currentTimeMillis();
+
+            writeToBuffer(ArduinoCommunication.BEGIN_SEND); // Should be more efficient than an ordinary write
 
             Light light;
             flushBuffer();
@@ -307,5 +306,25 @@ public class ComDriver {
         public static final byte BEGIN_SEND_PREFS = (byte) 253;
         public static final byte END_SEND         = (byte) 254;
         public static final byte BEGIN_SEND       = (byte) 255;
+    }
+
+    private static class PackageCounter {
+        private static int  packageCount        = 0;
+        private static int  packageContentCount = 0;
+        private static long lastOutput          = 0;
+
+        private static void update() {
+            if (System.currentTimeMillis() - lastOutput > 1000) {
+                System.out.println(String.format("Packages: %03d st, Contents: %d bytes", packageCount, packageContentCount));
+                packageCount = 0;
+                packageContentCount = 0;
+                lastOutput = System.currentTimeMillis();
+            }
+        }
+
+        private static void add(int count) {
+            packageCount++;
+            packageContentCount += count;
+        }
     }
 }
