@@ -147,7 +147,8 @@ public class LightHandlerCore {
     }
 
     private boolean enoughDiff(int light, int val) {
-        return !(diff(light, val) < Global.lightUpdateThreshold && light > Global.lightUpdateThreshold);
+        return //!(diff(light, val) < Global.lightUpdateThreshold && light > Global.lightUpdateThreshold);
+                diff(light, val) > Global.lightUpdateThreshold || (val == 0 && light > 0);
     }
 
     public void clearBuffer() {
