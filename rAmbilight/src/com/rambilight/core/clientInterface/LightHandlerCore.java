@@ -3,6 +3,7 @@ package com.rambilight.core.clientInterface;
 import com.rambilight.core.ModuleLoader;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.Light;
+import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -148,7 +149,7 @@ public class LightHandlerCore {
 
     private boolean enoughDiff(int light, int val) {
         return //!(diff(light, val) < Global.lightUpdateThreshold && light > Global.lightUpdateThreshold);
-                diff(light, val) > Global.lightUpdateThreshold || (val == 0 && light > 0);
+                diff(light, val) > Global.lightUpdateThreshold || (val == 0 && light > 0) || (light == 0 && val != 0);
     }
 
     public void clearBuffer() {
