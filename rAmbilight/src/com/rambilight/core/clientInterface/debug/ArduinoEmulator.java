@@ -292,7 +292,7 @@ public class ArduinoEmulator {
     }
 
     int colorStep(int l, int lt) {
-        int stepSize = (int) (1+difference(l, lt) / stepLength);
+        int stepSize = floor(1 + difference(l, lt) / stepLength);
         if (difference(l, lt) <= stepSize)
             l = lt;
         else if (l < lt)
@@ -304,7 +304,7 @@ public class ArduinoEmulator {
 
 
     int difference(int num1, int num2) {
-        return Math.abs(num1 - num2);
+        return abs(num1 - num2);
     }
 
     void writeAllLeds() {
@@ -334,6 +334,14 @@ public class ArduinoEmulator {
 
     long difference(long num1, long num2) {
         return Math.abs(num1 - num2);
+    }
+
+    int abs(int num) {
+        return Math.abs(num);
+    }
+
+    int floor(float num) {
+        return (int) Math.floor(num);
     }
 
     ArduinoSerial     Serial;

@@ -26,7 +26,6 @@ src_parsing = re.sub( r'final int ([\S]*)[\s]*=[\s]*([\S]*);',r'#define \1 \2', 
 src_parsing = re.sub( r'int\/\*\*\/','byte', src_parsing, flags=re.M|re.I)
 src_parsing = re.sub( r'double','float', src_parsing, flags=re.M|re.I)
 src_parsing = re.sub( r'long','unsigned long', src_parsing, flags=re.M|re.I)
-src_parsing = re.sub( r'Math\.','', src_parsing, flags=re.M|re.I)
 
 # Format the code.
 src_parsing = re.sub( r'^[ ]{4}','', src_parsing, flags=re.M|re.I)
