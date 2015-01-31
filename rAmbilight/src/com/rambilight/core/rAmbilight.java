@@ -16,7 +16,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * The main/core class which initiates the rest of the application.
  */
-public class Main {
+public class rAmbilight {
 
     private static TrayController tray;
     private static ComDriver      serialCom;
@@ -40,9 +40,9 @@ public class Main {
                 debug = true;
         }
         if (debug)
-            new Main().loadDebugger(null);
+            new rAmbilight().loadDebugger(null);
         else
-            new Main().load();
+            new rAmbilight().load();
     }
 
     public void loadDebugger(Class<? extends Module> debugModule) {
@@ -76,7 +76,7 @@ public class Main {
             if (debugModule != null)
                 ModuleLoader.loadModule(debugModule);
 
-            ModuleLoader.loadModules(ModuleLoader.loadExternalModules(Main.class));
+            ModuleLoader.loadModules(ModuleLoader.loadExternalModules(rAmbilight.class));
 
             tray = new TrayController();
 
@@ -182,16 +182,14 @@ public class Main {
      * @code Error code, 0 for safe exit
      */
     private static void exit(int code) {
-        if (!serialCom.close()) {
-            MessageBox.Error("Serial port locked!", "WARNING: Did not exit since the application was unable to close the serial port.\nPlease disconnect the USB device and try again.\n\nThis is a safety measure, since closing the program in the current state might make the USB device unusable until force quiting the rAmbilight process");
-            return;
-        }
         try {
             ModuleLoader.dispose();
             Global.currentControllers = ModuleLoader.getActiveModules().toArray(new String[ModuleLoader.getActiveModules().size()]);
             Global.savePreferences();
 
             Preferences.flush();
+
+            serialCom.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
