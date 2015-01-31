@@ -42,8 +42,12 @@ public abstract class SerialController {
         return dataRate;
     }
 
+    /**
+     * @return A string array containing the names of the available ports
+     */
     public abstract String[] getAvailablePorts();
 
+    public abstract void update();
 
     /**
      * Is the current serial port open?

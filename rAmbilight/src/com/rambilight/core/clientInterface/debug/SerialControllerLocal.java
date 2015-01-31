@@ -33,6 +33,10 @@ public class SerialControllerLocal extends SerialController {
         return new String[]{"local"};
     }
 
+    public void update() {
+
+    }
+
     public boolean isOpen() {
         return serialRuntime.isOpen;
     }

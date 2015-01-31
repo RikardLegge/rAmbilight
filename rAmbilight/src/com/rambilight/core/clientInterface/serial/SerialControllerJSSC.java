@@ -38,9 +38,9 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
                 close();
                 serialPort = tmpSerialPort;
                 initializeReturn = 0;
-                System.out.println("OPEN!");
+                System.out.println("Open!");
             } catch (SerialPortException ex) {
-                System.out.println("FAILED!");
+                System.err.println("Failed to open!");
                 //ex.printStackTrace();
                 initializeReturn = 1;
             }
@@ -53,13 +53,14 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
             latch.await(3, TimeUnit.SECONDS);
             if (System.currentTimeMillis() - timeBefore > 3000) {
                 thread.stop();
+                System.err.println("Opening of port timed out...");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         if (initializeReturn == 0) {
-            System.out.print("Waiting for port to get ready...");
+            System.out.print("Waiting for port to get ready... ");
             try {
                 Thread.sleep(4000); // Milliseconds to block while waiting for port open
             } catch (Exception e) {
@@ -67,9 +68,9 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
             try {
                 serialPort.addEventListener(this); // Add SerialPortEventListener
             } catch (Exception e) {
-                System.out.print(" Unable to add event listener. Weird...");
+                System.err.print("Unable to add event listener. Weird...");
             }
-            System.out.println(" COMPLETE!");
+            System.out.println("Ready!");
         }
 
         return initializeReturn;
@@ -77,6 +78,10 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
 
     public String[] getAvailablePorts() {
         return SerialPortList.getPortNames(Pattern.compile("tty.(serial|usbserial|usbmodem|wchusbserial).*"));
+    }
+
+    public void update() {
+
     }
 
     public boolean isOpen() {
@@ -91,13 +96,15 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
                 try {
                     serialPort.removeEventListener();
                 } catch (SerialPortException e) {
-                    e.printStackTrace();
+                    // Nothing has to be done if this fails
+                    //e.printStackTrace();
                 }
                 try {
                     serialPort.closePort();
                     serialPort = null;
                     System.out.println("Closed!");
                 } catch (SerialPortException e) {
+                    System.err.println("Failed to close!");
                     e.printStackTrace();
                 }
             }
@@ -108,12 +115,14 @@ public class SerialControllerJSSC extends SerialController implements SerialPort
 
         try {
             long timeBefore = System.currentTimeMillis();
+            System.out.println("Awaiting closing of port...");
             latch.await(2, TimeUnit.SECONDS);
-            if (System.currentTimeMillis() - timeBefore > 1500) {
-                System.out.println("Unable to close port.");
+            if (System.currentTimeMillis() - timeBefore > 4000) {
+                System.err.println("Closing of port timed out");
                 thread.stop();
                 return false;
             }
+            System.out.println("");
         } catch (Exception e) {
             e.printStackTrace();
         }
