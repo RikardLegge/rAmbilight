@@ -62,9 +62,14 @@ To run the application using the API, create a new instance of the Debug class, 
 
 ```java
 
-public class Main {
+// Create a class with a meaningfull class name.
+public class ModuleDebugger {
+    // The default java method of starting an application
     public static void main(String[] args) throws Exception {
-        new rAmbilight().loadDebugger(Built_In_Effects.class);
+        // Create a new instance of the rAmbilight core and load the application in debug mode. 
+        // Set the HelloWorld class as the input parameter, to allow code hotswap and speed up 
+        // development and debugging.
+        new rAmbilight().loadDebugger(HelloWorld.class);
     }
 }
 
