@@ -1,11 +1,24 @@
 
+
+/**
+ * A class which is compiled to a subset of C which is able to run on the arduino.
+ * This allows the debug environment to behave close to the same as when run on the device.
+ */
+
+//  
+//  THIS WILL ONLY RUN ON THE ARDUINO/*  /ARDUINO */
+//  byte WILL BECOME A BYTE WHEN COMPILED, SINCE BYTES ARE ANNOYING TO WORK WITH IN JAVA.
+//  final int BECOMES #define
+//  unsigned long BECOMES unsigned unsigned long
+
+
 #include <PololuLedStrip.h>      // The LED library
 
 // Hardware preferences.
 #define DATA_PIN 6       // The pin on the Arduino to use for the LED PWM.
 #define DATA_RATE 512000  //512000//256000//115200  // The speed of the transmission in bits / second.
 #define FRAMESLEEP 7       // Time to sleep between each frame.
-#define NUM_LEDS 200     // The maximum number of LEDs
+#define NUM_LEDS 220     // The maximum number of LEDs
 
 // Preference types
 #define NUMBER_OF_LEDS 1
@@ -271,8 +284,7 @@ boolean ColorSmoothing() {
 }
 
 int colorStep(int l, int lt) {
-    int stepSize =  (3 + difference(l, lt) / stepLength);
-    //int stepSize = 10;
+    int stepSize = (int) (1 + difference(l, lt) / stepLength);
     if (difference(l, lt) <= stepSize)
         l = lt;
     else if (l < lt)
