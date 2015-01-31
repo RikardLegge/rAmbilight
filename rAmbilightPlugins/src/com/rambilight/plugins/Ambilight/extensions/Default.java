@@ -21,37 +21,35 @@ public class Default extends ColorAlgorithm {
         int brightness = getBrightness(avg);
         avg(itt, rgb);
 
-//        // Blend it with the average.
-//        rgb[0] = (avg[0] * colorSuppress + rgb[0]) / (colorSuppress + 1);
-//        rgb[1] = (avg[1] * colorSuppress + rgb[1]) / (colorSuppress + 1);
-//        rgb[2] = (avg[2] * colorSuppress + rgb[2]) / (colorSuppress + 1);
+        for (int i = 0; i < 3; i++) {
+            float x = rgb[i];
+            float a = avg[i];
+//            rgb[i] = (int) (-Math.pow(2f, (a - x + 357f) / 70f) + a + 34f); // $f_2=-2^{\frac{a-x+417}{70}}+a+24$
+            rgb[i] = (int) (Math.pow((x - a - 110f) / 40f, 3f) + Math.pow((x - 40) / 40, 2f) + a);  // $f_3=\frac{\left(x-a-110\right)}{40}^3+\frac{\left(x-40\right)}{40}^2+a$
 
-        for (int i = 0; i < 3; i++){
-            rgb[i] = (int) (Math.pow((rgb[i] - avg[i] - 100f) / 40f, 3f) + Math.pow(rgb[i] / 40f, 2f) + avg[i]);
+//            rgb[i] = 5*(int)(Math.pow(x/(59-a/28), 3) + Math.pow(x/(28-a/28), 2));
+//            rgb[i] = (int) ((Math.pow((x - 120f) / 263f, 2f) * (x - 120f) + 25f) * 10f);
+
             rgb[i] = rgb[i] < 0 ? 0 : rgb[i];
             rgb[i] = rgb[i] > 255 ? 255 : rgb[i];
         }
 
-        pow(10, 10, 2f, rgb);
+        pow(brightness, brightness, 2f, rgb);
         normalize(rgb);
 
-        for (int i = 0; i < 3; i++) {
-            float a = 10;
-            float x = rgb[i];
-            rgb[i] = (int) ((a * Math.pow(x, 2f)) / (255f + x * (a - 1f)));
-        }
-
-        // Get the maximum difference between the calculated color and the average.
+        // Get the maximum difference of the color channels.
         int diff = 0;
         for (int i = 0; i < 3; i++) {
-            int tmpDiff = rgb[i] - avg[i];
+            int tmpDiff = diff(rgb[i], rgb[(i + 1) % 3]);
             diff = diff > tmpDiff ? diff : tmpDiff;
+            if (rgb[i] < 3)
+                rgb[i] = 0;
         }
 
-        // Dim the color to match the average.
-//        if (diff > 0 && diff <= diffThreshHold)
-//            for (int i = 0; i < 3; i++)
-//                rgb[i] = avg[i] + (int) (Math.pow(diff, 2f) / diffThreshHold);
+        // Dim the white channel.
+        if (diff <= 20)
+            for (int i = 0; i < 3; i++)
+                rgb[i] *= Math.pow((diff / 3f + 13f) / 20f, 2f);
     }
 
     public void savePreferences(Preferences preferences) {
