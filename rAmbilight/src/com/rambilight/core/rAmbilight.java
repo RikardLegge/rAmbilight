@@ -1,5 +1,6 @@
 package com.rambilight.core;
 
+import com.rambilight.core.api.EventHandler;
 import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.ui.MessageBox;
@@ -8,6 +9,7 @@ import com.rambilight.core.clientInterface.ComDriver;
 import com.rambilight.core.clientInterface.SerialController;
 import com.rambilight.core.clientInterface.debug.SerialControllerLocal;
 import com.rambilight.core.clientInterface.serial.SerialControllerJSSC;
+import com.rambilight.core.preferences.i18n;
 import com.rambilight.plugins.Module;
 
 import javax.swing.*;
@@ -70,23 +72,38 @@ public class rAmbilight {
 
         // Safer way to do things...
         try {
+            // Setup preferences and global variables
             Global.generateApplicationSupportPath();
             Preferences.setPathToDefault();
             Preferences.read();
             Global.loadPreferences();
 
+            // Create the serial comunicator
             serialCom = new ComDriver(serialController);
 
+            // Load extensions and modules
             if (debugModule != null)
                 ModuleLoader.loadModule(debugModule);
-
             ModuleLoader.loadModules(ModuleLoader.loadExternalModules(rAmbilight.class));
 
+            // Create the tray UI
             tray = new TrayController();
 
+            // Required after the tray controller since it listens to module state changes
             for (String moduleName : Global.currentControllers)
                 ModuleLoader.activateModule(moduleName);
             tray.enableRun();
+
+            // Add an event listener to enable awaking of the main thread on active state changed.
+            EventHandler.addEventListener(Global.ActiveStateModified, () -> {
+                if (Global.isActive())
+                    if (rAmbilight.sleepLatch != null)
+                        rAmbilight.sleepLatch.countDown();
+            });
+
+            Thread thread = new Thread(new Runtime());
+            thread.setName("rAmbilight Runtime");
+            thread.start();
         } catch (Exception e) {
             e.printStackTrace();
             String message = e.getMessage();
@@ -100,11 +117,7 @@ public class rAmbilight {
 
             MessageBox.Error(message != null ? message : "Initialization error!", error + "\nShutting down..."); // Displays an error box in case of something happens
             exit(-1);
-            return;
         }
-        Thread thread = new Thread(new Runtime());
-        thread.setName("rAmbilight Runtime");
-        thread.start();
     }
 
     /**
@@ -115,14 +128,22 @@ public class rAmbilight {
         boolean suspended;
 
         public void run() {
-            while (!Global.requestExit)
+            while (!Global.isRequestingExit())
                 try {
-                    if (Global.isSerialConnectionActive && Global.isActive) {
-                        if (suspended)
+                    if (Global.isSerialConnectionActive && Global.isActive()) {
+                        if (suspended) {
                             suspended = false;
+                            System.out.println(i18n.resuming);
+                            ModuleLoader.resume();
+                        }
+
                         ModuleLoader.step();
                         if (serialCom.update())
                             serialCom.getLightHandler().sanityCheck();
+                        else if (serialCom.hasHalted) {
+                            Global.setActive(false);
+                            tray.setLabel(i18n.reinsertCable);
+                        }
                         try {
                             Thread.sleep(10); // sleep for a while, to keep the CPU usage down.
                         } catch (InterruptedException e) {
@@ -132,43 +153,47 @@ public class rAmbilight {
                     }
                     else {
                         if (!suspended) {
-                            System.out.println("Suspending");
                             suspended = true;
+                            System.out.println(i18n.suspending);
                             ModuleLoader.suspend();
                             serialCom.getLightHandler().clearBuffer();
                             serialCom.close();
                         }
-                        if (Global.isActive) {
-
+                        if (Global.isActive()) {
                             if (serialCom.serialPortsAvailable()) {
-                                tray.setLabel("Connecting...", true);
+                                Global.setActive(true);
+                                tray.setLabel(i18n.connectingToDevice);
                                 if (serialCom.initialize())
-                                    tray.setLabel("", Global.isActive);
+                                    tray.setLabel("");
                                 else {
-                                    Global.isActive = false;
-                                    tray.setState(Global.isActive, "Failed to connect...");
+                                    Global.setActive(false);
+                                    tray.setLabel(i18n.connectionFailed);
                                 }
                             }
-                            else if (!tray.getLabel().contains("No device"))
-                                tray.setLabel("No device connected", false);
+                            else if (!tray.getLabel().contains(i18n.noDeviceConnected))
+                                tray.setLabel(i18n.noDeviceConnected, false);
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
-                                System.out.println("Thread sleep was interrupted.");
                                 e.printStackTrace();
                             }
                         }
                         else {
-                            tray.setState(Global.isActive, "");
                             try {
                                 sleepLatch = new CountDownLatch(1);
-                                System.out.print("Awaiting latch... ");
+                                System.out.print("Application idle, Awaiting latch... ");
                                 sleepLatch.await();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             System.out.println("Awoke!");
                             sleepLatch = null;
+
+                            if (serialCom.hasHalted) {
+                                serialCom.hasHalted = false;
+                                Global.setActive(false);
+                                tray.setLabel(i18n.reinsertCableConfirm);
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -186,6 +211,7 @@ public class rAmbilight {
      * @code Error code, 0 for safe exit
      */
     private static void exit(int code) {
+        System.out.println("\nExiting...");
         try {
             ModuleLoader.dispose();
             Global.currentControllers = ModuleLoader.getActiveModules().toArray(new String[ModuleLoader.getActiveModules().size()]);
@@ -198,15 +224,17 @@ public class rAmbilight {
             e.printStackTrace();
         }
         try {
-            tray.remove();
+            if (tray != null)
+                tray.remove();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        EventHandler.clear();
 
         if (code == 0)
-            System.out.println("Exiting");
+            System.out.println("Exited");
         else
-            System.out.println("Exiting with error code " + code);
+            System.out.println("Exited with error code " + code);
         System.exit(code);
     }
 
@@ -218,13 +246,6 @@ public class rAmbilight {
      */
     public static ComDriver getSerialCom() {
         return serialCom;
-    }
-
-    /**
-     * Global function for exiting the application under controlled manners
-     */
-    public static void requestExit() {
-        Global.requestExit = true;
     }
 
 }

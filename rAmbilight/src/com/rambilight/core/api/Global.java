@@ -17,25 +17,21 @@ import java.util.ArrayList;
  */
 public class Global {
 
-    public static final ArrayList<String> ERRORLOG        = new ArrayList<>();
-    public static final String            APPLICATIONNAME = "rAmbilight";
+    private static boolean requestExit = false;
+    private static boolean active      = true;
+
+    public static final String ActiveStateModified = "ActiveStateModified";
+
     /**
      * The version number of the API and application.
      */
-    public static final int               VERSION         = 31;
+    public static final int               VERSION         = 32;
+    public static final ArrayList<String> ERRORLOG        = new ArrayList<>();
+    public static final String            APPLICATIONNAME = "rAmbilight";
 
-    /**
-     * If set to true, the application will try to exit gracefully.
-     */
-    public static boolean requestExit            = false;
-    public static boolean disableErrorPopups     = false;
-    /**
-     * Is the application active?
-     * WARNING: If set to false manually, the user might get confused.
-     * Only change this value if you know what you are doing.
-     */
-    public static boolean isActive               = true;
-    public static String  applicationSupportPath = "";
+    public static boolean disableErrorPopups = false;
+
+    public static String applicationSupportPath = "";
 
     /**
      * The number of lights which are available, calculated from the
@@ -75,11 +71,48 @@ public class Global {
     public static int      compressionLevel            = 1;
     public static boolean  compressionAutoSet          = true;
 
-    public static int     lightUpdateThreshold     = 3;
-    public static int     lightStepSize            = 16;
+    public static int     lightUpdateThreshold     = 1;
+    public static int     lightStepSize            = 12;
     public static boolean isSerialConnectionActive = false;
 
     private static Preferences preferences;
+
+    /**
+     * Is the application active?
+     * WARNING: If set to false manually, the user might get confused.
+     * Only change this value if you know what you are doing.
+     */
+    public static void setActive(boolean state) {
+        active = state;
+        EventHandler.triggerEvent(ActiveStateModified);
+    }
+
+
+    /**
+     * Is the application active?
+     * Get the state of the application.
+     * Only really needed if working with threads or external event handlers
+     *
+     * @return The active state of the application
+     */
+    public static boolean isActive() {
+        return active;
+    }
+
+    /**
+     * If called, the application will try to exit gracefully.
+     */
+    public static void requestExit() {
+        requestExit = true;
+    }
+
+    /**
+     * Checks if the application is shutting down.
+     * Only really needed if working with threads or external event handlers.
+     */
+    public static boolean isRequestingExit() {
+        return requestExit;
+    }
 
     public static void generateApplicationSupportPath() {
         applicationSupportPath = Platform.getApplicationSupportPath(APPLICATIONNAME);
@@ -89,7 +122,7 @@ public class Global {
 
     public static void loadPreferences() {
         preferences = new Preferences("Core");
-        Global.isActive = preferences.load("isActive", Global.isActive);
+        Global.active = preferences.load("isActive", Global.active);
         Global.disableErrorPopups = preferences.load("disableErrorPopups", Global.disableErrorPopups);
         Global.currentControllers = preferences.load("currentControllers", Global.currentControllers, -1);
 
@@ -112,7 +145,7 @@ public class Global {
     }
 
     public static void savePreferences() {
-        preferences.save("isActive", Global.isActive);
+        preferences.save("isActive", Global.isActive());
         preferences.save("disableErrorPopups", Global.disableErrorPopups);
         preferences.save("currentControllers", Global.currentControllers);
 

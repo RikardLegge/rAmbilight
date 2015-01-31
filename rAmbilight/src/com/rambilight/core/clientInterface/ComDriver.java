@@ -24,7 +24,7 @@ public class ComDriver {
 
     private boolean writtenPrefs         = false;
     private boolean displayedBusyMessage = false;
-    private boolean allowSerialUpdate    = false;
+    public  boolean hasHalted            = false;
 
     public ComDriver(SerialController serialController) {
         lightHandler = new LightHandlerCore(Global.numLights);
@@ -94,6 +94,7 @@ public class ComDriver {
 
         lastReceived = System.currentTimeMillis();
         ticksSinceLastReceived = 0;
+        hasHalted = false;
 
         if (errorCode == 1)
             if (displayedBusyMessage) {
@@ -117,21 +118,19 @@ public class ComDriver {
 
     public boolean close() {
         onDisconnect();
-        return !serial.isOpen() || serial.close();
+        return hasHalted && (!serial.isOpen() || serial.close());
     }
 
     public boolean update() {
         PackageCounter.update();
         long now = System.currentTimeMillis();
         ticksSinceLastReceived++;
-        if (allowSerialUpdate && lightHandler.requiresUpdate())
-            serialGateway(Gateway.data);    // TODO: Will never trigger, bug fix needed
-        else if (ticksSinceLastReceived > 100 && Global.isSerialConnectionActive) {
+        if (ticksSinceLastReceived > 100 && Global.isSerialConnectionActive) {
             // Might have halted
             if (now - lastReceived > 8000) {
-                rAmbilight.trayControllerSetMessage(i18n.reinsertCable, false);
-                close();
                 System.out.println(i18n.hasHalted);
+                hasHalted = true;
+                onDisconnect();
                 return false;
             }
             else if (now - lastReceived > 2000) {
@@ -140,6 +139,10 @@ public class ComDriver {
             }
             else if (now - lastPing > 750)
                 ping();
+        }
+        if (now - lastReceived > 3000) {
+            close();
+            return false;
         }
         else if (now - lastPing > 750)
             ping();
@@ -221,7 +224,6 @@ public class ComDriver {
 
     private void flushLights() {
         if (lightHandler.requiresUpdate()) {
-            allowSerialUpdate = false;
             lastPing = System.currentTimeMillis();
 
             writeToBuffer(ArduinoCommunication.BEGIN_SEND); // Should be more efficient than an ordinary write
@@ -276,7 +278,7 @@ public class ComDriver {
                 }
                 break;
             default:
-                System.out.println("Relieved unknown data with value: " + data);
+                System.out.println("Received unknown data with value: " + data);
                 break;
         }
     }

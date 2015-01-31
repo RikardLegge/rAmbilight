@@ -1,6 +1,7 @@
 package com.rambilight.core.api.ui;
 
 import com.legge.utilities.AssetLoader;
+import com.rambilight.core.api.EventHandler;
 import com.rambilight.core.rAmbilight;
 import com.rambilight.core.ModuleLoader;
 import com.rambilight.core.api.Global;
@@ -52,11 +53,11 @@ public class TrayController {
             trayIcon = new TrayIcon(Image_Idle);
             trayIcon.setImageAutoSize(true);
             trayIcon.setPopupMenu(popup);
-            trayIcon.addActionListener((e) -> setState(!Global.isActive));
+            trayIcon.addActionListener((e) -> Global.setActive(!Global.isActive()));
             tray.add(trayIcon);
 
             // Create static controls for the tray
-            runToggle = createCheckbox(Global.isActive ? "Active" : "Active", Global.isActive, (target, selected) -> setState(selected));
+            runToggle = createCheckbox(Global.isActive() ? "Active" : "Inactive", Global.isActive(), (target, selected) -> Global.setActive(selected));
 
             // Gets a list of all available modules from the ModuleLoader
             Enumeration<String> controllerKeys = ModuleLoader.getAvailableModules().keys();
@@ -79,20 +80,12 @@ public class TrayController {
                 }
             });
 
-            // Error List
-            MenuItemsCreator errorListContentCreator = () -> {
-                MenuItem[] errorList = new MenuItem[Global.ERRORLOG.size()];
-                int pos = 0;
-                for (String errorString : Global.ERRORLOG)
-                    errorList[pos++] = createItem(errorString, null);
-                return errorList;
-            };
-
             exit = createItem("Quit rAmbilight", (target) -> {
                 if (rAmbilight.sleepLatch != null)
                     rAmbilight.sleepLatch.countDown();
-                rAmbilight.requestExit();
+                Global.requestExit();
             });
+
             openConfig = createItem("Reveal configuration", (target) -> {
                 if (Desktop.isDesktopSupported())
                     try {
@@ -112,38 +105,31 @@ public class TrayController {
 
             // Sets the tray controller to an empty instance in the case of no loaded controllers
             setTrayController();
+
+            EventHandler.addEventListener(Global.ActiveStateModified, () -> {
+                runToggle.setState(Global.isActive());
+                setLabel("", Global.isActive());
+            });
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Unable to create Tray controller." + e.getMessage());
         }
     }
 
-
-    public void setState(boolean active) {
-        setState(active, "");
-    }
-
     public String getLabel() {
         return runToggle.getLabel();
     }
 
-    public void setLabel(String message, boolean state) {
-        runToggle.setLabel((Global.isActive ? "Active" : "Inactive") + (message.length() == 0 ? "" : " (" + message + ")"));
-        trayIcon.setToolTip(message);
-        trayIcon.setImage(state ? Image_Active : Image_Idle);
+    public void setLabel(String message) {
+        setLabel(message, Global.isActive());
     }
 
-    public void setState(boolean active, String message) {
-        Global.isActive = active;
-
-        if (Global.isActive)
-            if (rAmbilight.sleepLatch != null)
-                rAmbilight.sleepLatch.countDown();
-
-        runToggle.setState(Global.isActive);
-        runToggle.setLabel((Global.isActive ? "Active" : "Inactive") + (message.length() == 0 ? "" : " (" + message + ")"));
-        trayIcon.setToolTip(Global.isActive ? Global.APPLICATIONNAME : null);
-        trayIcon.setImage(Global.isActive ? Image_Active : Image_Idle);
+    public void setLabel(String message, boolean icon) {
+        if (message.length() > 0)
+            System.out.println(String.format("Setting tray label to '%s'", message));
+        runToggle.setLabel((Global.isActive() ? "Active" : "Inactive") + (message.length() == 0 ? "" : " (" + message + ")"));
+        trayIcon.setToolTip(message.length() > 0 ? message : Global.APPLICATIONNAME);
+        trayIcon.setImage(icon ? Image_Active : Image_Idle);
     }
 
     public boolean isRunEnabled() {
@@ -152,7 +138,7 @@ public class TrayController {
 
 
     public void disableRun(String label) {
-        runToggle.setState(Global.isActive);
+        runToggle.setState(Global.isActive());
         runToggle.setLabel("Inactive (" + label + ")");
         trayIcon.setToolTip(label);
         trayIcon.setImage(Image_Idle);
@@ -161,7 +147,7 @@ public class TrayController {
 
     public void enableRun() {
         runToggle.setEnabled(true);
-        setState(Global.isActive);
+        Global.setActive(Global.isActive());
     }
 
     private void setTrayController() {
@@ -182,7 +168,7 @@ public class TrayController {
         popup.add(openConfig);
         popup.add(exit);
 
-        setState(Global.isActive);
+        Global.setActive(Global.isActive());
     }
 
     public void setActiveInputType() {
