@@ -50,7 +50,11 @@ public class rAmbilight {
     }
 
     public void load() {
-        load(new SerialControllerJSSC(), null);
+        load(null);
+    }
+
+    public void load(Class<? extends Module> debugModule) {
+        load(new SerialControllerJSSC(), debugModule);
     }
 
     private void load(SerialController serialController, Class<? extends Module> debugModule) {
