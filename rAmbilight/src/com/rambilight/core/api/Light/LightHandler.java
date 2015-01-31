@@ -1,6 +1,6 @@
 package com.rambilight.core.api.Light;
 
-import com.rambilight.core.Main;
+import com.rambilight.core.rAmbilight;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.clientInterface.LightHandlerCore;
 
@@ -21,7 +21,7 @@ public class LightHandler {
      */
     public LightHandler(String name) {
         this.name = name;
-        this.lightHandlerCore = Main.getSerialCom().getLightHandler();
+        this.lightHandlerCore = rAmbilight.getSerialCom().getLightHandler();
         lightHandlerCore.registerModule(name);
     }
 

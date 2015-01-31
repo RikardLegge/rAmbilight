@@ -1,7 +1,7 @@
 package com.rambilight.core.api.ui;
 
 import com.legge.utilities.AssetLoader;
-import com.rambilight.core.Main;
+import com.rambilight.core.rAmbilight;
 import com.rambilight.core.ModuleLoader;
 import com.rambilight.core.api.Global;
 
@@ -89,9 +89,9 @@ public class TrayController {
             };
 
             exit = createItem("Quit rAmbilight", (target) -> {
-                if (Main.sleepLatch != null)
-                    Main.sleepLatch.countDown();
-                Main.requestExit();
+                if (rAmbilight.sleepLatch != null)
+                    rAmbilight.sleepLatch.countDown();
+                rAmbilight.requestExit();
             });
             openConfig = createItem("Reveal configuration", (target) -> {
                 if (Desktop.isDesktopSupported())
@@ -137,8 +137,8 @@ public class TrayController {
         Global.isActive = active;
 
         if (Global.isActive)
-            if (Main.sleepLatch != null)
-                Main.sleepLatch.countDown();
+            if (rAmbilight.sleepLatch != null)
+                rAmbilight.sleepLatch.countDown();
 
         runToggle.setState(Global.isActive);
         runToggle.setLabel((Global.isActive ? "Active" : "Inactive") + (message.length() == 0 ? "" : " (" + message + ")"));
