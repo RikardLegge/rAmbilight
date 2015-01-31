@@ -1,6 +1,6 @@
 package com.rambilight.core.clientInterface;
 
-import com.rambilight.core.Main;
+import com.rambilight.core.rAmbilight;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.Light;
 import com.rambilight.core.api.ui.MessageBox;
@@ -24,6 +24,7 @@ public class ComDriver {
 
     private boolean writtenPrefs         = false;
     private boolean displayedBusyMessage = false;
+    private boolean allowSerialUpdate    = false;
 
     public ComDriver(SerialController serialController) {
         lightHandler = new LightHandlerCore(Global.numLights);
@@ -88,7 +89,7 @@ public class ComDriver {
             }
         }
 
-        Main.trayControllerSetMessage(i18n.connectingToDevice, true);
+        rAmbilight.trayControllerSetMessage(i18n.connectingToDevice, true);
         int errorCode = serial.initialize(Global.serialPort);
 
         lastReceived = System.currentTimeMillis();
@@ -120,12 +121,15 @@ public class ComDriver {
     }
 
     public boolean update() {
-        //PackageCounter.update();
+        PackageCounter.update();
         long now = System.currentTimeMillis();
         ticksSinceLastReceived++;
-        if (ticksSinceLastReceived > 100 && Global.isSerialConnectionActive) {
+        if (allowSerialUpdate && lightHandler.requiresUpdate())
+            serialGateway(Gateway.data);    // TODO: Will never trigger, bug fix needed
+        else if (ticksSinceLastReceived > 100 && Global.isSerialConnectionActive) {
+            // Might have halted
             if (now - lastReceived > 8000) {
-                Main.trayControllerSetMessage(i18n.reinsertCable, false);
+                rAmbilight.trayControllerSetMessage(i18n.reinsertCable, false);
                 close();
                 System.out.println(i18n.hasHalted);
                 return false;
@@ -165,6 +169,7 @@ public class ComDriver {
 
 
     private void write(byte[] b) {
+        PackageCounter.add(b.length);
         try {
             serial.write(b);
         } catch (Exception e) {
@@ -173,6 +178,7 @@ public class ComDriver {
     }
 
     private void write(byte b) {
+        PackageCounter.add(1);
         try {
             serial.write(b);
         } catch (Exception e) {
@@ -199,7 +205,6 @@ public class ComDriver {
 
 
     private void flushBuffer() {
-        //PackageCounter.add(serialBuffer.size());
         if (serialBuffer.size() > 64) {
             System.out.println("Arduino serial buffer overflow: " + serialBuffer.size());
         }
@@ -216,6 +221,7 @@ public class ComDriver {
 
     private void flushLights() {
         if (lightHandler.requiresUpdate()) {
+            allowSerialUpdate = false;
             lastPing = System.currentTimeMillis();
 
             writeToBuffer(ArduinoCommunication.BEGIN_SEND); // Should be more efficient than an ordinary write
@@ -264,8 +270,10 @@ public class ComDriver {
             case 252: // PING
                 if (!writtenPrefs)
                     serialGateway(Gateway.preferences);
-                else
+                else {
+                    //allowSerialUpdate = true;
                     serialGateway(Gateway.data);
+                }
                 break;
             default:
                 System.out.println("Relieved unknown data with value: " + data);
