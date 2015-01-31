@@ -25,7 +25,7 @@ public class Default extends ColorAlgorithm {
             float x = rgb[i];
             float a = avg[i];
 
-            rgb[i] = (int) (-Math.pow(2f, (a - x + 357f) / 70f) + a + 34f); // $f_2=-2^{\frac{a-x+417}{70}}+a+24$
+            rgb[i] = (int) (-Math.pow(2f, (a - x + 357f) / 70f) + a + 34f); // $f_2=-2^{\frac{a-x+357}{70}}+a+24$
 //            rgb[i] = (int) (-Math.pow(3f, (a - x + 220f) / 70f) + a + 20f); // $f_2=-2^{\frac{a-x+417}{70}}+a+24$
 //            rgb[i] = (int) (Math.pow((x - a - 110f) / 40f, 3f) + Math.pow((x - 40) / 40, 2f) + a);  // $f_3=\frac{\left(x-a-110\right)}{40}^3+\frac{\left(x-40\right)}{40}^2+a$
 
