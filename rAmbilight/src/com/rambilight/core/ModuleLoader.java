@@ -33,6 +33,7 @@ public class ModuleLoader {
     public static void loadModules(Class<?> modules[]) {
         for (Class<?> module : modules)
             loadModule(module);
+        System.out.println("");
     }
 
     public static void loadModule(Class<?> module) {
@@ -191,11 +192,15 @@ public class ModuleLoader {
             for (String moduleName : activeModules)
                 loadedModules.get(moduleName).step();
         } catch (Exception e) {
-            e.printStackTrace();
             // An exception is triggered since the TrayController thread needs to modify the active Modules list.
             // This is by design, but might be changed in a later version
             //e.printStackTrace();
         }
+    }
+
+    public static void resume() {
+        for (String moduleName : activeModules)
+            loadedModules.get(moduleName).resume();
     }
 
     public static void suspend() {
