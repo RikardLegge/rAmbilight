@@ -64,7 +64,7 @@ To run the application using the API, create a new instance of the Debug class, 
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        new Main().loadDebugger(Built_In_Effects.class);
+        new rAmbilight().loadDebugger(Built_In_Effects.class);
     }
 }
 
