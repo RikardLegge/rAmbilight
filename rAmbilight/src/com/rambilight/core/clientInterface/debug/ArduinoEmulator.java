@@ -292,7 +292,7 @@ public class ArduinoEmulator {
     }
 
     int colorStep(int l, int lt) {
-        int stepSize = (int) (1 + difference(l, lt) / stepLength);
+        int stepSize = (int) (1+difference(l, lt) / stepLength);
         if (difference(l, lt) <= stepSize)
             l = lt;
         else if (l < lt)
