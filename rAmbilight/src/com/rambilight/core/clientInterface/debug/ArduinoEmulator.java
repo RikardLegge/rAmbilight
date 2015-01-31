@@ -1,6 +1,5 @@
 /* JAVA */
-
-package com.rambilight.core.clientInterface.debug;
+package com.rambilight.core.clientInterface.debug;/* /Java */
 
 /**
  * A class which is compiled to a subset of C which is able to run on the arduino.
@@ -13,6 +12,7 @@ package com.rambilight.core.clientInterface.debug;
 //  final int BECOMES #define
 //  long BECOMES unsigned long
 
+/* JAVA */
 public class ArduinoEmulator {
 /* /Java */
     /* ARDUINO /#include <PololuLedStrip.h>/* /Arduino */      // The LED library
@@ -21,7 +21,7 @@ public class ArduinoEmulator {
     final int DATA_PIN   = 6;       // The pin on the Arduino to use for the LED PWM.
     final int DATA_RATE  = 512000;  //512000//256000//115200  // The speed of the transmission in bits / second.
     final int FRAMESLEEP = 7;       // Time to sleep between each frame.
-    final int NUM_LEDS   = 200;     // The maximum number of LEDs
+    final int NUM_LEDS   = 220;     // The maximum number of LEDs
 
     // Preference types
     final int NUMBER_OF_LEDS    = 1;
@@ -292,7 +292,7 @@ public class ArduinoEmulator {
     }
 
     int colorStep(int l, int lt) {
-        int stepSize = (int) (3 + difference(l, lt) / stepLength);
+        int stepSize = (int) (1 + difference(l, lt) / stepLength);
         if (difference(l, lt) <= stepSize)
             l = lt;
         else if (l < lt)
