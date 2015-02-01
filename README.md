@@ -59,6 +59,8 @@ The javadoc for the project can be found at the following url. This url will how
 
 Installation is as easy as adding the rAmbilightAPI.jar file to the projects dependency paths. 
 To run the application using the API, create a new instance of the Debug class, with the module as an input parameter.
+Currently the file can be found in dist/rAmbilight.app/Contents/Resources/Java/Application.jar.
+This will change when a better build script is created.
 
 ```java
 
@@ -91,6 +93,17 @@ To use the module which you've created, just export it as a jar or class file. W
 Rikard Legge  - rikard.legge@gmail.com
 
 ## License
-Copyright Rikard Legge, All rights reserved.
+GNU General Public License v3.0
+Copyright (C) 2015 Rikard Legge
 
-This  will change in the future.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+http://www.gnu.org/licenses/
