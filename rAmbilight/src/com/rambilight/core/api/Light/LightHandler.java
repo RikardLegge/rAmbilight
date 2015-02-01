@@ -1,8 +1,8 @@
 package com.rambilight.core.api.Light;
 
-import com.rambilight.core.rAmbilight;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.clientInterface.LightHandlerCore;
+import com.rambilight.core.rAmbilight;
 
 /**
  * A class for handling the Lights and what to output to the ambilight device.

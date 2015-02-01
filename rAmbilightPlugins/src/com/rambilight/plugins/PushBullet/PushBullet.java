@@ -1,13 +1,13 @@
 package com.rambilight.plugins.PushBullet;
 
-import java.awt.*;
-import java.security.InvalidKeyException;
-import java.util.Hashtable;
-
 import com.rambilight.core.api.ui.MessageBox;
 import com.rambilight.core.api.ui.TrayController;
 import com.rambilight.plugins.Module;
 import com.rambilight.plugins.PushBullet.PushBulletEndpoint.PushBulletEndpointListener;
+
+import java.awt.*;
+import java.security.InvalidKeyException;
+import java.util.Hashtable;
 
 public class PushBullet extends Module {
 

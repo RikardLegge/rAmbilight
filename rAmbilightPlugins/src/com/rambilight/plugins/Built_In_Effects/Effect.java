@@ -1,7 +1,7 @@
 package com.rambilight.plugins.Built_In_Effects;
 
-import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.api.Light.LightHandler;
+import com.rambilight.core.preferences.Preferences;
 import com.rambilight.plugins.extensions.Extension;
 
 public abstract class Effect extends Extension {

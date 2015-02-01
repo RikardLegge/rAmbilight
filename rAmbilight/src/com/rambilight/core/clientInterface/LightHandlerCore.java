@@ -3,7 +3,6 @@ package com.rambilight.core.clientInterface;
 import com.rambilight.core.ModuleLoader;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.Light;
-import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 
 import java.util.Hashtable;
 import java.util.LinkedList;

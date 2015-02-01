@@ -1,7 +1,6 @@
 package com.rambilight.core;
 
 import com.rambilight.core.api.EventHandler;
-import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.ui.MessageBox;
 import com.rambilight.core.api.ui.TrayController;
@@ -9,6 +8,7 @@ import com.rambilight.core.clientInterface.ComDriver;
 import com.rambilight.core.clientInterface.SerialController;
 import com.rambilight.core.clientInterface.debug.SerialControllerLocal;
 import com.rambilight.core.clientInterface.serial.SerialControllerJSSC;
+import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.preferences.i18n;
 import com.rambilight.plugins.Module;
 

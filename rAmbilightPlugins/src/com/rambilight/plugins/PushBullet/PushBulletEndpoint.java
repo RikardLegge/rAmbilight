@@ -1,20 +1,13 @@
 package com.rambilight.plugins.PushBullet;
 
+import org.glassfish.tyrus.client.ClientManager;
+
+import javax.websocket.*;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-
-import javax.websocket.ClientEndpoint;
-import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-
-import org.glassfish.tyrus.client.ClientManager;
 
 @ClientEndpoint
 public class PushBulletEndpoint {

@@ -1,10 +1,10 @@
 package com.rambilight.core;
 
-import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.LightHandler;
 import com.rambilight.core.api.Platform;
 import com.rambilight.core.api.ui.MessageBox;
+import com.rambilight.core.preferences.Preferences;
 import com.rambilight.plugins.Module;
 import com.rambilight.plugins.extensions.Extension;
 

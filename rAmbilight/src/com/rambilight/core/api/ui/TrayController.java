@@ -1,10 +1,10 @@
 package com.rambilight.core.api.ui;
 
 import com.legge.utilities.AssetLoader;
-import com.rambilight.core.api.EventHandler;
-import com.rambilight.core.rAmbilight;
 import com.rambilight.core.ModuleLoader;
+import com.rambilight.core.api.EventHandler;
 import com.rambilight.core.api.Global;
+import com.rambilight.core.rAmbilight;
 
 import java.awt.*;
 import java.io.File;

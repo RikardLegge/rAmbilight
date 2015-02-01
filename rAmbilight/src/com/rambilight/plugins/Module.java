@@ -1,8 +1,8 @@
 package com.rambilight.plugins;
 
-import com.rambilight.core.preferences.Preferences;
 import com.rambilight.core.api.Light.LightHandler;
 import com.rambilight.core.api.ui.TrayController.CustomCreator;
+import com.rambilight.core.preferences.Preferences;
 import com.rambilight.plugins.extensions.Extension;
 
 /**

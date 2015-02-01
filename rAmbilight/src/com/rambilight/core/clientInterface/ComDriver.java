@@ -1,10 +1,10 @@
 package com.rambilight.core.clientInterface;
 
-import com.rambilight.core.rAmbilight;
 import com.rambilight.core.api.Global;
 import com.rambilight.core.api.Light.Light;
 import com.rambilight.core.api.ui.MessageBox;
 import com.rambilight.core.preferences.i18n;
+import com.rambilight.core.rAmbilight;
 
 import java.util.LinkedList;
 import java.util.Queue;

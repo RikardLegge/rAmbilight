@@ -1,17 +1,15 @@
 package com.rambilight.plugins.Built_In_Effects;
 
-import java.awt.CheckboxMenuItem;
-import java.awt.Menu;
-import java.awt.MenuItem;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.rambilight.core.api.ui.TrayController;
 import com.rambilight.plugins.Built_In_Effects.extensions.CirclingLights;
 import com.rambilight.plugins.Built_In_Effects.extensions.Flashing;
 import com.rambilight.plugins.Built_In_Effects.extensions.KnightRider;
 import com.rambilight.plugins.Module;
 import com.rambilight.plugins.extensions.Extension;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Built_In_Effects extends Module {
 

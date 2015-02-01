@@ -3,7 +3,6 @@ package com.rambilight.plugins.Ambilight.extensions;
 import com.rambilight.core.preferences.Preferences;
 import com.rambilight.plugins.Ambilight.ColorAlgorithm;
 
-import javax.swing.tree.VariableHeightLayoutCache;
 import java.awt.image.BufferedImage;
 
 public class Default extends ColorAlgorithm {
