@@ -62,7 +62,7 @@ public class ModuleLoader {
         try {
             for (String name : new File(pluginPath).list())
                 // Filter away any unwanted files
-                if (name.endsWith(".jar") || name.endsWith(".class"))
+                if (name.endsWith(".jar") || name.endsWith(".class") || name.endsWith(".rlplugin"))
                     urls.add(new URL(Platform.getFilePathFormat(pluginPath + "/" + name)));
         } catch (Exception e) {
             e.printStackTrace();

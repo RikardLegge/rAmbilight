@@ -3,12 +3,12 @@
   <dict>
     <key>CFBundleDevelopmentRegion</key> <string>en</string>
     <key>CFBundleName</key> <string>rAmbilight</string>
-    <key>CFBundleVersion</key> <string>0.2.5</string>
-    <key>CFBundleShortVersionString</key> <string>rAmbilight 0.2.5</string>
+    <key>CFBundleVersion</key> <string>0.3.2</string>
+    <key>CFBundleShortVersionString</key> <string>rAmbilight 32</string>
     <key>CFBundleExecutable</key> <string>ApplicationStub</string>
     <key>CFBundlePackageType</key> <string>APPL</string>
     <key>CFBundleSignature</key> <string>????</string>
-    <key>CFBundleGetInfoString</key> <string>Copyright © Rikard Legge, 2014</string>
+    <key>CFBundleGetInfoString</key> <string>Copyright © 2014 Rikard Legge</string>
     <key>CFBundleIconFile</key> <string>favicon.icns</string>
     <key>CFBundleAllowMixedLocalizations</key> <true/>
     <key>CFBundleInfoDictionaryVersion</key> <string>6.0</string>
@@ -19,6 +19,23 @@
     <key>LSArchitecturePriority</key>
     <array>
       <string>x86_64</string>
+    </array>
+   <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>rlplugin</string>
+            </array>
+            <key>CFBundleTypeIconFile</key> <string>rlplugin.icns</string>
+            <key>CFBundleTypeName</key> <string>rAmbilight plugin</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/java-archive</string>
+            </array>
+            <key>CFBundleTypeRole</key> <string>Viewer</string>
+            <key>ICExtension</key> <string>RLPLUGIN</string>
+        </dict>
     </array>
   </dict>
 </plist>
