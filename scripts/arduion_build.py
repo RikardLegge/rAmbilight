@@ -1,8 +1,8 @@
 #!/usr/bin/python
 import re
 
-src_file_path = "../src/com/rambilight/core/clientInterface/debug/ArduinoEmulator.java"
-target_file_path = "../arduino/driver-dev/driver-dev.ino"
+src_file_path = "../rAmbilight/src/com/rambilight/core/clientInterface/debug/ArduinoEmulator.java"
+target_file_path = "../rAmbilight/arduino/arduino.ino"
 
 def readfile(file_path):
 	filehandler = open(file_path, "r")
@@ -32,4 +32,4 @@ src_parsing = re.sub( r'^[ ]{4}','', src_parsing, flags=re.M|re.I)
 
 writefile(target_file_path, src_parsing)
 #print src_parsing
-print 'file compiled sucessfully!'
+print 'File conversion completed'
