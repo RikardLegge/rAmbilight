@@ -59,7 +59,8 @@ The javadoc for the project can be found at the following url. This url will how
 
 Installation is as easy as adding the rAmbilightAPI.jar file to the projects dependency paths. 
 To run the application using the API, create a new instance of the Debug class, with the module as an input parameter.
-Currently the file can be found in dist/rAmbilight.app/Contents/Resources/Java/Application.jar.
+
+Currently the file can be found in `dist/rAmbilight.app/Contents/Resources/Java/Application.jar`.
 This will change when a better build script is created.
 
 ```java
