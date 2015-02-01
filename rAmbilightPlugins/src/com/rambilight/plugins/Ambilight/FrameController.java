@@ -56,7 +56,7 @@ public class FrameController extends JFrame implements MouseMotionListener, Mous
         addMouseListener(this);
         setTitle("Change capture rectangle");
         try {
-            setIconImage(new ImageIcon(FrameController.class.getResource("Tray_Active.png")).getImage());
+            setIconImage(new ImageIcon(FrameController.class.getResource("Application_Icon.png")).getImage());
         } catch (Exception e) {
         }
         this.setSize(initialDimension.width, initialDimension.height);

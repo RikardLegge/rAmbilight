@@ -1,8 +1,8 @@
 #!/bin/sh
 
 PLUGINS="$HOME/Library/Application Support/rAmbilight/plugins";     # Build output path
-CLASSROOT=../rAmbilightPlugins/bin;                              # Root path to the compiled plugin classes
-CLASSPREFIX=com/rambilight/plugins;                               # The required plugin path prefix
+CLASSROOT=../rAmbilightPlugins/bin;                                 # Root path to the compiled plugin classes
+CLASSPREFIX=com/rambilight/plugins;                                 # The required plugin path prefix
 PLUGINNAME="$1";                                                    # The filename of the plugin to build
 
 # If no plugin name is available, exit
@@ -19,9 +19,8 @@ fi
 
 # Package the files into a JAR and place it in the plugins directory
 echo "Packaging files...";
-echo " ";
 
 jar cvf "${PLUGINS}/${PLUGINNAME}.jar" -C "$CLASSROOT" "$CLASSPREFIX/$PLUGINNAME";
 
 echo " ";
-echo "Finished exporting $PLUGINNAME to $PLUGINS";
+echo "Finished exporting \"$PLUGINNAME\" to \"$PLUGINS\"";

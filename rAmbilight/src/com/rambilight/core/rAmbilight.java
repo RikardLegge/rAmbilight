@@ -35,9 +35,9 @@ public class rAmbilight {
      * @param args The input from the command line
      */
     public static void main(String[] args) throws Exception {
+
         boolean debug = false;
-        for (int k = 0; k < args.length; k++) {
-            String v = args[k];
+        for (String v : args) {
             if (v.equals("--debug"))
                 debug = true;
         }
