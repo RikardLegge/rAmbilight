@@ -155,14 +155,13 @@ public class TrayController {
 
         popup.add(runToggle);
         popup.add(inputs);
-        for (String moduleName : ModuleLoader.getActiveModules())
-            if (itemGroups.containsKey(moduleName)) {
-                MenuItem[] items = itemGroups.get(moduleName);
-                if (items.length > 0)
-                    popup.addSeparator();
-                for (MenuItem item : items)
-                    popup.add(item);
-            }
+        ModuleLoader.getActiveModules().stream().filter(itemGroups::containsKey).forEach(moduleName -> {
+            MenuItem[] items = itemGroups.get(moduleName);
+            if (items.length > 0)
+                popup.addSeparator();
+            for (MenuItem item : items)
+                popup.add(item);
+        });
 
         popup.addSeparator();
         popup.add(openConfig);

@@ -70,8 +70,8 @@ public class PushBulletEndpoint {
 
     @OnMessage
     public String onMessage(String message, Session session) {
-        if (message.contains("tickle"))
-            ;
+        //if (message.contains("tickle"))
+        //    ;
         if (message.contains("push")) {
             int start = message.indexOf("\"application_name\"");
             if (start > 0) {

@@ -34,9 +34,7 @@ public class EventHandler {
 
     public static void triggerEvent(String eventName) {
         if (callbackMap.containsKey(eventName))
-            for (EventListener eventCallback : callbackMap.get(eventName)) {
-                eventCallback.trigger();
-            }
+            callbackMap.get(eventName).forEach(EventHandler.EventListener::trigger);
     }
 
     public static void clear() {

@@ -83,7 +83,7 @@ public class SerialControllerLocal extends SerialController {
                 if (isOpen)
                     try {
                         int read;
-                        while ((read = (int) (inBuffer.read())) > -1)
+                        while ((read = inBuffer.read()) > -1)
                             serialEvent.Recived(read);
                     } catch (Exception e) {
                         e.printStackTrace();
