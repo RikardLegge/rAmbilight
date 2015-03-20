@@ -12,8 +12,8 @@ public class LightHandlerCore {
 
     private int numLights;                                      // Total number of lights
 
-    private Light[]                    colorBuffer;             // List of the colors of the respective lights
-    private Queue<Integer>             lightsToUpdate;          // List of lights that require updating
+    private Light[] colorBuffer;             // List of the colors of the respective lights
+    private Queue<Integer> lightsToUpdate;          // List of lights that require updating
     private Hashtable<String, Light[]> identifiableColorBuffer;
 
 
@@ -60,9 +60,9 @@ public class LightHandlerCore {
             b = (light.b + b) / 2;
         }*/
 
-        r = Math.max(Math.min(r, 250), 0);
-        g = Math.max(Math.min(g, 250), 0);
-        b = Math.max(Math.min(b, 250), 0);
+        r = Math.max(Math.min(r, 249), 0);
+        g = Math.max(Math.min(g, 249), 0);
+        b = Math.max(Math.min(b, 249), 0);
 
         if (enoughDiff(light.r, r) || enoughDiff(light.g, g) || enoughDiff(light.b, b) || force) {
             light.r = r;
@@ -129,15 +129,15 @@ public class LightHandlerCore {
     }
 
     private Light composeColor(int i) {
-        colorBuffer[i].set(252, 252, 252);
+        colorBuffer[i].set(255, 255, 255);
         if (ModuleLoader.getActiveModules().size() == 0)
             colorBuffer[i].set(0, 0, 0);
         else
             ModuleLoader.getActiveModules().parallelStream().filter(identifiableColorBuffer::containsKey).forEach(name -> {
                 Light lightI = identifiableColorBuffer.get(name)[i];
-                colorBuffer[i].r = Math.round((float) colorBuffer[i].r * ((float) lightI.r / 252f));
-                colorBuffer[i].g = Math.round((float) colorBuffer[i].g * ((float) lightI.g / 252f));
-                colorBuffer[i].b = Math.round((float) colorBuffer[i].b * ((float) lightI.b / 252f));
+                colorBuffer[i].r = Math.round((float) colorBuffer[i].r * ((float) lightI.r / 255f));
+                colorBuffer[i].g = Math.round((float) colorBuffer[i].g * ((float) lightI.g / 255f));
+                colorBuffer[i].b = Math.round((float) colorBuffer[i].b * ((float) lightI.b / 255f));
             });
         return colorBuffer[i];
     }

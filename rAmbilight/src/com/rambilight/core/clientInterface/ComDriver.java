@@ -14,327 +14,358 @@ import java.util.Queue;
  */
 public class ComDriver {
 
-    private SerialController serial;
-    private LightHandlerCore lightHandler;
-    private Queue<Byte>      serialBuffer;
+	private SerialController serial;
+	private LightHandlerCore lightHandler;
+	private Queue<Byte>      serialBuffer;
 
-    private long lastPing               = 0;
-    private long lastReceived           = 0;
-    private long ticksSinceLastReceived = 0;    // 1 tick ~10ms.
+	private long lastPing               = 0;
+	private long lastReceived           = 0;
+	private long ticksSinceLastReceived = 0;    // 1 tick ~10ms.
 
-    private boolean writtenPrefs         = false;
-    private boolean displayedBusyMessage = false;
-    public  boolean hasHalted            = false;
+	private boolean writtenPrefs         = false;
+	private boolean displayedBusyMessage = false;
+	public  boolean hasHalted            = false;
 
-    public ComDriver(SerialController serialController) {
-        lightHandler = new LightHandlerCore(Global.numLights);
-        serial = serialController;
-        serialBuffer = new LinkedList<>();
+	private int lastDataByte = -1;
 
-        serial.setEventListener((data) -> receivedPacket(data));
-        serial.setDisconnectedListener((data) -> close());
-    }
+	public ComDriver(SerialController serialController) {
+		lightHandler = new LightHandlerCore(Global.numLights);
+		serial = serialController;
+		serialBuffer = new LinkedList<>();
 
-    public LightHandlerCore getLightHandler() {
-        return lightHandler;
-    }
+		serial.setEventListener((data) -> receivedPacket(data));
+		serial.setDisconnectedListener((data) -> close());
+	}
 
-    public boolean initialize() throws Exception {
+	public LightHandlerCore getLightHandler() {
+		return lightHandler;
+	}
 
-        String[] ports = serial.getAvailablePorts();
-        //if (ports.length == lastNumPorts)
-        //    return false;
-        //lastNumPorts = ports.length;
-        writtenPrefs = false;
+	public boolean initialize() throws Exception {
 
-        boolean foundPort = false;
-        if (Global.serialPort.length() > 0)
-            for (String port : ports)
-                if (Global.serialPort.equals(port)) {
-                    foundPort = true;
-                    break;
-                }
+		String[] ports = serial.getAvailablePorts();
+		//if (ports.length == lastNumPorts)
+		//    return false;
+		//lastNumPorts = ports.length;
+		writtenPrefs = false;
 
-        if (!foundPort && ports.length > 0) {
-            System.out.println(i18n.noSerialPortSpecified);
-            if (ports.length == 1) {
-                System.out.println(String.format(i18n.onePortFound, ports[0]));
+		boolean foundPort = false;
+		if (Global.serialPort.length() > 0)
+			for (String port : ports)
+				if (Global.serialPort.equals(port)) {
+					foundPort = true;
+					break;
+				}
 
-                String result = MessageBox.Input(i18n.portFound, String.format(i18n.usePortQuestion, ports[0]));
-                if (result == null || (!result.toLowerCase().equals("y") && !result.toLowerCase().equals("yes")))
-                    return false;
+		if (!foundPort && ports.length > 0) {
+			System.out.println(i18n.noSerialPortSpecified);
+			if (ports.length == 1) {
+				System.out.println(String.format(i18n.onePortFound, ports[0]));
 
-                System.out.println(i18n.activating);
-                Global.serialPort = ports[0];
-            }
-            else {
-                String portList = "";
-                int i = 0;
-                for (String port : ports) {
-                    portList += i++ + ": " + port + "\n";
-                }
+				String result = MessageBox.Input(i18n.portFound, String.format(i18n.usePortQuestion, ports[0]));
+				if (result == null || (!result.toLowerCase().equals("y") && !result.toLowerCase().equals("yes")))
+					return false;
 
-                String extraMessage = "";
-                while (true) {
-                    String result = MessageBox.Input(i18n.portSelect, String.format(i18n.selectPortActivation, extraMessage, portList));
-                    if (result != null && result.toLowerCase().equals("e"))
-                        throw new Exception(i18n.noPortSelectShutDown);
-                    try {
-                        Global.serialPort = ports[Integer.parseInt(result)];
-                        break;
-                    } catch (Exception e) {
-                        extraMessage = String.format(i18n.notValidInput, result);
-                    }
-                }
-            }
-        }
+				System.out.println(i18n.activating);
+				Global.serialPort = ports[0];
+			} else {
+				String portList = "";
+				int i = 0;
+				for (String port : ports) {
+					portList += i++ + ": " + port + "\n";
+				}
 
-        rAmbilight.trayControllerSetMessage(i18n.connectingToDevice, true);
-        int errorCode = serial.initialize(Global.serialPort);
+				String extraMessage = "";
+				while (true) {
+					String result = MessageBox.Input(i18n.portSelect, String.format(i18n.selectPortActivation, extraMessage, portList));
+					if (result != null && result.toLowerCase().equals("e"))
+						throw new Exception(i18n.noPortSelectShutDown);
+					try {
+						Global.serialPort = ports[Integer.parseInt(result)];
+						break;
+					} catch (Exception e) {
+						extraMessage = String.format(i18n.notValidInput, result);
+					}
+				}
+			}
+		}
 
-        lastReceived = System.currentTimeMillis();
-        ticksSinceLastReceived = 0;
-        hasHalted = false;
+		rAmbilight.trayControllerSetMessage(i18n.connectingToDevice, true);
+		int errorCode = serial.initialize(Global.serialPort);
 
-        if (errorCode == 1)
-            if (displayedBusyMessage) {
-                System.out.println(i18n.portBusy);
-                return false;
-            }
-            else {
-                displayedBusyMessage = true;
-                System.out.println(i18n.portBusyLong);
-                return false;
-            }
-        else if (errorCode == 2)
-            return false;
+		lastReceived = System.currentTimeMillis();
+		ticksSinceLastReceived = 0;
+		hasHalted = false;
 
-        displayedBusyMessage = false;
-        System.out.println(String.format(i18n.baudRate, serial.getDataRate()));
-        lightHandler.reset();
-        onConnect();
-        return true;
-    }
+		if (errorCode == 1)
+			if (displayedBusyMessage) {
+				System.out.println(i18n.portBusy);
+				return false;
+			} else {
+				displayedBusyMessage = true;
+				System.out.println(i18n.portBusyLong);
+				return false;
+			}
+		else if (errorCode == 2)
+			return false;
 
-    public boolean close() {
-        onDisconnect();
-        return hasHalted && (!serial.isOpen() || serial.close());
-    }
+		displayedBusyMessage = false;
+		System.out.println(String.format(i18n.baudRate, serial.getDataRate()));
+		lightHandler.reset();
+		onConnect();
+		return true;
+	}
 
-    public boolean update() {
-        PackageCounter.update();
-        long now = System.currentTimeMillis();
-        ticksSinceLastReceived++;
-        if (ticksSinceLastReceived > 100 && Global.isSerialConnectionActive) {
-            // Might have halted
-            if (now - lastReceived > 8000) {
-                System.out.println(i18n.hasHalted);
-                hasHalted = true;
-                onDisconnect();
-                return false;
-            }
-            else if (now - lastReceived > 2000) {
-                close();
-                return false;
-            }
-            else if (now - lastPing > 750)
-                ping();
-        }
-        if (now - lastReceived > 3000) {
-            close();
-            return false;
-        }
-        else if (now - lastPing > 750)
-            ping();
-        return true;
-    }
+	public boolean close() {
+		onDisconnect();
+		return hasHalted && (!serial.isOpen() || serial.close());
+	}
 
-    public boolean serialPortsAvailable() {
-        return serial.getAvailablePorts().length > 0;
-    }
+	public boolean update() {
 
+		if (lastDataByte != -1 && lightHandler.requiresUpdate()) {
+			handlePacket(lastDataByte);
+			lastDataByte = -1;
+		}
 
-    private void onDisconnect() {
-        onDisconnect(i18n.connectionLost);
-    }
+		PackageCounter.update();
+		long now = System.currentTimeMillis();
+		ticksSinceLastReceived++;
+		if (ticksSinceLastReceived > 100 && Global.isSerialConnectionActive) {
+			// Might have halted
+			if (now - lastReceived > 8000) {
+				System.out.println(i18n.hasHalted);
+				hasHalted = true;
+				onDisconnect();
+				return false;
+			} else if (now - lastReceived > 2000) {
+				close();
+				return false;
+			} else if (now - lastPing > 750)
+				ping();
+		}
+		if (now - lastReceived > 3000) {
+			close();
+			return false;
+		} else if (now - lastPing > 750)
+			ping();
+		return true;
+	}
 
-    private void onDisconnect(String message) {
-        if (Global.isSerialConnectionActive) {
-            write(ArduinoCommunication.DISCONNECT);
-            System.out.println(message);
-            Global.isSerialConnectionActive = false;
-        }
-    }
-
-    private void onConnect() {
-        Global.isSerialConnectionActive = true;
-    }
+	public boolean serialPortsAvailable() {
+		return serial.getAvailablePorts().length > 0;
+	}
 
 
-    private void write(byte[] b) {
-        PackageCounter.add(b.length);
-        try {
-            serial.write(b);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	private void onDisconnect() {
+		onDisconnect(i18n.connectionLost);
+	}
 
-    private void write(byte b) {
-        PackageCounter.add(1);
-        try {
-            serial.write(b);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	private void onDisconnect(String message) {
+		if (Global.isSerialConnectionActive) {
+			write(ArduinoCommunication.DISCONNECT);
+			System.out.println(message);
+			Global.isSerialConnectionActive = false;
+		}
+	}
 
-    private void writeToBuffer(byte b) {
-        serialBuffer.add(b);
-    }
-
-    private void writeToBuffer(byte b[]) {
-        for (byte bi : b) {
-            serialBuffer.add(bi);
-        }
-    }
-
-    private void writePreference(byte preference, int value) {
-        writeToBuffer(ArduinoCommunication.BEGIN_SEND_PREFS);
-
-        writeToBuffer(preference);
-        writeToBuffer((byte) value);
-    }
+	private void onConnect() {
+		Global.isSerialConnectionActive = true;
+		PackageCounter.initialize();
+	}
 
 
-    private void flushBuffer() {
-        if (serialBuffer.size() > 64) {
-            System.out.println("Arduino serial buffer overflow: " + serialBuffer.size());
-        }
-        if (serialBuffer.size() > 0) {
-            byte[] toWrite = new byte[serialBuffer.size()];
+	private void write(byte[] b) {
+		PackageCounter.addSend(b.length);
+		try {
+			serial.write(b);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-            int i = 0;
-            while (serialBuffer.size() > 0)
-                toWrite[i++] = serialBuffer.poll();
+	private void write(byte b) {
+		PackageCounter.addSend(1);
+		try {
+			serial.write(b);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-            write(toWrite);
-        }
-    }
+	private void writeToBuffer(byte b) {
+		serialBuffer.add(b);
+	}
 
-    private void flushLights() {
-        if (lightHandler.requiresUpdate()) {
-            lastPing = System.currentTimeMillis();
+	private void writeToBuffer(byte b[]) {
+		for (byte bi : b) {
+			serialBuffer.add(bi);
+		}
+	}
 
-            writeToBuffer(ArduinoCommunication.BEGIN_SEND); // Should be more efficient than an ordinary write
+	private void writePreference(byte preference, int value) {
+		writeToBuffer(ArduinoCommunication.BEGIN_SEND_PREFS);
 
-            Light light;
-            flushBuffer();
-            for (int i = 0; i < 13; i++) {
-                if ((light = lightHandler.next()) == null)
-                    break;
-                writeToBuffer(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
-            }
-            writeToBuffer(ArduinoCommunication.END_SEND);
-            flushBuffer();
-        }
-        else
-            ping();
-    }
-
-    private void flushPreferences() {
-        writtenPrefs = true;
-        writePreference(ArduinoCommunication.CLEAR_BUFFER, ArduinoCommunication.NULL);
-        writePreference(ArduinoCommunication.NUMBER_OF_LEDS, Global.numLights);
-        writePreference(ArduinoCommunication.SMOOTH_STEP, Global.lightStepSize);
-        writePreference(ArduinoCommunication.COMPRESSION_LEVEL, Global.compressionLevel);
-        flushBuffer();
-    }
+		writeToBuffer(preference);
+		writeToBuffer((byte) value);
+	}
 
 
-    public void ping() {
-        lastPing = System.currentTimeMillis();
-        serialGateway(Gateway.ping);
-    }
+	private void flushBuffer() {
+		if (serialBuffer.size() > 64) {
+			System.out.println("Arduino serial buffer overflow: " + serialBuffer.size());
+		}
+		if (serialBuffer.size() > 0) {
+			byte[] toWrite = new byte[serialBuffer.size()];
 
-    private void pingLights() {
-        write(ArduinoCommunication.PING);
-    }
+			int i = 0;
+			while (serialBuffer.size() > 0)
+				toWrite[i++] = serialBuffer.poll();
 
+			write(toWrite);
+		}
+	}
 
-    private void receivedPacket(int data) {
-        lastReceived = System.currentTimeMillis();
-        ticksSinceLastReceived = 0;
-        switch (data) {
-            case 253: // Needs setup
-                serialGateway(Gateway.preferences);
-                break;
-            case 252: // PING
-                if (!writtenPrefs)
-                    serialGateway(Gateway.preferences);
-                else {
-                    //allowSerialUpdate = true;
-                    serialGateway(Gateway.data);
-                }
-                break;
-            default:
-                System.out.println("Received unknown data with value: " + data);
-                break;
-        }
-    }
+	private void flushLights() {
+		if (lightHandler.requiresUpdate()) {
+			lastPing = System.currentTimeMillis();
 
-    private synchronized void serialGateway(Gateway gate) {
-        switch (gate) {
-            case ping:
-                pingLights();
-                break;
-            case data:
-                flushLights();
-                break;
-            case preferences:
-                flushPreferences();
-                break;
-        }
-    }
+			writeToBuffer(ArduinoCommunication.BEGIN_SEND); // Should be more efficient than an ordinary write
+
+			Light light;
+			flushBuffer();
+			for (int i = 0; i < 13; i++) {
+				if ((light = lightHandler.next()) == null)
+					break;
+				writeToBuffer(new byte[]{(byte) light.id, (byte) light.r, (byte) light.g, (byte) light.b});
+			}
+			writeToBuffer(ArduinoCommunication.END_SEND);
+			flushBuffer();
+		} else
+			ping();
+	}
+
+	private void flushPreferences() {
+		writtenPrefs = true;
+		writePreference(ArduinoCommunication.CLEAR_BUFFER, ArduinoCommunication.NULL);
+		writePreference(ArduinoCommunication.NUMBER_OF_LEDS, Global.numLights);
+		writePreference(ArduinoCommunication.SMOOTH_STEP, Global.lightStepSize);
+		writePreference(ArduinoCommunication.COMPRESSION_LEVEL, Global.compressionLevel);
+		flushBuffer();
+	}
 
 
-    private enum Gateway {
-        ping, data, preferences
-    }
+	public void ping() {
+		lastPing = System.currentTimeMillis();
+		serialGateway(Gateway.ping);
+	}
 
-    private static class ArduinoCommunication {
+	private void pingLights() {
+		write(ArduinoCommunication.PING);
+	}
 
-        public static final byte NULL = 0;
 
-        public static final byte NUMBER_OF_LEDS    = 1;
-        public static final byte SMOOTH_STEP       = 2;
-        public static final byte COMPRESSION_LEVEL = 3;
-        public static final byte CLEAR_BUFFER      = 4;
+	private void handlePacket(int data) {
+		lastReceived = System.currentTimeMillis();
+		ticksSinceLastReceived = 0;
+		switch (data) {
+			case 252: // Needs setup
+				serialGateway(Gateway.preferences);
+				break;
+			case 251: // PING
+				if (!writtenPrefs)
+					serialGateway(Gateway.preferences);
+				else {
+					//allowSerialUpdate = true;
+					serialGateway(Gateway.data);
+				}
+				break;
+			default:
+				System.out.println("Received unknown data with value: " + data);
+				break;
+		}
+	}
 
-        public static final byte DISCONNECT       = (byte) 251;
-        public static final byte PING             = (byte) 252;
-        public static final byte BEGIN_SEND_PREFS = (byte) 253;
-        public static final byte END_SEND         = (byte) 254;
-        public static final byte BEGIN_SEND       = (byte) 255;
-    }
+	private void receivedPacket(int data) {
+		PackageCounter.addReceived(1);
+		lastReceived = System.currentTimeMillis();
+		ticksSinceLastReceived = 0;
+		if (lightHandler.requiresUpdate())
+			handlePacket(data);
+		else
+			lastDataByte = data;
+	}
 
-    private static class PackageCounter {
-        private static int  packageCount        = 0;
-        private static int  packageContentCount = 0;
-        private static long lastOutput          = 0;
+	private synchronized void serialGateway(Gateway gate) {
+		switch (gate) {
+			case ping:
+				pingLights();
+				break;
+			case data:
+				flushLights();
+				break;
+			case preferences:
+				flushPreferences();
+				break;
+		}
+	}
 
-        private static void update() {
-            if (System.currentTimeMillis() - lastOutput > 1000) {
-                System.out.println(String.format("Packages: %03d st, Contents: %d bytes", packageCount, packageContentCount));
-                packageCount = 0;
-                packageContentCount = 0;
-                lastOutput = System.currentTimeMillis();
-            }
-        }
 
-        private static void add(int count) {
-            packageCount++;
-            packageContentCount += count;
-        }
-    }
+	private enum Gateway {
+		ping, data, preferences
+	}
+
+	private static class ArduinoCommunication {
+
+		public static final byte NULL = 0;
+
+		public static final byte NUMBER_OF_LEDS    = 1;
+		public static final byte SMOOTH_STEP       = 2;
+		public static final byte COMPRESSION_LEVEL = 3;
+		public static final byte CLEAR_BUFFER      = 4;
+
+		public static final byte DISCONNECT       = (byte) 250;
+		public static final byte PING             = (byte) 251;
+		public static final byte BEGIN_SEND_PREFS = (byte) 252;
+		public static final byte END_SEND         = (byte) 253;
+		public static final byte BEGIN_SEND       = (byte) 254;
+	}
+
+	private static class PackageCounter {
+		private static int  packageSentCount            = 0;
+		private static int  packageRecievedCount        = 0;
+		private static int  packageSentContentCount     = 0;
+		private static int  packageRecievedContentCount = 0;
+		private static long lastOutput                  = 0;
+
+		private static void initialize() {
+			System.out.println("                /------------------------\\               ");
+			System.out.println("                | Serial package counter |               ");
+			System.out.println("                \\------------------------/               ");
+
+			System.out.println("| Sent count | Sent bytes | Received count | Received bytes |");
+		}
+
+		private static void update() {
+			if (System.currentTimeMillis() - lastOutput > 1000) {
+				//                               "| Sent count | Sent bytes | Received count | Received bytes |"
+				System.out.println(String.format("    %3s st     %4s bytes        %3s st        %4s bytes    ", packageSentCount + "", packageSentContentCount + "", packageRecievedCount + "", packageRecievedContentCount + ""));
+				packageSentCount = 0;
+				packageRecievedCount = 0;
+				packageSentContentCount = 0;
+				packageRecievedContentCount = 0;
+				lastOutput = System.currentTimeMillis();
+			}
+		}
+
+		private static void addSend(int count) {
+			packageSentCount++;
+			packageSentContentCount += count;
+		}
+
+		private static void addReceived(int count) {
+			packageRecievedCount++;
+			packageRecievedContentCount += count;
+		}
+	}
 }
