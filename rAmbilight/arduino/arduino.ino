@@ -16,7 +16,7 @@
 
 	// Hardware preferences.
 	#define DATA_PIN 6       // The pin on the Arduino to use for the LED PWM.
-	#define DATA_RATE 115200  //512000//256000//115200  // The speed of the transmission in bits / second.
+	#define DATA_RATE 512000  //512000//256000//115200  // The speed of the transmission in bits / second.
 	#define FRAMESLEEP 1       // Time to sleep between each frame.
 	#define NUM_LEDS 220     // The maximum number of LEDs
 
@@ -60,7 +60,7 @@ byte RGBBuffer[4];
 	unsigned long lastRealData = 0;          // When did i last get data?
 
 	int  state                      = DISCONNECTED; // Current connection state
-	int  stateHandlerDelay          = 0;            // Delay between state related actions
+	int  stateHandlerDelay          = 1;            // Delay between state related actions
 	unsigned long lastStateHandlerInvocation = 0;            // Last time the stateHandle was invoked
 
 	int oldTransmitToken = 0;   // The token related to the last transmission
@@ -79,7 +79,7 @@ byte RGBBuffer[4];
 
 	void loop() {
 		serialHandle();
-		//if (difference(lastStateHandlerInvocation, millis()) > stateHandlerDelay)
+		if (difference(lastStateHandlerInvocation, millis()) > stateHandlerDelay)
 		stateHandle();
 		delay(stateHandlerDelay);
 	}
