@@ -67,7 +67,7 @@ byte RGBBuffer[4];
 	int transmitToken    = 0;   // The token related to the current transmission
 
 	void setup() {
-	    PololuLedStripBase::interruptFriendly = true;
+	    PololuLedStripBase::interruptFriendly = false;
 
 		delay(500);                       // sanity check delay - allows reprogramming if accidentally blowing power w/leds
 		clearLightColors();
@@ -78,11 +78,18 @@ byte RGBBuffer[4];
 	}
 
 	void loop() {
-		serialHandle();
-		if (difference(lastStateHandlerInvocation, millis()) > stateHandlerDelay)
-		stateHandle();
-		delay(stateHandlerDelay);
+		//serialHandle();
+		//if (difference(lastStateHandlerInvocation, millis()) > stateHandlerDelay)
+		//stateHandle();
+		delay(500);
+                test();
 	}
+        int i = 0;
+        void test(){
+          leds[i++].red = 30;
+          i = i % 40;
+          ledStrip.write(leds, 40);
+        }
 
 	void stateHandle() {
 		lastStateHandlerInvocation = millis();
