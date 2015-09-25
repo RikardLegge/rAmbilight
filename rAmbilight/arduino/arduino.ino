@@ -12,7 +12,8 @@
 //  unsigned long BECOMES unsigned unsigned long
 
 
-#include <PololuLedStrip.h>      // The LED library
+//#include <PololuLedStrip.h>      // The LED library
+#include <FastLED.h>      // The LED library
 
 	// Hardware preferences.
 	#define DATA_PIN 6       // The pin on the Arduino to use for the LED PWM.
@@ -43,14 +44,18 @@
 
 	
 	
-	PololuLedStrip<DATA_PIN> ledStrip;
-rgb_color leds[NUM_LEDS];
-rgb_color leds_TargetValue[NUM_LEDS];
+//	PololuLedStrip<DATA_PIN> ledStrip;
+//	rgb_color leds[NUM_LEDS];
+//	rgb_color leds_TargetValue[NUM_LEDS];
+
+CRGB leds[NUM_LEDS];      // The current LED value
+CRGB leds_TargetValue[NUM_LEDS];  // The buffered LED value
+
 byte RGBBuffer[4];
 
 
 	// Variable to be set by host
-	float stepLength    = 20;             // Step size for the lights                     - Default: 2
+	float stepLength    = 2;             // Step size for the lights                     - Default: 2
 	int   numActiveLeds = NUM_LEDS;      // Number of active LEDs that are handled       - Default: ~60
 	int   compression   = 1;             // The amount of compression which is set up    - Default: 1
 
@@ -65,9 +70,11 @@ byte RGBBuffer[4];
 
 	int oldTransmitToken = 0;   // The token related to the last transmission
 	int transmitToken    = 0;   // The token related to the current transmission
+	boolean sleptFrame = false;
 
 	void setup() {
-	    PololuLedStripBase::interruptFriendly = false;
+	    //PololuLedStripBase::interruptFriendly = true;
+	    LEDS.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);  // Sets WS2812B as the selected LED microcontroller
 
 		delay(500);                       // sanity check delay - allows reprogramming if accidentally blowing power w/leds
 		clearLightColors();
@@ -78,18 +85,14 @@ byte RGBBuffer[4];
 	}
 
 	void loop() {
-		//serialHandle();
+		sleptFrame = false;
+		serialHandle();
+
+		delay(20);
 		//if (difference(lastStateHandlerInvocation, millis()) > stateHandlerDelay)
-		//stateHandle();
-		delay(500);
-                test();
+			stateHandle();
+		//delay(50);
 	}
-        int i = 0;
-        void test(){
-          leds[i++].red = 30;
-          i = i % 40;
-          ledStrip.write(leds, 40);
-        }
 
 	void stateHandle() {
 		lastStateHandlerInvocation = millis();
@@ -305,16 +308,20 @@ byte RGBBuffer[4];
 	}
 
 	void writeAllLeds() {
-		ledStrip.write(leds, NUM_LEDS);
+		//ledStrip.write(leds, NUM_LEDS);
+		FastLED.show();
+		sleptFrame = true;
 	}
 
 	void writeLEDS() {
-		ledStrip.write(leds, numActiveLeds);
+		//ledStrip.write(leds, numActiveLeds);
+		FastLED.show();
+		sleptFrame = true;
 	}
 
 	void setLightColor(int l, byte r, byte g, byte b) {
-		leds_TargetValue[l].red = r;
-		leds_TargetValue[l].green = g;
+		leds_TargetValue[l].red = g;
+		leds_TargetValue[l].green = r;
 		leds_TargetValue[l].blue = b;
 	}
 
