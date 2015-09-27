@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PLUGINS="$HOME/Library/Application Support/rAmbilight/plugins";     # Build output path
+PLUGINS=../dist/rAmbilight.app/Contents/Resources/plugins           #"$HOME/Library/Application Support/rAmbilight/plugins";     # Build output path
 CLASSROOT=../rAmbilightPlugins/bin;                                 # Root path to the compiled plugin classes
 CLASSPREFIX=com/rambilight/plugins;                                 # The required plugin path prefix
 PLUGINNAME="$1";                                                    # The filename of the plugin to build
