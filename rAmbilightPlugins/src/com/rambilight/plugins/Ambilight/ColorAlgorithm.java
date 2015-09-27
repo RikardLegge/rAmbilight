@@ -94,7 +94,6 @@ public abstract class ColorAlgorithm extends Extension {
 
 		}
 
-
 		if (itt == 0)
 			System.out.println("test");
 

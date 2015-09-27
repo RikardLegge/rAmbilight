@@ -138,11 +138,11 @@ public class Visualizer extends JFrame {
 	private void drawOutlineJocke(Graphics2D g) {
 		resetDraw();
 
-		draw(g, SIDE.LEFT, 0, Global.lightLayoutOffset, Global.lightLayout[0]);
+		draw(g, SIDE.LEFT, 0, 16, Global.lightLayout[0]);
 		draw(g, SIDE.BOTTOM, 1);
 		draw(g, SIDE.RIGHT, 2);
 		draw(g, SIDE.TOP, 3);
-		draw(g, SIDE.LEFT, 0, 0, Global.lightLayoutOffset);
+		draw(g, SIDE.LEFT, 0, 0, 16);
 
 	}
 
