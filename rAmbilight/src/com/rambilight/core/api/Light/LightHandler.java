@@ -32,10 +32,10 @@ public class LightHandler {
 
 		compressionLevel = Global.compressionLevel;
 		clockwiseLayout = Global.lightLayoutClockwise;
-		sideOffset = Global.lightLayoutStartingPosition;
+		sideOffset = Global.lightLayoutOffset;
 
 		lightHandlerCore = rAmbilight.getSerialCom().getLightHandler();
-		offset = -Global.lightLayoutOffset;
+		offset = -Global.lightOffset;
 		lightLayout = new int[Global.lightLayout.length];
 
 		lightHandlerCore.registerModule(name);

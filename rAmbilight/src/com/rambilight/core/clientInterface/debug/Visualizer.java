@@ -1,6 +1,7 @@
 package com.rambilight.core.clientInterface.debug;
 
 import com.rambilight.core.api.Global;
+import com.rambilight.core.api.Side;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,13 +64,6 @@ public class Visualizer extends JFrame {
 		com.sun.awt.AWTUtilities.setWindowOpaque(this, false);
 	}
 
-	enum SIDE {
-		LEFT,
-		RIGHT,
-		TOP,
-		BOTTOM
-	}
-
 	enum DIRECTION {
 		LEFT,
 		RIGHT,
@@ -77,39 +71,45 @@ public class Visualizer extends JFrame {
 		DOWN
 	}
 
+	private int getIndex(int side) {
+		int mod = Global.lightLayout.length;
+		int val = (Global.lightLayoutClockwise ? -side : side) - Global.lightLayoutOffset;
+
+		return ((val % mod) + mod) % mod;
+	}
+
 	private void resetDraw() {
 		light = 0;
 	}
 
-	private void draw(Graphics2D g, SIDE side, int index) {
-		draw(g, side, index, 0, Global.lightLayout[index]);
+	private void draw(Graphics2D g, int side) {
+		draw(g, side, 0, Global.lightLayout[side]);
 	}
 
-	private void draw(Graphics2D g, SIDE side, int index, int start, int stop) {
+	private void draw(Graphics2D g, int side, int start, int stop) {
 		DIRECTION direction = DIRECTION.DOWN;
 		switch (side) {
-			case LEFT:
+			case Side.LEFT:
 				direction = Global.lightLayoutClockwise ? DIRECTION.UP : DIRECTION.DOWN;
 				break;
-			case RIGHT:
+			case Side.RIGHT:
 				direction = Global.lightLayoutClockwise ? DIRECTION.DOWN : DIRECTION.UP;
 				break;
-			case TOP:
+			case Side.TOP:
 				direction = Global.lightLayoutClockwise ? DIRECTION.RIGHT : DIRECTION.LEFT;
 				break;
-			case BOTTOM:
+			case Side.BOTTOM:
 				direction = Global.lightLayoutClockwise ? DIRECTION.LEFT : DIRECTION.RIGHT;
 				break;
 		}
 
-		draw(g, direction, index, start, stop);
+		draw(g, direction, Global.lightLayout[side], start, stop);
 	}
 
-	private void draw(Graphics2D g, DIRECTION direction, int index, int start, int stop) {
+	private void draw(Graphics2D g, DIRECTION direction, int numLights, int start, int stop) {
 		int a = 10;
 		int h = getHeight() - 2 * a;
 		int w = getWidth() - 2 * a;
-		int numLights = Global.lightLayout[index];
 
 		float fhd = h / numLights;
 		int fwd = w / numLights;
@@ -138,12 +138,20 @@ public class Visualizer extends JFrame {
 	private void drawOutlineJocke(Graphics2D g) {
 		resetDraw();
 
-		draw(g, SIDE.LEFT, 0, 16, Global.lightLayout[0]);
-		draw(g, SIDE.BOTTOM, 1);
-		draw(g, SIDE.RIGHT, 2);
-		draw(g, SIDE.TOP, 3);
-		draw(g, SIDE.LEFT, 0, 0, 16);
+		draw(g, Side.LEFT, 16, Global.lightLayout[Side.LEFT]);
+		draw(g, Side.BOTTOM);
+		draw(g, Side.RIGHT);
+		draw(g, Side.TOP);
+		draw(g, Side.LEFT, 0, 16);
+	}
 
+	private void drawOutlineTesting(Graphics2D g) {
+		resetDraw();
+
+		draw(g, Side.LEFT);
+		draw(g, Side.BOTTOM);
+		draw(g, Side.RIGHT);
+		draw(g, Side.TOP);
 	}
 
 	private void drawOutline(Graphics2D g) {

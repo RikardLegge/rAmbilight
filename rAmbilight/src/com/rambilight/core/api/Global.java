@@ -37,7 +37,7 @@ public class Global {
 	 * The number of lights which are available, calculated from the
 	 * light layout.
 	 */
-	public static int      numLights                   = 0;
+	public static int      numLights            = 0;
 	/**
 	 * The light layout of the screen, in order of which they appear.
 	 * This only effects modules which require control over specific
@@ -48,29 +48,29 @@ public class Global {
 	 * This says that the first side has 15 lights, the second has 30,
 	 * the third 15 and the forth 30.
 	 */
-	public static int[]    lightLayout                 = new int[]{15, 30, 15};
+	public static int[]    lightLayout          = new int[]{15, 30, 15};
 	/**
 	 * The direction of which the lights get addressed.
 	 * This only effects modules which require control over specific
 	 * sides of the screen, not only which light is active.
 	 */
-	public static boolean  lightLayoutClockwise        = true;
+	public static boolean  lightLayoutClockwise = true;
 	/**
 	 * The starting position of which the lights get addressed.
 	 * This only effects modules which require control over specific
 	 * sides of the screen, not only which light is active.
 	 */
-	public static int      lightLayoutStartingPosition = 2;
-	public static int      lightLayoutOffset           = 0;
-	public static String[] currentControllers          = new String[]{"Ambilight"};
-	public static String   serialPort                  = "";
+	public static int      lightLayoutOffset    = 2;
+	public static int      lightOffset          = 0;
+	public static String[] currentControllers   = new String[]{"Ambilight"};
+	public static String   serialPort           = "";
 	/**
 	 * The amount of compression which is applied to the data using
 	 * a simple algorithm that only takes every n:th lights and fills
 	 * the gap with a color related to the nearest neighbours.
 	 */
-	public static int      compressionLevel            = 1;
-	public static boolean  compressionAutoSet          = true;
+	public static int      compressionLevel     = 1;
+	public static boolean  compressionAutoSet   = true;
 
 	public static int     lightUpdateThreshold     = 1;
 	public static int     lightStepSize            = 8;
@@ -127,8 +127,8 @@ public class Global {
 		Global.currentControllers = preferences.load("currentControllers", Global.currentControllers, -1);
 
 		Global.lightLayoutClockwise = preferences.load("lightLayoutClockwise", Global.lightLayoutClockwise);
-		Global.lightLayoutStartingPosition = preferences.load("lightLayoutStartingPosition", Global.lightLayoutStartingPosition);
 		Global.lightLayoutOffset = preferences.load("lightLayoutOffset", Global.lightLayoutOffset);
+		Global.lightOffset = preferences.load("lightOffset", Global.lightOffset);
 		Global.lightLayout = preferences.load("lightLayout", Global.lightLayout, -1);
 		numLights = 0;
 		for (int num : lightLayout)
@@ -151,7 +151,7 @@ public class Global {
 		preferences.save("currentControllers", Global.currentControllers);
 
 		preferences.save("lightLayoutClockwise", Global.lightLayoutClockwise);
-		preferences.save("lightLayoutStartingPosition", Global.lightLayoutStartingPosition);
+		preferences.save("lightLayoutOffset", Global.lightLayoutOffset);
 		preferences.save("lightLayout", Global.lightLayout);
 
 		preferences.save("lightUpdateThreshold", Global.lightUpdateThreshold);
