@@ -17,148 +17,149 @@ import java.util.ArrayList;
  */
 public class Global {
 
-    private static boolean requestExit = false;
-    private static boolean active      = true;
+	private static boolean requestExit = false;
+	private static boolean active      = true;
 
-    public static final String ActiveStateModified = "ActiveStateModified";
+	public static final String ActiveStateModified = "ActiveStateModified";
 
-    /**
-     * The version number of the API and application.
-     */
-    public static final int               VERSION         = 32;
-    public static final ArrayList<String> ERRORLOG        = new ArrayList<>();
-    public static final String            APPLICATIONNAME = "rAmbilight";
+	/**
+	 * The version number of the API and application.
+	 */
+	public static final int               VERSION         = 32;
+	public static final ArrayList<String> ERRORLOG        = new ArrayList<>();
+	public static final String            APPLICATIONNAME = "rAmbilight";
 
-    public static boolean disableErrorPopups = false;
+	public static boolean disableErrorPopups = false;
 
-    public static String applicationSupportPath = "";
+	public static String applicationSupportPath = "";
 
-    /**
-     * The number of lights which are available, calculated from the
-     * light layout.
-     */
-    public static int      numLights                   = 0;
-    /**
-     * The light layout of the screen, in order of which they appear.
-     * This only effects modules which require control over specific
-     * sides of the screen, not only which light is active.
-     * <p>
-     * Example:
-     * {15, 30, 15, 30};
-     * This says that the first side has 15 lights, the second has 30,
-     * the third 15 and the forth 30.
-     */
-    public static int[]    lightLayout                 = new int[]{15, 30, 15};
-    /**
-     * The direction of which the lights get addressed.
-     * This only effects modules which require control over specific
-     * sides of the screen, not only which light is active.
-     */
-    public static boolean  lightLayoutClockwise        = true;
-    /**
-     * The starting position of which the lights get addressed.
-     * This only effects modules which require control over specific
-     * sides of the screen, not only which light is active.
-     */
-    public static int      lightLayoutStartingPosition = 2;
-    public static String[] currentControllers          = new String[]{"Ambilight"};
-    public static String   serialPort                  = "";
-    /**
-     * The amount of compression which is applied to the data using
-     * a simple algorithm that only takes every n:th lights and fills
-     * the gap with a color related to the nearest neighbours.
-     */
-    public static int      compressionLevel            = 1;
-    public static boolean  compressionAutoSet          = true;
+	/**
+	 * The number of lights which are available, calculated from the
+	 * light layout.
+	 */
+	public static int      numLights                   = 0;
+	/**
+	 * The light layout of the screen, in order of which they appear.
+	 * This only effects modules which require control over specific
+	 * sides of the screen, not only which light is active.
+	 * <p>
+	 * Example:
+	 * {15, 30, 15, 30};
+	 * This says that the first side has 15 lights, the second has 30,
+	 * the third 15 and the forth 30.
+	 */
+	public static int[]    lightLayout                 = new int[]{15, 30, 15};
+	/**
+	 * The direction of which the lights get addressed.
+	 * This only effects modules which require control over specific
+	 * sides of the screen, not only which light is active.
+	 */
+	public static boolean  lightLayoutClockwise        = true;
+	/**
+	 * The starting position of which the lights get addressed.
+	 * This only effects modules which require control over specific
+	 * sides of the screen, not only which light is active.
+	 */
+	public static int      lightLayoutStartingPosition = 2;
+	public static int      lightLayoutOffset           = 0;
+	public static String[] currentControllers          = new String[]{"Ambilight"};
+	public static String   serialPort                  = "";
+	/**
+	 * The amount of compression which is applied to the data using
+	 * a simple algorithm that only takes every n:th lights and fills
+	 * the gap with a color related to the nearest neighbours.
+	 */
+	public static int      compressionLevel            = 1;
+	public static boolean  compressionAutoSet          = true;
 
-    public static int     lightUpdateThreshold     = 1;
-    public static int     lightStepSize            = 8;
-    public static boolean isSerialConnectionActive = false;
+	public static int     lightUpdateThreshold     = 1;
+	public static int     lightStepSize            = 8;
+	public static boolean isSerialConnectionActive = false;
 
-    private static Preferences preferences;
+	private static Preferences preferences;
 
-    /**
-     * Is the application active?
-     * WARNING: If set to false manually, the user might get confused.
-     * Only change this value if you know what you are doing.
-     */
-    public static void setActive(boolean state) {
-        active = state;
-        EventHandler.triggerEvent(ActiveStateModified);
-    }
+	/**
+	 * Is the application active?
+	 * WARNING: If set to false manually, the user might get confused.
+	 * Only change this value if you know what you are doing.
+	 */
+	public static void setActive(boolean state) {
+		active = state;
+		EventHandler.triggerEvent(ActiveStateModified);
+	}
 
+	/**
+	 * Is the application active?
+	 * Get the state of the application.
+	 * Only really needed if working with threads or external event handlers
+	 *
+	 * @return The active state of the application
+	 */
+	public static boolean isActive() {
+		return active;
+	}
 
-    /**
-     * Is the application active?
-     * Get the state of the application.
-     * Only really needed if working with threads or external event handlers
-     *
-     * @return The active state of the application
-     */
-    public static boolean isActive() {
-        return active;
-    }
+	/**
+	 * If called, the application will try to exit gracefully.
+	 */
+	public static void requestExit() {
+		requestExit = true;
+	}
 
-    /**
-     * If called, the application will try to exit gracefully.
-     */
-    public static void requestExit() {
-        requestExit = true;
-    }
+	/**
+	 * Checks if the application is shutting down.
+	 * Only really needed if working with threads or external event handlers.
+	 */
+	public static boolean isRequestingExit() {
+		return requestExit;
+	}
 
-    /**
-     * Checks if the application is shutting down.
-     * Only really needed if working with threads or external event handlers.
-     */
-    public static boolean isRequestingExit() {
-        return requestExit;
-    }
+	public static void generateApplicationSupportPath() {
+		applicationSupportPath = Platform.getApplicationSupportPath(APPLICATIONNAME);
+		if (!new File(applicationSupportPath).exists())
+			new File(applicationSupportPath).mkdir();
+	}
 
-    public static void generateApplicationSupportPath() {
-        applicationSupportPath = Platform.getApplicationSupportPath(APPLICATIONNAME);
-        if (!new File(applicationSupportPath).exists())
-            new File(applicationSupportPath).mkdir();
-    }
+	public static void loadPreferences() {
+		preferences = new Preferences("Core");
+		Global.active = preferences.load("isActive", Global.active);
+		Global.disableErrorPopups = preferences.load("disableErrorPopups", Global.disableErrorPopups);
+		Global.currentControllers = preferences.load("currentControllers", Global.currentControllers, -1);
 
-    public static void loadPreferences() {
-        preferences = new Preferences("Core");
-        Global.active = preferences.load("isActive", Global.active);
-        Global.disableErrorPopups = preferences.load("disableErrorPopups", Global.disableErrorPopups);
-        Global.currentControllers = preferences.load("currentControllers", Global.currentControllers, -1);
+		Global.lightLayoutClockwise = preferences.load("lightLayoutClockwise", Global.lightLayoutClockwise);
+		Global.lightLayoutStartingPosition = preferences.load("lightLayoutStartingPosition", Global.lightLayoutStartingPosition);
+		Global.lightLayoutOffset = preferences.load("lightLayoutOffset", Global.lightLayoutOffset);
+		Global.lightLayout = preferences.load("lightLayout", Global.lightLayout, -1);
+		numLights = 0;
+		for (int num : lightLayout)
+			numLights += num;
 
-        Global.lightLayoutClockwise = preferences.load("lightLayoutClockwise", Global.lightLayoutClockwise);
-        Global.lightLayoutStartingPosition = preferences.load("lightLayoutStartingPosition", Global.lightLayoutStartingPosition);
-        Global.lightLayout = preferences.load("lightLayout", Global.lightLayout, -1);
-        numLights = 0;
-        for (int num : lightLayout)
-            numLights += num;
+		Global.lightUpdateThreshold = preferences.load("lightUpdateThreshold", Global.lightUpdateThreshold);
+		Global.lightStepSize = preferences.load("lightStepSize", Global.lightStepSize);
+		Global.serialPort = preferences.load("serialPort", Global.serialPort);
+		Global.compressionAutoSet = preferences.load("compressionAutoSet", Global.compressionAutoSet);
+		if (compressionAutoSet)
+			Global.compressionLevel = (int) Math.floor(Global.numLights / 50);
+		else
+			Global.compressionLevel = preferences.load("compressionLevel", Global.compressionLevel);
+		Global.compressionLevel = Global.compressionLevel > 0 ? Global.compressionLevel : 1;
+	}
 
-        Global.lightUpdateThreshold = preferences.load("lightUpdateThreshold", Global.lightUpdateThreshold);
-        Global.lightStepSize = preferences.load("lightStepSize", Global.lightStepSize);
-        Global.serialPort = preferences.load("serialPort", Global.serialPort);
-        Global.compressionAutoSet = preferences.load("compressionAutoSet", Global.compressionAutoSet);
-        if (compressionAutoSet)
-            Global.compressionLevel = (int) Math.floor(Global.numLights / 50);
-        else
-            Global.compressionLevel = preferences.load("compressionLevel", Global.compressionLevel);
-        Global.compressionLevel = Global.compressionLevel > 0 ? Global.compressionLevel : 1;
-    }
+	public static void savePreferences() {
+		preferences.save("isActive", Global.isActive());
+		preferences.save("disableErrorPopups", Global.disableErrorPopups);
+		preferences.save("currentControllers", Global.currentControllers);
 
-    public static void savePreferences() {
-        preferences.save("isActive", Global.isActive());
-        preferences.save("disableErrorPopups", Global.disableErrorPopups);
-        preferences.save("currentControllers", Global.currentControllers);
+		preferences.save("lightLayoutClockwise", Global.lightLayoutClockwise);
+		preferences.save("lightLayoutStartingPosition", Global.lightLayoutStartingPosition);
+		preferences.save("lightLayout", Global.lightLayout);
 
-        preferences.save("lightLayoutClockwise", Global.lightLayoutClockwise);
-        preferences.save("lightLayoutStartingPosition", Global.lightLayoutStartingPosition);
-        preferences.save("lightLayout", Global.lightLayout);
+		preferences.save("lightUpdateThreshold", Global.lightUpdateThreshold);
+		preferences.save("lightStepSize", Global.lightStepSize);
+		preferences.save("serialPort", Global.serialPort);
+		preferences.save("compressionLevel", Global.compressionLevel);
+		preferences.save("compressionAutoSet", Global.compressionAutoSet);
 
-        preferences.save("lightUpdateThreshold", Global.lightUpdateThreshold);
-        preferences.save("lightStepSize", Global.lightStepSize);
-        preferences.save("serialPort", Global.serialPort);
-        preferences.save("compressionLevel", Global.compressionLevel);
-        preferences.save("compressionAutoSet", Global.compressionAutoSet);
-
-        preferences.save("VERSION", Global.VERSION);
-    }
+		preferences.save("VERSION", Global.VERSION);
+	}
 }

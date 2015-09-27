@@ -1,9 +1,15 @@
 /* JAVA */
-package com.rambilight.core.clientInterface.debug;/* /Java */
+package com.rambilight.core.clientInterface.debug;
+/* /Java */
 
 /**
  * A class which is compiled to a subset of C which is able to run on the arduino.
  * This allows the debug environment to behave close to the same as when run on the device.
+ * <p>
+ * Problem with serial library.
+ * https://plus.google.com/102282558639672545743/posts/j1Xrt9iwgrZ?cfem=1
+ * <p>
+ * TODO:Add changes from arduino.ino.
  */
 
 //  /* JAVA */ THIS WILL ONLY RUN IN THE TEST ENVIRONMENT /* /JAVA */
@@ -15,13 +21,16 @@ package com.rambilight.core.clientInterface.debug;/* /Java */
 /* JAVA */
 public class ArduinoEmulator {
 /* /Java */
-    /* ARDUINO /#include <PololuLedStrip.h>/* /Arduino */      // The LED library
+    /* ARDUINO /
+    //#include <PololuLedStrip.h>
+    #include <FastLED.h>
+    /* /Arduino */      // The LED library
 
 	// Hardware preferences.
 	final int DATA_PIN   = 6;       // The pin on the Arduino to use for the LED PWM.
-	final int DATA_RATE  = 115200;  //512000//256000//115200  // The speed of the transmission in bits / second.
+	final int DATA_RATE  = 512000;  //512000//256000//115200  // The speed of the transmission in bits / second.
 	final int FRAMESLEEP = 1;       // Time to sleep between each frame.
-	final int NUM_LEDS   = 220;     // The maximum number of LEDs
+	final int NUM_LEDS   = 180;     // The maximum number of LEDs
 
 	// Preference types
 	final int NUMBER_OF_LEDS    = 1;
@@ -45,20 +54,27 @@ public class ArduinoEmulator {
 	final int DISCONNECTED = 6;
 
 	/* JAVA */
-	LEDStrip  ledStrip           = new LEDStrip();
-	rgb_color leds[]             = new rgb_color[NUM_LEDS];
-	rgb_color leds_TargetValue[] = new rgb_color[NUM_LEDS];
-	int       RGBBuffer[]        = new int[4];
+	//LibLEDStrip ledStrip           = new LibLEDStrip();
+	LibFastLED FastLED        = new LibFastLED();
+	rgb_color  leds_current[] = new rgb_color[NUM_LEDS];
+	//rgb_color  leds_angle[]   = new rgb_color[NUM_LEDS];
+	rgb_color  leds_target[]  = new rgb_color[NUM_LEDS];
+	int        RGBBuffer[]    = new int[4];
 	/* /JAVA */
 	/* ARDUINO /
-	PololuLedStrip<DATA_PIN> ledStrip;
-    rgb_color leds[NUM_LEDS];
-    rgb_color leds_TargetValue[NUM_LEDS];
+	//PololuLedStrip<DATA_PIN> ledStrip;
+    //rgb_color leds_current[NUM_LEDS];
+    //rgb_color leds_target[NUM_LEDS];
+
+    CRGB leds_current[NUM_LEDS];            // The current LED value
+    //CRGB leds_angle[NUM_LEDS];// The current LED value
+	CRGB leds_target[NUM_LEDS];// The buffered LED value
+
     byte RGBBuffer[4];
     /* /Arduino */
 
 	// Variable to be set by host
-	float stepLength    = 8;             // Step size for the lights                     - Default: 2
+	float stepLength    = 2;             // Step size for the lights                     - Default: 2
 	int   numActiveLeds = NUM_LEDS;      // Number of active LEDs that are handled       - Default: ~60
 	int   compression   = 1;             // The amount of compression which is set up    - Default: 1
 
@@ -68,14 +84,17 @@ public class ArduinoEmulator {
 	long lastRealData = 0;          // When did i last get data?
 
 	int  state                      = DISCONNECTED; // Current connection state
-	int  stateHandlerDelay          = 0;            // Delay between state related actions
+	int  stateHandlerDelay          = 1;            // Delay between state related actions
 	long lastStateHandlerInvocation = 0;            // Last time the stateHandle was invoked
 
 	int oldTransmitToken = 0;   // The token related to the last transmission
 	int transmitToken    = 0;   // The token related to the current transmission
 
 	void setup() {
-	    /* ARDUINO /PololuLedStripBase::interruptFriendly = true;/* /Arduino */
+	    /* ARDUINO /
+	    //PololuLedStripBase::interruptFriendly = true;
+	    LEDS.addLeds<WS2812B, DATA_PIN, RGB>(leds_current, NUM_LEDS);  // Sets WS2812B as the selected LED microcontroller
+	    /* /Arduino */
 
 		delay(500);                       // sanity check delay - allows reprogramming if accidentally blowing power w/leds
 		clearLightColors();
@@ -88,8 +107,8 @@ public class ArduinoEmulator {
 	void loop() {
 		serialHandle();
 		//if (difference(lastStateHandlerInvocation, millis()) > stateHandlerDelay)
+		delay(20);
 		stateHandle();
-		delay(stateHandlerDelay);
 	}
 
 	void stateHandle() {
@@ -259,32 +278,39 @@ public class ArduinoEmulator {
 		int i, j;
 		int l, lt;
 		for (i = 0; i < numActiveLeds; i += compression) {
-			l = leds[i].red;
-			lt = leds_TargetValue[i].red;
+			l = leds_current[i].red;
+			lt = leds_target[i].red;
 			if (l != lt) {
 				l = colorStep(l, lt);
 				requiresUpdate = true;
 				for (j = i; j < i + compression; j++)
-					leds[j].red = l;
+					leds_current[j].red = l;
+			}
+			//leds_angle[i].red = l / lt;
+
+			l = leds_current[i].green;
+			lt = leds_target[i].green;
+			if (l != lt) {
+				l = colorStep(l, lt);
+				requiresUpdate = true;
+				for (j = i; j < i + compression; j++)
+					leds_current[j].green = l;
 			}
 
-			l = leds[i].green;
-			lt = leds_TargetValue[i].green;
+			//leds_angle[i].green = l / lt;
+
+
+			l = leds_current[i].blue;
+			lt = leds_target[i].blue;
 			if (l != lt) {
 				l = colorStep(l, lt);
 				requiresUpdate = true;
 				for (j = i; j < i + compression; j++)
-					leds[j].green = l;
+					leds_current[j].blue = l;
 			}
 
-			l = leds[i].blue;
-			lt = leds_TargetValue[i].blue;
-			if (l != lt) {
-				l = colorStep(l, lt);
-				requiresUpdate = true;
-				for (j = i; j < i + compression; j++)
-					leds[j].blue = l;
-			}
+			//leds_angle[i].blue = l / lt;
+
 		}
 		return requiresUpdate;
 	}
@@ -300,33 +326,33 @@ public class ArduinoEmulator {
 		return l;
 	}
 
-
 	int difference(int num1, int num2) {
 		return abs(num1 - num2);
 	}
 
 	void writeAllLeds() {
-		ledStrip.write(leds, NUM_LEDS);
+		//ledStrip.write(leds, NUM_LEDS);
+		FastLED.show();
 	}
 
 	void writeLEDS() {
-		ledStrip.write(leds, numActiveLeds);
+		//ledStrip.write(leds, numActiveLeds);
+		FastLED.show();
 	}
 
 	void setLightColor(int l, int/**/ r, int/**/ g, int/**/ b) {
-		leds_TargetValue[l].red = r;
-		leds_TargetValue[l].green = g;
-		leds_TargetValue[l].blue = b;
+		leds_target[l].red = r;
+		leds_target[l].green = g;
+		leds_target[l].blue = b;
 	}
 
 	void clearLightColors() {
 		for (int i = 0; i < NUM_LEDS; i++) {
-			leds_TargetValue[i].red = 0;
-			leds_TargetValue[i].green = 0;
-			leds_TargetValue[i].blue = 0;
+			leds_target[i].red = 0;
+			leds_target[i].green = 0;
+			leds_target[i].blue = 0;
 		}
 	}
-
 
     /* JAVA COMPATIBLE VARIABLES */
 
@@ -350,11 +376,11 @@ public class ArduinoEmulator {
 		this.inBuffer = inBuffer;
 		this.outBuffer = outBuffer;
 		Serial = new ArduinoSerial();
-		visualizer = new Visualizer(leds);
+		visualizer = new Visualizer(leds_current);
 
-		for (int i = 0; i < leds_TargetValue.length; i++) {
-			leds_TargetValue[i] = new rgb_color();
-			leds[i] = new rgb_color();
+		for (int i = 0; i < leds_target.length; i++) {
+			leds_target[i] = new rgb_color();
+			leds_current[i] = new rgb_color();
 		}
 	}
 
@@ -400,11 +426,16 @@ public class ArduinoEmulator {
 		public int green = 0;
 	}
 
-	class LEDStrip {
+	class LibLEDStrip {
 		public void write(rgb_color[] leds, int count) {
 			visualizer.update();
 		}
+	}
 
+	class LibFastLED {
+		public void show() {
+			visualizer.update();
+		}
 	}
 
 	long millis() {
