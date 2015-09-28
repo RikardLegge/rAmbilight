@@ -45,7 +45,7 @@ public class LightHandler {
 		}
 
 		for (int i = 0; i < sideOffset; i++) {
-			offset += numLightsOnSide(i);
+			offset += rawNumLightsOnSide(i);
 		}
 	}
 
@@ -63,7 +63,7 @@ public class LightHandler {
 	 * @return true if the value was set as a new one.
 	 */
 	public boolean addToUpdateBuffer(int id, int r, int g, int b) {
-		id = (id + offset) % rawNumLights();
+		id = (id + offset / compressionLevel) % numLights();
 		boolean ret = false;
 		for (int i = id * compressionLevel; i < id * compressionLevel + compressionLevel; i++) {
 			if (lightHandlerCore.addToUpdateBuffer(name, i, r, g, b))

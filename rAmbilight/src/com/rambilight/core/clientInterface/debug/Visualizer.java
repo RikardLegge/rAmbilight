@@ -112,9 +112,6 @@ public class Visualizer {
 				setLocation(x() + (int) (start * lWidth()), y());
 			else
 				setLocation(x(), y() + (int) (start * lHeight()));
-
-
-			System.out.println(getX() + ":" + getY() + " & " + getWidth() + "/" + getHeight());
 		}
 
 		public DrawSide(int side) {

@@ -180,7 +180,6 @@ class ExternalClassLoader {
 
 	private ArrayList<URL> getDevFileList() {
 		String path = getExecutablePath() + "../../dist/rAmbilight.app/Contents/Resources/plugins";
-		System.out.println(path);
 		return getFileList(path);
 	}
 
@@ -211,7 +210,6 @@ public class ModuleLoader {
 	public static void loadModules(Class<?> modules[]) {
 		for (Class<?> module : modules)
 			loadModule(module);
-		System.out.println("");
 	}
 
 	public static void loadModule(Class<?> module) {
