@@ -9,10 +9,10 @@ import com.rambilight.plugins.Module;
 import com.rambilight.plugins.extensions.Extension;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -20,17 +20,193 @@ import java.util.List;
 /**
  * Class for loading and handling modules
  */
+
+enum ModuleType {
+	MODULE,
+	EXTENSION,
+	UNKNOWN
+}
+
+class ModuleDefinition {
+	String                     name;
+	Class<? extends Module>    module;
+	Class<? extends Extension> extension;
+	ModuleType                 type;
+
+	public ModuleDefinition() {
+		this.type = ModuleType.UNKNOWN;
+	}
+
+	public ModuleDefinition(Class<? extends Module> module) {
+		this.type = ModuleType.MODULE;
+		this.module = module;
+	}
+
+	public ModuleDefinition(String name, Class<? extends Extension> extension) {
+		this.type = ModuleType.EXTENSION;
+		this.extension = extension;
+		this.name = name;
+	}
+}
+
+class ExternalClassLoader {
+
+	private static final String packageName = "com.rambilight.plugins";
+
+	private ArrayList<Class<? extends Module>>            modules    = new ArrayList<>();
+	private Hashtable<String, Class<? extends Extension>> extensions = new Hashtable<>();
+
+	private static String pluginPath = Global.applicationSupportPath + "/plugins";
+
+	private Class<?> classLoaderSource;
+
+	public ExternalClassLoader(Class<?> classLoaderSource) {
+		this.classLoaderSource = classLoaderSource;
+	}
+
+	private String getExecutablePath() {
+		String path = "";
+		try {
+			path = ExternalClassLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath().replaceAll("[^/]*$", "");
+		} catch (URISyntaxException ignored) { }
+
+		return path;
+	}
+
+
+	private ArrayList<URL> getFileList(String path) {
+		ArrayList<URL> urls = new ArrayList<>();
+
+		try {
+			for (String fileName : new File(path).list()) {
+				// Filter away any unwanted files
+
+				if (fileName.endsWith(".jar") || fileName.endsWith(".class") || fileName.endsWith(".rlplugin")) {
+					String filePath = Platform.getFilePathFormat(path + "/" + fileName);
+					urls.add(new URL(filePath));
+				}
+			}
+		} catch (NullPointerException | MalformedURLException ignored) { }
+
+		return urls;
+	}
+
+
+	private ModuleDefinition getModuleDefByName(String path, URLClassLoader classLoader) {
+		// Parse the path into a name. Remove everything before the last "/"(Path) and after the last "."(Extension)
+		String name = path.substring(path.lastIndexOf("plugins/") + 8, path.lastIndexOf("."));
+
+		ModuleDefinition definition;
+
+		// Try to load packages as a module
+		try {
+			Class<? extends Module> module = loadModule(name, classLoader);
+			definition = new ModuleDefinition(module);
+
+			System.out.println("Successfully loaded module '" + name + "'");
+		} catch (ClassNotFoundException e) {
+			try {
+				Class<? extends Extension> extension = loadExtension(name, classLoader);
+
+				definition = new ModuleDefinition(name, extension);
+
+				System.out.println("Successfully loaded extension " + name);
+			} catch (ClassNotFoundException e2) {
+				definition = new ModuleDefinition();
+				System.err.println("Failed to load '" + name + "' as an associated file");
+			}
+		}
+
+		return definition;
+	}
+
+
+	public void loadExternalModules() {
+
+		ArrayList<URL> pathList = new ArrayList<>();
+
+		pathList.addAll(getPluginFileList());
+		pathList.addAll(getDefaultFileList());
+		pathList.addAll(getDevFileList());
+
+		URL[] pluginPaths = pathList.toArray(new URL[pathList.size()]);
+		URLClassLoader classLoader = URLClassLoader.newInstance(pluginPaths, classLoaderSource.getClassLoader());
+
+		for (URL pluginPath : pluginPaths) {
+			ModuleDefinition definition = getModuleDefByName(pluginPath.toString(), classLoader);
+
+			switch (definition.type) {
+				case MODULE:
+					modules.add(definition.module);
+					break;
+				case EXTENSION:
+					extensions.put(definition.name, definition.extension);
+					break;
+			}
+		}
+
+		if (pluginPaths.length == 0) {
+			MessageBox.Error("No plugins where found", "No plugins found in the plugins folder '" + pluginPath + "'");
+		}
+	}
+
+	private Class<? extends Module> loadModule(String className, URLClassLoader classLoader) throws ClassNotFoundException {
+		Class<?> classToLoad = classLoader.loadClass(packageName + "." + className + "." + className);
+
+		// Make sure it's a subclass of "Module".
+		return classToLoad.asSubclass(Module.class);
+	}
+
+	private Class<? extends Extension> loadExtension(String classPath, URLClassLoader classLoader) throws ClassNotFoundException {
+		String[] pieces = classPath.split(".");
+		String pluginName = pieces[0];
+		String extensionName = pieces[1];
+
+		Class<?> classToLoad = classLoader.loadClass(packageName + "." + pluginName + ".extensions." + extensionName);
+
+		return classToLoad.asSubclass(Extension.class);
+	}
+
+
+	private ArrayList<URL> getDefaultFileList() {
+		String path = getExecutablePath() + "../plugins";
+		return getFileList(path);
+	}
+
+	private ArrayList<URL> getPluginFileList() {
+		String path = pluginPath;
+		return getFileList(path);
+	}
+
+	private ArrayList<URL> getDevFileList() {
+		String path = getExecutablePath() + "../../dist/rAmbilight.app/Contents/Resources/plugins";
+		System.out.println(path);
+		return getFileList(path);
+	}
+
+
+	public ArrayList<Class<? extends Module>> getModules() {
+		return modules;
+	}
+
+	public Class<?>[] getModulesAsArray() {
+		return modules.toArray(new Class<?>[modules.size()]);
+	}
+
+	public Hashtable<String, Class<? extends Extension>> getExtensions() {
+		return extensions;
+	}
+
+}
+
 public class ModuleLoader {
 
 	// Fields for saving the modules as well as attributes that are related to them
-	private static final String                      packageName       = "com.rambilight.plugins";
-	private static       Hashtable<String, Class<?>> availableModules  = new Hashtable<>();
-	private static       Hashtable<String, Module>   loadedModules     = new Hashtable<>();
-	private static       List<String>                activeModules     = new ArrayList<>();
-	private static       List<OnChangeListener>      onChangeListeners = new ArrayList<>();
-
-	private static Hashtable<String, Class<?>> availableClasses = new Hashtable<>();
-
+	private static Hashtable<String, Class<?>> availableExtensions = new Hashtable<>();
+	private static Hashtable<String, Class<?>> availableModules    = new Hashtable<>();
+	private static Hashtable<String, Module>   loadedModules       = new Hashtable<>();
+	private static List<String>                activeModules       = new ArrayList<>();
+	private static List<OnChangeListener>      onChangeListeners   = new ArrayList<>();
 
 	public static void loadModules(Class<?> modules[]) {
 		for (Class<?> module : modules)
@@ -51,72 +227,14 @@ public class ModuleLoader {
 
 	/**
 	 * @param classLoaderSource The source which must be part of the same context as the Modules class
-	 * @return Array of the found classes
-	 * @throws Exception
 	 */
-	public static Class<?>[] loadExternalModules(Class<?> classLoaderSource) throws Exception {
-		return loadExternalModules(classLoaderSource, 0);
-	}
+	@SuppressWarnings("unchecked")
+	public static void loadExternalModules(Class<?> classLoaderSource) {
+		ExternalClassLoader classLoader = new ExternalClassLoader(classLoaderSource);
 
-	public static Class<?>[] loadExternalModules(Class<?> classLoaderSource, int tries) throws Exception {
-
-		String pluginPath = Global.applicationSupportPath + "/plugins";
-
-		ArrayList<URL> urls = new ArrayList<>();
-		try {
-			for (String name : new File(pluginPath).list())
-				// Filter away any unwanted files
-				if (name.endsWith(".jar") || name.endsWith(".class") || name.endsWith(".rlplugin"))
-					urls.add(new URL(Platform.getFilePathFormat(pluginPath + "/" + name)));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		URLClassLoader loader = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]), classLoaderSource.getClassLoader());
-		ArrayList<Class<? extends Module>> classes = new ArrayList<>();
-
-		if (urls.size() == 0) {
-			if (tries == 0) {
-				File sourceDir = new File(ModuleLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath().replaceAll("[^/]*$", "") + "../plugins");
-				Path sourcePath = sourceDir.toPath();
-				Path targetPath = new File(pluginPath).toPath();
-				if (!Files.exists(targetPath))
-					Files.createDirectory(targetPath);
-
-				for (File sourceFile : sourceDir.listFiles()) {
-					Path filePath = sourceFile.toPath();
-					Files.copy(filePath, targetPath.resolve(filePath.getFileName()));
-				}
-
-				return loadExternalModules(classLoaderSource, ++tries);
-			} else {
-				MessageBox.Error("No plugins where found", "No plugins found in the plugins folder '" + pluginPath + "'");
-			}
-		}
-
-		for (URL url : urls) {
-			// Parse the path into a name. Remove everything before the last "/"(Path) and after the last "."(Extension)
-			String name = url.toString().substring(url.toString().lastIndexOf("plugins/") + 8, url.toString().lastIndexOf("."));
-			Class<?> unknownClass;
-			// Try to load packages as a module
-			try {
-				unknownClass = loader.loadClass(packageName + "." + name + "." + name);
-
-				// Make sure it's a subclass of "Module" and if all goes well, add it to the list.
-				classes.add(unknownClass.asSubclass(Module.class));
-				System.out.println("Successfully loaded module '" + name + "'");
-			} catch (Exception e) {
-				try {
-					String[] namePieces = name.split(".");
-					unknownClass = loader.loadClass(packageName + "." + namePieces[0] + ".extensions." + namePieces[1]);
-					availableClasses.put(name, unknownClass);
-					System.out.println("Successfully loaded extension " + name);
-				} catch (Exception e2) {
-					System.err.println("Failed to load '" + name + "' as an associated file");
-				}
-			}
-		}
-		return classes.toArray(new Class<?>[classes.size()]);
+		classLoader.loadExternalModules();
+		loadModules(classLoader.getModulesAsArray());
+		availableExtensions.putAll(classLoader.getExtensions());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -125,62 +243,73 @@ public class ModuleLoader {
 
 		newModule.lightHandler = new LightHandler(name);
 		newModule.preferences = new Preferences(name);
-		for (String key : availableClasses.keySet()) {
+
+		for (String key : availableExtensions.keySet()) {
 			String prefix;
-			if (key.startsWith(prefix = name + "."))
+			if (key.startsWith(prefix = name + ".")) {
 				try {
-					newModule.loadExtension((Class<Extension>) availableClasses.get(key));
+					newModule.loadExtension((Class<Extension>) availableExtensions.get(key));
 				} catch (Exception e) {
 					System.err.println("Unable to load extension: " + key.replace(prefix, ""));
 				}
+			}
 		}
+
 		newModule.loadPreferences();
+
 		try {
 			newModule.loaded();
 		} catch (Exception e) {
 			System.out.println("An error occurred when loading " + name + ":" + e.getMessage());
 			return false;
 		}
+
 		loadedModules.put(name, newModule);
+
 		return true;
 	}
 
 	public static boolean activateModule(String name) throws InstantiationException, IllegalAccessException {
-		if (name == null)
-			return false;
-		if (!availableModules.containsKey(name)) {
-			System.err.println("The module '" + name + "' isn't available");
-			return false;
-		}
-		if (!loadedModules.containsKey(name))
-			initializeModule(name);
-		else
-			try {
-				loadedModules.get(name).resume();
-			} catch (Exception e) {
-				System.out.println("An error occurred when resuming " + name + ":" + e.getMessage());
+		if (name != null) {
+			if (!availableModules.containsKey(name)) {
+				System.err.println("The module '" + name + "' isn't available");
 				return false;
 			}
 
-		activeModules.add(name);
-		for (OnChangeListener listener : onChangeListeners)
-			listener.onChange(name);
-		return true;
+			if (!loadedModules.containsKey(name)) {
+				initializeModule(name);
+			} else {
+				try {
+					loadedModules.get(name).resume();
+				} catch (Exception e) {
+					System.out.println("An error occurred when resuming " + name + ":" + e.getMessage());
+					return false;
+				}
+			}
+
+			activeModules.add(name);
+			for (OnChangeListener listener : onChangeListeners)
+				listener.onChange(name);
+
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public static void deactivateModule(String name) {
-		if (name == null)
-			return;
-		if (activeModules.contains(name)) {
-			try {
-				loadedModules.get(name).suspend();
-			} catch (Exception e) {
-				e.printStackTrace();
+		if (name != null) {
+			if (activeModules.contains(name)) {
+				try {
+					loadedModules.get(name).suspend();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				activeModules.remove(name);
 			}
-			activeModules.remove(name);
+			for (OnChangeListener listener : onChangeListeners)
+				listener.onChange(name);
 		}
-		for (OnChangeListener listener : onChangeListeners)
-			listener.onChange(name);
 	}
 
 
@@ -236,9 +365,9 @@ public class ModuleLoader {
 		});
 	}
 
-	public static interface OnChangeListener {
+	public interface OnChangeListener {
 
-		public void onChange(String name);
+		void onChange(String name);
 	}
 
 }

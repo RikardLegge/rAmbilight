@@ -390,7 +390,6 @@ public class ArduinoEmulator {
 	}
 
 	void dispose() {
-		visualizer.removeAll();
 		visualizer.dispose();
 	}
 

@@ -5,6 +5,7 @@ import com.rambilight.core.api.Side;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
 
 /*
  * Original source
@@ -13,190 +14,55 @@ import java.awt.*;
  * Edited to suite my needs. Credit to the original author
  */
 
+enum Direction {
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN
+}
+
 /**
  * A way of visualizing the light buffer in the same way as the arduino and led strip would.
  * Creates a frame and interface for displaying the light buffer.
  */
-public class Visualizer extends JFrame {
+public class Visualizer {
 
-	private Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+	private DisplayMode display = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
+	private Rectangle   screen  = new Rectangle(0, 0, display.getWidth(), display.getHeight());
 	ArduinoEmulator.rgb_color[] colorBuffer;
-	int                         light;
+	int             drawIndex = 0;
+	Queue<DrawSide> sides     = new LinkedList<>();
 
 	public Visualizer(ArduinoEmulator.rgb_color[] colorBuffer) {
 		this.colorBuffer = colorBuffer;
-		createUI();
+		drawOutlineJocke();
 	}
 
 	public void update() {
-		repaint();
+		sides.forEach(Visualizer.DrawSide::repaint);
 	}
 
-	private void createUI() {
-		setTitle("rAmbiligt Visualizer");
-		try {
-			setIconImage(new ImageIcon(Visualizer.class.getResource("Tray_Active.png")).getImage());
-		} catch (Exception e) {
-		}
-
-		Component c = new JPanel() {
-
-			@Override
-			public void paintComponent(Graphics g) {
-				Graphics2D g2 = (Graphics2D) g.create();
-				g2.setColor(Color.black);
-				int w = getWidth();
-				int h = getHeight();
-				g2.fillRect(0, 0, w, h);
-				drawOutlineJocke(g2);
-				g2.setComposite(AlphaComposite.Clear);
-				g2.fillRect(10, 10, w - 20, h - 20);
-			}
-		};
-		c.setPreferredSize(screen.getSize());
-		getContentPane().add(c);
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setUndecorated(true);
-		setDefaultLookAndFeelDecorated(false);
-		//setAlwaysOnTop(true);
-		pack();
-		setVisible(true);
-		com.sun.awt.AWTUtilities.setWindowOpaque(this, false);
+	public void dispose() {
+		sides.forEach(Visualizer.DrawSide::removeAll);
+		sides.forEach(Visualizer.DrawSide::dispose);
+		sides.clear();
 	}
 
-	enum DIRECTION {
-		LEFT,
-		RIGHT,
-		UP,
-		DOWN
+	private int addDrawIndex(int number, DrawSide side) {
+		sides.add(side);
+
+		int cache = drawIndex;
+		drawIndex += number;
+
+		return cache;
 	}
 
-	private int getIndex(int side) {
-		int mod = Global.lightLayout.length;
-		int val = (Global.lightLayoutClockwise ? -side : side) - Global.lightLayoutOffset;
-
-		return ((val % mod) + mod) % mod;
-	}
-
-	private void resetDraw() {
-		light = 0;
-	}
-
-	private void draw(Graphics2D g, int side) {
-		draw(g, side, 0, Global.lightLayout[side]);
-	}
-
-	private void draw(Graphics2D g, int side, int start, int stop) {
-		DIRECTION direction = DIRECTION.DOWN;
-		switch (side) {
-			case Side.LEFT:
-				direction = Global.lightLayoutClockwise ? DIRECTION.UP : DIRECTION.DOWN;
-				break;
-			case Side.RIGHT:
-				direction = Global.lightLayoutClockwise ? DIRECTION.DOWN : DIRECTION.UP;
-				break;
-			case Side.TOP:
-				direction = Global.lightLayoutClockwise ? DIRECTION.RIGHT : DIRECTION.LEFT;
-				break;
-			case Side.BOTTOM:
-				direction = Global.lightLayoutClockwise ? DIRECTION.LEFT : DIRECTION.RIGHT;
-				break;
-		}
-
-		draw(g, direction, Global.lightLayout[side], start, stop);
-	}
-
-	private void draw(Graphics2D g, DIRECTION direction, int numLights, int start, int stop) {
-		int a = 10;
-		int h = getHeight() - 2 * a;
-		int w = getWidth() - 2 * a;
-
-		float fhd = h / numLights;
-		int fwd = w / numLights;
-		int hd = Math.round(fhd);
-		int wd = Math.round(fwd);
-
-		for (int i = start; i < stop; i++) {
-			g.setColor(getColor(light++));
-			switch (direction) {
-				case UP:
-					g.fillRect(w + a, h - Math.round(fhd * i) - a, a, hd);
-					break;
-				case DOWN:
-					g.fillRect(0, Math.round(fhd * i) + a, a, hd);
-					break;
-				case LEFT:
-					g.fillRect(w - Math.round(fwd * i) - a, 0, wd, a);
-					break;
-				case RIGHT:
-					g.fillRect(Math.round(fwd * i) + a, h + a, wd, a);
-					break;
-			}
-		}
-	}
-
-	private void drawOutlineJocke(Graphics2D g) {
-		resetDraw();
-
-		draw(g, Side.LEFT, 16, Global.lightLayout[Side.LEFT]);
-		draw(g, Side.BOTTOM);
-		draw(g, Side.RIGHT);
-		draw(g, Side.TOP);
-		draw(g, Side.LEFT, 0, 16);
-	}
-
-	private void drawOutlineTesting(Graphics2D g) {
-		resetDraw();
-
-		draw(g, Side.LEFT);
-		draw(g, Side.BOTTOM);
-		draw(g, Side.RIGHT);
-		draw(g, Side.TOP);
-	}
-
-	private void drawOutline(Graphics2D g) {
-		int a = 10;
-		int h = getHeight() - 2 * a;
-		int w = getWidth() - 2 * a;
-		int light = 0;
-		int numSides = Global.lightLayout.length;
-
-		if (numSides > 0) {
-			float fhd = h / Global.lightLayout[0];
-			int hd = Math.round(fhd);
-			for (int i = 0; i < Global.lightLayout[0]; i++) {
-				g.setColor(getColor(light));
-				g.fillRect(w + a, h - Math.round(fhd * i) - 2 * a, a, hd);
-				light++;
-			}
-		}
-		if (numSides > 1) {
-			int fwd = w / Global.lightLayout[1];
-			int wd = Math.round(fwd);
-			for (int i = 0; i < Global.lightLayout[1]; i++) {
-				g.setColor(getColor(light));
-				g.fillRect(w - Math.round(fwd * i) - a, 0, wd, a);
-				light++;
-			}
-		}
-		if (numSides > 2) {
-			float fhd = h / Global.lightLayout[2];
-			int hd = Math.round(fhd);
-			for (int i = 0; i < Global.lightLayout[2]; i++) {
-				g.setColor(getColor(light));
-				g.fillRect(0, Math.round(fhd * i) + a, a, hd);
-				light++;
-			}
-		}
-		if (numSides > 3) {
-			int fwd = w / Global.lightLayout[3];
-			int wd = Math.round(fwd);
-			for (int i = 0; i < Global.lightLayout[3]; i++) {
-				g.setColor(getColor(light));
-				g.fillRect(Math.round(fwd * i) + a, h + a, wd, a);
-				light++;
-			}
-		}
+	private void drawOutlineJocke() {
+		new DrawSide(Side.LEFT, 16, Global.lightLayout[Side.LEFT]);
+		new DrawSide(Side.BOTTOM);
+		new DrawSide(Side.RIGHT);
+		new DrawSide(Side.TOP);
+		new DrawSide(Side.LEFT, 0, 16);
 	}
 
 	private Color getColor(int l) {
@@ -204,6 +70,208 @@ public class Visualizer extends JFrame {
 			return Color.black;
 		else
 			return new Color(colorBuffer[l].red, colorBuffer[l].green, colorBuffer[l].blue);
+	}
+
+
+	class DrawSide extends JFrame {
+		int side;
+		int start;
+		int stop;
+		int offset = 22;
+
+		int lightIndex;
+
+		int depth = 10;
+
+		private void addUI() {
+			Component c = new JPanel() {
+				@Override
+				public void paintComponent(Graphics g) {
+					Graphics2D g2 = (Graphics2D) g.create();
+					draw(g2);
+				}
+			};
+
+			c.setPreferredSize(new Dimension((int) (width() * partOfWidth()), (int) (height() * partOfHeight())));
+
+			getContentPane().add(c);
+
+			setTitle("rAmbiligt Visualizer");
+			try {
+				setIconImage(new ImageIcon(Visualizer.class.getResource("Tray_Active.png")).getImage());
+			} catch (Exception ignored) { }
+
+			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+			setUndecorated(true);
+			setDefaultLookAndFeelDecorated(false);
+			setAlwaysOnTop(true);
+			pack();
+			setVisible(true);
+
+			if (side == Side.TOP || side == Side.BOTTOM)
+				setLocation(x() + (int) (start * lWidth()), y());
+			else
+				setLocation(x(), y() + (int) (start * lHeight()));
+
+
+			System.out.println(getX() + ":" + getY() + " & " + getWidth() + "/" + getHeight());
+		}
+
+		public DrawSide(int side) {
+			this(side, 0, Global.lightLayout[side]);
+		}
+
+		public DrawSide(int side, int start, int stop) {
+			this.side = side;
+			this.start = start;
+			this.stop = stop;
+
+			lightIndex = addDrawIndex(stop - start, this);
+			addUI();
+		}
+
+
+		int width() {
+			switch (side) {
+				case Side.TOP:
+				case Side.BOTTOM:
+					return (int) screen.getWidth() - 2 * depth;
+				case Side.LEFT:
+				case Side.RIGHT:
+					return depth;
+				default:
+					return 0;
+			}
+		}
+
+		int height() {
+			switch (side) {
+				case Side.TOP:
+				case Side.BOTTOM:
+					return depth;
+				case Side.LEFT:
+				case Side.RIGHT:
+					return (int) screen.getHeight() - 2 * depth - offset;
+				default:
+					return 0;
+			}
+		}
+
+		int x() {
+			switch (side) {
+				case Side.TOP:
+				case Side.BOTTOM:
+					return depth;
+				case Side.LEFT:
+					return 0;
+				case Side.RIGHT:
+					return (int) screen.getWidth() - depth;
+				default:
+					return 0;
+			}
+		}
+
+		int y() {
+			switch (side) {
+				case Side.TOP:
+					return offset;
+				case Side.LEFT:
+				case Side.RIGHT:
+					return depth + offset;
+				case Side.BOTTOM:
+					return (int) screen.getHeight() - depth;
+				default:
+					return 0;
+			}
+
+		}
+
+		Direction getDirection() {
+			switch (side) {
+				case Side.LEFT:
+					return Global.lightLayoutClockwise ? Direction.UP : Direction.DOWN;
+				case Side.RIGHT:
+					return Global.lightLayoutClockwise ? Direction.DOWN : Direction.UP;
+				case Side.TOP:
+					return Global.lightLayoutClockwise ? Direction.RIGHT : Direction.LEFT;
+				case Side.BOTTOM:
+					return Global.lightLayoutClockwise ? Direction.LEFT : Direction.RIGHT;
+				default:
+					return Direction.UP;
+			}
+		}
+
+		float partOfWidth() {
+			switch (side) {
+				case Side.TOP:
+				case Side.BOTTOM:
+					return (float) numLights() / Global.lightLayout[side];
+				default:
+					return 1;
+			}
+		}
+
+		float partOfHeight() {
+			switch (side) {
+				case Side.LEFT:
+				case Side.RIGHT:
+					return (float) numLights() / Global.lightLayout[side];
+				default:
+					return 1;
+			}
+		}
+
+		int numLights() {
+			return (stop - start);
+		}
+
+		float lHeight() {
+			return getHeight() / numLights();
+		}
+
+		float lWidth() {
+			return getWidth() / numLights();
+		}
+
+		int widthError() {
+			return Math.round(getWidth() * .0015f);
+		}
+
+		int heightError() {
+			return Math.round(getHeight() * .004f);
+		}
+
+		private void draw(Graphics2D g) {
+			int light = lightIndex;
+			Direction dir = getDirection();
+
+			int w = getWidth();
+			int h = getHeight();
+
+			float fwd = lWidth();
+			float fhd = lHeight();
+
+			int hd = Math.round(fhd);
+			int wd = Math.round(fwd);
+
+			for (int i = 0; i < stop - start; i++) {
+				g.setColor(getColor(light++));
+				switch (dir) {
+					case UP:
+						g.fillRect(0, h - Math.round(fhd * (i + 1f)) - heightError(), depth, hd);
+						break;
+					case DOWN:
+						g.fillRect(0, Math.round(fhd * i) + heightError(), depth, hd);
+						break;
+					case LEFT:
+						g.fillRect(w - Math.round(fwd * (i + 1f)) - widthError(), 0, wd, depth);
+						break;
+					case RIGHT:
+						g.fillRect(Math.round(fwd * i) + widthError(), 0, wd, depth);
+						break;
+				}
+			}
+		}
 	}
 
 }
