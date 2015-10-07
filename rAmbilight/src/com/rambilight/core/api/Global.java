@@ -152,6 +152,7 @@ public class Global {
 
 		preferences.save("lightLayoutClockwise", Global.lightLayoutClockwise);
 		preferences.save("lightLayoutOffset", Global.lightLayoutOffset);
+		preferences.save("lightOffset", Global.lightOffset);
 		preferences.save("lightLayout", Global.lightLayout);
 
 		preferences.save("lightUpdateThreshold", Global.lightUpdateThreshold);
